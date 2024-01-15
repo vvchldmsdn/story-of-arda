@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import { Inter, Gugi } from 'next/font/google'
+import './globals.css';
+import {Providers} from "./providers";
 
 const inter = Inter({ subsets: ['latin'] })
+const gugi = Gugi({ subsets: ['latin'], weight: ['400',]});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={gugi.className}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   )
 }

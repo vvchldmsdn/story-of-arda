@@ -1,0 +1,12 @@
+import Topnav from "../ui/home/topnav";
+
+export default function ({children}: {children: React.ReactNode}) {
+  return (
+    <div className="flex-col">
+      <div className="flex-none h-24">
+        <Topnav></Topnav>
+      </div>
+      <div>{children}</div>
+    </div>
+  )
+};
