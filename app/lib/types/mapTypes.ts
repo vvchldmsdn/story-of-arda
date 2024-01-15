@@ -4,3 +4,11 @@ export type MapType = {
   left: number;
   top: number;
 };
+
+export type RegionNameType = {
+  name: string;
+};
+
+export type RegionDetailType = {
+  description: string;
+};

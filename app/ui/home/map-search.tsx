@@ -1,10 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export default function MapSearch() {
+  const mapCoordParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const divRef = useRef<HTMLImageElement>(null);
   const [mapData, setMapData] = useState<MapType>({ width: 0, height: 0, top: 0, left: 0 });
 
@@ -24,12 +29,6 @@ export default function MapSearch() {
     }
   }, []);
 
-  const onClick = () => {
-    const imgRect = imgRef.current?.getBoundingClientRect();
-    console.log('on click');
-    console.log(imgRect);
-  }
-
   const {
     imgRef,
     mapPosition,
@@ -40,6 +39,18 @@ export default function MapSearch() {
     handleZoomIn
   } = useMap(mapData);
 
+  const getRegionByClick = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    if (imgRef.current) {
+      const rect = imgRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (imgRef.current.naturalWidth / rect.width);
+      const y = (e.clientY - rect.top) * (imgRef.current.naturalHeight / rect.height);
+      console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
+      const params = new URLSearchParams(mapCoordParams);
+      params.set('query', `${Math.round(x * 1e4) / 1e4} ${Math.round(y * 1e4) / 1e4}`);
+      replace(`${pathname}?${params.toString()}`)
+    }
+  }, [imgRef]);
+
   return (
     <div
       ref={divRef}
@@ -49,7 +60,7 @@ export default function MapSearch() {
         ref={imgRef}
         src="/SoA.jpeg"
         alt="Home Map Image"
-        onClick={onClick}
+        onClick={getRegionByClick}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
