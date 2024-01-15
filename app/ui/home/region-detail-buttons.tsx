@@ -16,8 +16,8 @@ export default function ButtonWrapper() {
     <div className="flex flex-row flex-wrap space-x-2 justify-center items-center h-full">
       {detailTypes.map((item) => {
         return (
-          <div className="flex flex-row items-center space-x-2">
-            <Buttons type={item.type} key={item.key}></Buttons>
+          <div className="flex flex-row items-center space-x-2" key={item.key}>
+            <Buttons type={item.type}></Buttons>
             <Divider orientation="vertical" />
           </div>
         )
