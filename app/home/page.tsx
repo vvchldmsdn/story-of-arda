@@ -6,7 +6,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
 
   return (
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="bg-sky-600 h-full basis-2/5 flex-shrink xl:flex-auto xl:basis-4/12 mx-4">
+      <div className="bg-sky-600 h-full basis-2/5 flex-shrink xl:flex-auto xl:basis-4/12 mx-4 overflow-hidden">
         {/* 지역 이름, 상세설명 들어갈 부분 */}
         <RegionDetail query={query}></RegionDetail>
       </div>

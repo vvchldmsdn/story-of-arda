@@ -24,7 +24,6 @@ export async function fetchRegionName(query: string) {
       LIMIT 1
     ) AS nearest_line ON rl.line_id = nearest_line.id;
     `;
-    console.log(data.rows);
     return data.rows;
   } catch (error) {
     console.log(error);
@@ -36,12 +35,37 @@ export async function fetchRegionDetail(regionName: string, detailName: string) 
   noStore();
 
   try {
-    const data = await sql<RegionDetailType>`
-    SELECT ${detailName}
-    FROM region
-    WHERE name = ${regionName};
-    `;
-    console.log(data.rows);
+    let data: any;
+    switch (detailName) {
+      case 'history':
+        data = await sql<RegionDetailType>`
+        SELECT history AS description
+        FROM region
+        WHERE name = ${regionName};
+        `;
+        break;
+      case 'geography':
+        data = await sql<RegionDetailType>`
+        SELECT geography AS description
+        FROM region
+        WHERE name = ${regionName};
+        `;
+        break;
+      case 'role_in_story':
+        data = await sql<RegionDetailType>`
+        SELECT role_in_story AS description
+        FROM region
+        WHERE name = ${regionName};
+        `;
+        break;
+      case 'depiction_in_media':
+        data = await sql<RegionDetailType>`
+        SELECT depiction_in_media AS description
+        FROM region
+        WHERE name = ${regionName};
+        `;
+        break;
+    }
     return data.rows;
   } catch (error) {
     console.log(error);
