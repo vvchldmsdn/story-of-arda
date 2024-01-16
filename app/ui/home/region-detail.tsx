@@ -4,10 +4,9 @@ import {ScrollShadow} from "@nextui-org/react";
 import ButtonWrapper from "./region-detail-buttons";
 
 export default async function RegionDetail({ query, detail }: {query: string, detail: string}) {
-  const regionNameData: RegionNameType[] = await fetchRegionName(query);
+  const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
   const regionName = regionNameData[0].name;
-
-  const regionDetailData: RegionDetailType[] = await fetchRegionDetail(regionName, detail);
+  const regionDetailData: RegionDetailType[] = detail === '' ? [{description: ''}] : await fetchRegionDetail(regionName, detail);
 
   return (
     <div className="flex flex-col h-full pb-4 xl:px-16">

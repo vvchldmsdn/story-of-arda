@@ -33,6 +33,7 @@ export function Buttons({type}: {type: string}) {
 
   const params = new URLSearchParams(mapCoordParams);
   const detailType = params.get('detail');
+  console.log(type, detailType)
 
   const handleButtonClick = () => {
     params.set('detail', type);
@@ -43,9 +44,12 @@ export function Buttons({type}: {type: string}) {
     <div
       onClick={handleButtonClick}
       className={clsx(
-        'text-eeeeee text-xs',
+        'text-xs',
         {
           'text-ardayellow': detailType === type,
+        },
+        {
+          'text-eeeeee': detailType !== type,
         }
       )}
     >
