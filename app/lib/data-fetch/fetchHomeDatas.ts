@@ -19,7 +19,7 @@ export async function fetchRegionName(query: string) {
       FROM line
       ORDER BY ST_Distance(
         ST_MakeLine(start_point, end_point),
-        ST_MakePoint(${x}, ${y})
+        ST_SetSRID(ST_MakePoint(${x}, ${y}), 4326)
       ) ASC
       LIMIT 1
     ) AS nearest_line ON rl.line_id = nearest_line.id;

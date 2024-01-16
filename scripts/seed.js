@@ -1,4 +1,8 @@
 const { db } = require('@vercel/postgres');
+const { languages, races,
+  raceLanguages, families, regions,
+  lines, regionLines, quotes
+} = require('../app/lib/data');
 
 async function createTable(client) {
   try {
@@ -10,7 +14,7 @@ async function createTable(client) {
     await client.sql`
     CREATE TABLE IF NOT EXISTS language (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL
+      name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL
     );
     `;
@@ -20,7 +24,7 @@ async function createTable(client) {
     await client.sql`
     CREATE TABLE IF NOT EXISTS race (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL
+      name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL
     );
     `;
@@ -51,7 +55,7 @@ async function createTable(client) {
     await client.sql`
     CREATE TABLE IF NOT EXISTS image (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      url VARCHAR(255) NOT NULL,
+      url VARCHAR(255) NOT NULL
     );
     `;
     console.log('create image table success');
@@ -61,7 +65,7 @@ async function createTable(client) {
     CREATE TABLE IF NOT EXISTS region (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      brief_description VARCHAR(255) NOT NULL,
+      brief_description TEXT NOT NULL,
       history TEXT NOT NULL,
       geography TEXT NOT NULL,
       role_in_story TEXT NOT NULL,
@@ -92,6 +96,7 @@ async function createTable(client) {
     // Region-Line table
     await client.sql`
     CREATE TABLE IF NOT EXISTS region_line (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       region_id UUID REFERENCES region(id),
       line_id UUID REFERENCES line(id)
     );
@@ -144,7 +149,7 @@ async function createTable(client) {
     CREATE TABLE IF NOT EXISTS person_family (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       person_id UUID REFERENCES person(id),
-      family_id UUID REFERENCES person(id),
+      family_id UUID REFERENCES person(id)
     );
     `;
     console.log('create person_family table success');
@@ -191,7 +196,7 @@ async function createTable(client) {
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       detailed_description TEXT,
-      brief_description TEXT,
+      brief_description TEXT
     );
     `;
     console.log('create item table success');
@@ -256,4 +261,200 @@ async function createTable(client) {
   } catch (error) {
 
   }
-}
+};
+
+async function seedLanguage(client) {
+  try {
+    const insertedLanguage = await Promise.all(
+      languages.map(
+        (language) => client.sql`
+        INSERT INTO language (id, name, description)
+        VALUES (${language.id}, ${language.name}, ${language.description})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      ),
+    );
+
+    return {
+      languages: insertedLanguage
+    };
+  } catch (error) {
+    console.log("Error while inserting languages data:", error);
+    throw error;
+  }
+};
+
+async function seedRace(client) {
+  try {
+    const insertedRaces = await Promise.all(
+      races.map(
+        (race) => client.sql`
+        INSERT INTO race (id, name, description)
+        VALUES (${race.id}, ${race.name}, ${race.description})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      ),
+    );
+
+    return {
+      races: insertedRaces,
+    }
+  } catch (error) {
+    console.log("Error while inserting races data:", error);
+    throw error;
+  }
+};
+
+async function seedRaceLanguage(client) {
+  try {
+    const insertedRaceLanguages = await Promise.all(
+      raceLanguages.map(
+        (raceLanguage) => client.sql`
+        INSERT INTO race_language (id, race_id, language_id)
+        VALUES (${raceLanguage.id}, ${raceLanguage.race_id}, ${raceLanguage.language_id})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      ),
+    );
+
+    return {
+      raceLanguages: insertedRaceLanguages,
+    }
+  } catch (error) {
+    console.log("Error while inserting races data:", error);
+    throw error;
+  }
+};
+
+async function seedFamily(client) {
+  try {
+    const insertedFamilies = await Promise.all(
+      families.map(
+        (family) => client.sql`
+        INSERT INTO family (id, race_id, name, description)
+        VALUES (${family.id}, ${family.race_id}, ${family.name}, ${family.description})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      ),
+    );
+
+    return {
+      familis: insertedFamilies,
+    }
+  } catch (error) {
+    console.log("Error while inserting family data:", error);
+    throw error;
+  }
+};
+
+async function seedRegion(client) {
+  try {
+    const insertedRegions = await Promise.all(
+      regions.map(
+        (region) => client.sql`
+        INSERT INTO region (id, name, brief_description, history, geography, role_in_story, depiction_in_media)
+        VALUES(${region.id}, ${region.name}, ${region.brief_description}, ${region.history}, ${region.geography}, ${region.role_in_story}, ${region.depiction_in_media})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      )
+    );
+
+    return {
+      regions: insertedRegions,
+    }
+  } catch (error) {
+    console.log("Error while inserting region data:", error);
+    throw error;
+  }
+};
+
+async function seedQuote(client) {
+  try {
+    const instertedQuotes = await Promise.all(
+      quotes.map(
+        (quote) => client.sql`
+        INSERT INTO quote (id, saying, person_id, region_id)
+        VALUES (${quote.id}, ${quote.saying}, ${quote.person_id}, ${quote.region_id})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      ),
+    );
+
+    return {
+      quotes: instertedQuotes,
+    }
+  } catch (error) {
+    console.log("Error while inserting quotes data:", error);
+    throw error;
+  }
+};
+
+async function seedLine(client) {
+  try {
+    const insertedLines = await Promise.all(
+      lines.map(
+        (line) => client.sql`
+        INSERT INTO line (id, start_point, end_point)
+        VALUES (
+          ${line.id},
+          ST_MakePoint(${line.start_point[0]}, ${line.start_point[1]}),
+          ST_MakePoint(${line.end_point[0]}, ${line.end_point[1]})
+        )
+        ON CONFLICT (id) DO NOTHING;
+        `
+      )
+    );
+
+    return {
+      lines: insertedLines,
+    }
+  } catch (error) {
+    console.log("Error while inserting line data:", error);
+    throw error;
+  }
+};
+
+async function seedRegionLine(client) {
+  try {
+    const insertedRegionLines = await Promise.all(
+      regionLines.map(
+        (regionLine) => client.sql`
+        INSERT INTO region_line (id, region_id, line_id)
+        VALUES (${regionLine.id}, ${regionLine.region_id}, ${regionLine.line_id})
+        ON CONFLICT (id) DO NOTHING;
+        `
+      )
+    );
+
+    return {
+      regionLines: insertedRegionLines,
+    }
+  } catch (error) {
+    console.log("Error while inserting region_line data:", error);
+    throw error;
+  }
+};
+
+async function main() {
+  const client = await db.connect();
+
+  // await createTable(client);
+  await seedRace(client);
+  await seedLanguage(client);
+  await seedRaceLanguage(client);
+  await seedFamily(client);
+  await seedRegion(client);
+  await seedQuote(client);
+  await seedLine(client);
+  await seedRegionLine(client);
+
+  await client.end();
+};
+
+
+main().catch((err) => {
+  console.log(
+    "An error occurred while creating tables:",
+    err,
+  );
+});
