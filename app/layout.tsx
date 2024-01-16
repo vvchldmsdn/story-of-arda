@@ -1,10 +1,7 @@
-import type { Metadata } from 'next'
-import { Inter, Gugi } from 'next/font/google'
+import type { Metadata } from 'next';
+import { inter, gugi } from './lib/fonts';
 import './globals.css';
 import {Providers} from "./providers";
-
-const inter = Inter({ subsets: ['latin'] })
-const gugi = Gugi({ subsets: ['latin'], weight: ['400',]});
 
 export const metadata: Metadata = {
   title: 'Create Next App',

@@ -2,6 +2,7 @@ import { fetchRegionDetail, fetchRegionName } from "@/app/lib/data-fetch/fetchHo
 import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import ButtonWrapper from "./region-detail-buttons";
+import { firaSans } from "@/app/lib/fonts";
 
 export default async function RegionDetail({ query, detail }: {query: string, detail: string}) {
   const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
@@ -16,7 +17,7 @@ export default async function RegionDetail({ query, detail }: {query: string, de
       </div>
       <div className="p-4 flex-auto overflow-hidden">
         <ScrollShadow hideScrollBar className="w-full h-full">
-          <p className="text-eeeeee">{regionDetailData[0].description}</p>
+          <p className={`text-eeeeee whitespace-pre-line text-center ${firaSans.className}`}>{regionDetailData[0].description}</p>
         </ScrollShadow>
       </div>
     </div>
