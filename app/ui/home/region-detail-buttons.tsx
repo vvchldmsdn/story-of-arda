@@ -24,7 +24,7 @@ export default function ButtonWrapper() {
       })}
     </div>
   )
-}
+};
 
 export function Buttons({type}: {type: string}) {
   const mapCoordParams = useSearchParams();
@@ -56,4 +56,4 @@ export function Buttons({type}: {type: string}) {
       {type}
     </div>
   )
-}
+};

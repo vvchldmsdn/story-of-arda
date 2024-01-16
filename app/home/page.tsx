@@ -1,3 +1,4 @@
+import CardWrapper from "../ui/home/cards";
 import MapSearch from "../ui/home/map-search";
 import RegionDetail from "../ui/home/region-detail";
 
@@ -18,8 +19,9 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
             <MapSearch></MapSearch>
           </div>
         </div>
-        <div className="bg-teal-800 w-full h-60 flex-none">
+        <div className="w-full h-60 flex-none">
           {/* 대시보드 카드들 들어갈 부분 */}
+          <CardWrapper></CardWrapper>
         </div>
       </div>
       <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">

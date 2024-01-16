@@ -9,7 +9,7 @@ export default function Topnav() {
       <div className="mr-4 grow flex flex-row gap-16 justify-center items-center text-eeeeee text-xl">
         <NavLinks/>
       </div>
-      <div className="bg-sky-600 w-64"></div>
+      <div className="w-64"></div>
     </div>
   )
 }
