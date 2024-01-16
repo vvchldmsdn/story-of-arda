@@ -24,6 +24,12 @@ export default function MapSearch() {
     window.addEventListener("resize", handleResize);
     handleResize(); // initial position
 
+    // query=1694.8769+1184.4651&detail=history
+    const params = new URLSearchParams(mapCoordParams);
+    params.set('query', `1694.8769 1184.4651`);
+    params.set('detail', 'history');
+    replace(`${pathname}?${params.toString()}`)
+
     return () => {
       window.removeEventListener("resize", handleResize);
     }
@@ -47,6 +53,7 @@ export default function MapSearch() {
       console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
       const params = new URLSearchParams(mapCoordParams);
       params.set('query', `${Math.round(x * 1e4) / 1e4} ${Math.round(y * 1e4) / 1e4}`);
+      params.set('detail', 'history');
       replace(`${pathname}?${params.toString()}`)
     }
   }, [imgRef]);
