@@ -42,11 +42,12 @@ export default function MapSearch() {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    handleZoomIn
+    handleZoomIn,
+    isMoved
   } = useMap(mapData);
 
   const getRegionByClick = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    if (imgRef.current) {
+    if (imgRef.current && !isMoved) {
       const rect = imgRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) * (imgRef.current.naturalWidth / rect.width);
       const y = (e.clientY - rect.top) * (imgRef.current.naturalHeight / rect.height);
@@ -56,7 +57,7 @@ export default function MapSearch() {
       params.set('detail', 'history');
       replace(`${pathname}?${params.toString()}`)
     }
-  }, [imgRef]);
+  }, [imgRef, isMoved]);
 
   return (
     <div

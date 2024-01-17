@@ -22,6 +22,8 @@ export const useMap = (mapData: MapType) => {
   const [mapPosition, setMapPosition] = usePosition({ x: 0, y: 0 });
   const [mouseStart, setMouseStart] = usePosition({ x: 0, y: 0 });
   const [mapTopLeft, setMapTopLeft] = usePosition({ x: 0, y: 0 });
+  // 클릭과 드래그 구분용 state
+  const [isMoved, setIsMoved] = useState<boolean>(false);
 
   // 중복되는 로직을 처리하는 함수
   const calculateNewPosition = useCallback((clientX: number, clientY: number, rect: ClientRect) => {
@@ -50,6 +52,7 @@ export const useMap = (mapData: MapType) => {
   const handleMouseDown = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     e.preventDefault();
     setDragging(true);
+    setIsMoved(false);
     if (imgRef.current) {
       const rect = imgRef.current.getBoundingClientRect(); 
       setMouseStart({ x: e.clientX - rect.left, y: e.clientY - rect.top }); 
@@ -57,6 +60,7 @@ export const useMap = (mapData: MapType) => {
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    setIsMoved(true);
     if (dragging && imgRef.current) {
       const rect = imgRef.current.getBoundingClientRect();
       const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
@@ -161,6 +165,7 @@ export const useMap = (mapData: MapType) => {
     handleMouseMove,
     handleMouseUp,
     handleZoomIn,
+    isMoved,
     // handleZoomOut
   }
 }
