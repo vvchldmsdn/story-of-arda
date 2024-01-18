@@ -1,19 +1,27 @@
 const { db } = require('@vercel/postgres');
-const { languages, races,
-  raceLanguages, families, regions,
-  lines, regionLines, quotes
+const { 
+  languages,
+  races,
+  raceLanguages,
+  families,
+  regions,
+  lines,
+  regionLines,
+  persons,
+  personRegions,
+  quotes,
 } = require('../app/lib/data');
 
 async function createTable(client) {
   try {
     // UUID and PostGIS Extensions
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS postgis`;
 
     // language table
     await client.sql`
     CREATE TABLE IF NOT EXISTS language (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL
     );
@@ -23,7 +31,7 @@ async function createTable(client) {
     // race table
     await client.sql`
     CREATE TABLE IF NOT EXISTS race (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL
     );
@@ -33,9 +41,8 @@ async function createTable(client) {
     // Race-Language table
     await client.sql`
     CREATE TABLE IF NOT EXISTS race_language (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      race_id UUID REFERENCES race(id),
-      language_id UUID REFERENCES language(id)
+      race_id INTEGER NOT NULL REFERENCES race(id),
+      language_id INTEGER NOT NULL REFERENCES language(id)
     );
     `;
     console.log('create race_language table success');
@@ -43,8 +50,8 @@ async function createTable(client) {
     // Family table
     await client.sql`
     CREATE TABLE IF NOT EXISTS family (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      race_id UUID REFERENCES race(id),
+      id SERIAL PRIMARY KEY,
+      race_id INTEGER REFERENCES race(id),
       name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL
     );
@@ -54,7 +61,7 @@ async function createTable(client) {
     // image table
     await client.sql`
     CREATE TABLE IF NOT EXISTS image (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       url VARCHAR(255) NOT NULL
     );
     `;
@@ -63,7 +70,7 @@ async function createTable(client) {
     // region table
     await client.sql`
     CREATE TABLE IF NOT EXISTS region (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       brief_description TEXT NOT NULL,
       history TEXT NOT NULL,
@@ -77,8 +84,8 @@ async function createTable(client) {
     // region_image table
     await client.sql`
     CREATE TABLE IF NOT EXISTS region_image (
-      region_id UUID REFERENCES region(id),
-      image_id UUID REFERENCES image(id)
+      region_id INTEGER NOT NULL REFERENCES region(id),
+      image_id INTEGER NOT NULL REFERENCES image(id)
     );
     `;
     console.log('create region_image table success');
@@ -86,7 +93,7 @@ async function createTable(client) {
     // Line table
     await client.sql`
     CREATE TABLE IF NOT EXISTS line (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       start_point GEOMETRY(Point, 4326),
       end_point GEOMETRY(Point, 4326)
     );
@@ -96,30 +103,31 @@ async function createTable(client) {
     // Region-Line table
     await client.sql`
     CREATE TABLE IF NOT EXISTS region_line (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      region_id UUID REFERENCES region(id),
-      line_id UUID REFERENCES line(id)
+      region_id INTEGER NOT NULL REFERENCES region(id),
+      line_id INTEGER NOT NULL REFERENCES line(id)
     );
     `;
     console.log('create region_line table success');
 
     // Create spatial index on Line table
     await client.sql`CREATE INDEX line_gix ON line USING GIST (start_point, end_point)`;
+    console.log('create spatial index success');
 
     // Person table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      race_id UUID REFERENCES race(id),
+      race_id INTEGER NOT NULL REFERENCES race(id),
       birth_date VARCHAR(255),
       death_date VARCHAR(255),
       nickname VARCHAR(255),
       gender CHAR(1),
-      detailed_description TEXT NOT NULL,
+      history TEXT NOT NULL,
+      crrs TEXT NOT NULL,
+      abilities_characteristics TEXT NOT NULL,
       brief_description TEXT NOT NULL,
-      image_url VARCHAR(255),
-      home UUID REFERENCES region(id)
+      home INTEGER REFERENCES region(id)
     );
     `;
     console.log('create person table success');
@@ -127,9 +135,8 @@ async function createTable(client) {
     // Person-Region table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person_region (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      person_id UUID REFERENCES person(id),
-      region_id UUID REFERENCES region(id)
+      person_id INTEGER NOT NULL REFERENCES person(id),
+      region_id INTEGER NOT NULL REFERENCES region(id)
     );
     `;
     console.log('create person_region table success');
@@ -137,9 +144,8 @@ async function createTable(client) {
     // Tree table
     await client.sql`
     CREATE TABLE IF NOT EXISTS tree (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      parent_id UUID REFERENCES person(id),
-      spring_id UUID REFERENCES person(id)
+      parent_id INTEGER NOT NULL REFERENCES person(id),
+      spring_id INTEGER NOT NULL REFERENCES person(id)
     );
     `;
     console.log('create tree table success');
@@ -147,9 +153,8 @@ async function createTable(client) {
     // person_family table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person_family (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      person_id UUID REFERENCES person(id),
-      family_id UUID REFERENCES person(id)
+      person_id INTEGER NOT NULL REFERENCES person(id),
+      family_id INTEGER NOT NULL REFERENCES person(id)
     );
     `;
     console.log('create person_family table success');
@@ -157,8 +162,8 @@ async function createTable(client) {
     // person_image table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person_image (
-      person_id UUID REFERENCES person(id),
-      image_id UUID REFERENCES image(id)
+      person_id INTEGER NOT NULL REFERENCES person(id),
+      image_id INTEGER NOT NULL REFERENCES image(id)
     );
     `;
     console.log('create person_image table success');
@@ -166,10 +171,10 @@ async function createTable(client) {
     // quote table
     await client.sql`
     CREATE TABLE quote (
-      id UUID NOT NULL PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       saying VARCHAR(255) NOT NULL,
-      person_id UUID REFERENCES person(id),
-      region_id UUID REFERENCES region(id),
+      person_id INTEGER REFERENCES person(id),
+      region_id INTEGER REFERENCES region(id),
       CHECK (
         (person_id IS NOT NULL AND region_id IS NOT NULL) OR 
         (person_id IS NOT NULL AND region_id IS NULL) OR 
@@ -182,10 +187,10 @@ async function createTable(client) {
     // Event table
     await client.sql`
     CREATE TABLE IF NOT EXISTS event (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      detailed_description TEXT,
-      brief_description TEXT
+      detailed_description TEXT NOT NULL,
+      brief_description TEXT NOT NULL
     );
     `;
     console.log('create event table success');
@@ -193,10 +198,9 @@ async function createTable(client) {
     // Item table
     await client.sql`
     CREATE TABLE IF NOT EXISTS item (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      detailed_description TEXT,
-      brief_description TEXT
+      description TEXT NOT NULL
     );
     `;
     console.log('create item table success');
@@ -204,8 +208,8 @@ async function createTable(client) {
     // event_image table
     await client.sql`
     CREATE TABLE IF NOT EXISTS event_image (
-      event_id UUID REFERENCES event(id),
-      image_id UUID REFERENCES image(id)
+      event_id INTEGER NOT NULL REFERENCES event(id),
+      image_id INTEGER NOT NULL REFERENCES image(id)
     );
     `;
     console.log('create event_image table success');
@@ -213,8 +217,8 @@ async function createTable(client) {
     // item_image table
     await client.sql`
     CREATE TABLE IF NOT EXISTS item_image (
-      item_id UUID REFERENCES item(id),
-      image_id UUID REFERENCES image(id)
+      item_id INTEGER NOT NULL REFERENCES item(id),
+      image_id INTEGER NOT NULL REFERENCES image(id)
     );
     `;
     console.log('create item_image table success');
@@ -222,9 +226,8 @@ async function createTable(client) {
     // Person-Event table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person_event (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      person_id UUID REFERENCES person(id),
-      event_id UUID REFERENCES event(id)
+      person_id INTEGER NOT NULL REFERENCES person(id),
+      event_id INTEGER NOT NULL REFERENCES event(id)
     );
     `;
     console.log('create person_event table success');
@@ -232,9 +235,8 @@ async function createTable(client) {
     // Person-Item table
     await client.sql`
     CREATE TABLE IF NOT EXISTS person_item (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      person_id UUID REFERENCES person(id),
-      item_id UUID REFERENCES item(id)
+      person_id INTEGER NOT NULL REFERENCES person(id),
+      item_id INTEGER NOT NULL REFERENCES item(id)
     );
     `;
     console.log('create person_item table success');
@@ -242,9 +244,8 @@ async function createTable(client) {
     // region_event table
     await client.sql`
     CREATE TABLE IF NOT EXISTS region_event (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      event_id UUID REFERENCES event(id),
-      region_id UUID REFERENCES region(id)
+      event_id INTEGER NOT NULL REFERENCES event(id),
+      region_id INTEGER NOT NULL REFERENCES region(id)
     );
     `;
     console.log('create region_event table success');
@@ -252,14 +253,14 @@ async function createTable(client) {
     // Event-Item table
     await client.sql`
     CREATE TABLE IF NOT EXISTS event_item (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      event_id UUID REFERENCES event(id),
-      item_id UUID REFERENCES item(id)
+      event_id INTEGER NOT NULL REFERENCES event(id),
+      item_id INTEGER NOT NULL REFERENCES item(id)
     );`;
     console.log('create event_item table success')
 
   } catch (error) {
-
+    console.log(error);
+    throw new Error('error occurred while creating tables');
   }
 };
 
@@ -268,9 +269,8 @@ async function seedLanguage(client) {
     const insertedLanguage = await Promise.all(
       languages.map(
         (language) => client.sql`
-        INSERT INTO language (id, name, description)
-        VALUES (${language.id}, ${language.name}, ${language.description})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO language (name, description)
+        VALUES (${language.name}, ${language.description});
         `
       ),
     );
@@ -289,9 +289,8 @@ async function seedRace(client) {
     const insertedRaces = await Promise.all(
       races.map(
         (race) => client.sql`
-        INSERT INTO race (id, name, description)
-        VALUES (${race.id}, ${race.name}, ${race.description})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO race (name, description)
+        VALUES (${race.name}, ${race.description});
         `
       ),
     );
@@ -310,9 +309,8 @@ async function seedRaceLanguage(client) {
     const insertedRaceLanguages = await Promise.all(
       raceLanguages.map(
         (raceLanguage) => client.sql`
-        INSERT INTO race_language (id, race_id, language_id)
-        VALUES (${raceLanguage.id}, ${raceLanguage.race_id}, ${raceLanguage.language_id})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO race_language (race_id, language_id)
+        VALUES (${raceLanguage.race_id}, ${raceLanguage.language_id});
         `
       ),
     );
@@ -321,7 +319,7 @@ async function seedRaceLanguage(client) {
       raceLanguages: insertedRaceLanguages,
     }
   } catch (error) {
-    console.log("Error while inserting races data:", error);
+    console.log("Error while inserting race_language data:", error);
     throw error;
   }
 };
@@ -331,9 +329,8 @@ async function seedFamily(client) {
     const insertedFamilies = await Promise.all(
       families.map(
         (family) => client.sql`
-        INSERT INTO family (id, race_id, name, description)
-        VALUES (${family.id}, ${family.race_id}, ${family.name}, ${family.description})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO family (race_id, name, description)
+        VALUES (${family.race_id}, ${family.name}, ${family.description});
         `
       ),
     );
@@ -352,9 +349,8 @@ async function seedRegion(client) {
     const insertedRegions = await Promise.all(
       regions.map(
         (region) => client.sql`
-        INSERT INTO region (id, name, brief_description, history, geography, role_in_story, depiction_in_media)
-        VALUES(${region.id}, ${region.name}, ${region.brief_description}, ${region.history}, ${region.geography}, ${region.role_in_story}, ${region.depiction_in_media})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO region (name, brief_description, history, geography, role_in_story, depiction_in_media)
+        VALUES(${region.name}, ${region.brief_description}, ${region.history}, ${region.geography}, ${region.role_in_story}, ${region.depiction_in_media});
         `
       )
     );
@@ -368,39 +364,16 @@ async function seedRegion(client) {
   }
 };
 
-async function seedQuote(client) {
-  try {
-    const instertedQuotes = await Promise.all(
-      quotes.map(
-        (quote) => client.sql`
-        INSERT INTO quote (id, saying, person_id, region_id)
-        VALUES (${quote.id}, ${quote.saying}, ${quote.person_id}, ${quote.region_id})
-        ON CONFLICT (id) DO NOTHING;
-        `
-      ),
-    );
-
-    return {
-      quotes: instertedQuotes,
-    }
-  } catch (error) {
-    console.log("Error while inserting quotes data:", error);
-    throw error;
-  }
-};
-
 async function seedLine(client) {
   try {
     const insertedLines = await Promise.all(
       lines.map(
         (line) => client.sql`
-        INSERT INTO line (id, start_point, end_point)
+        INSERT INTO line (start_point, end_point)
         VALUES (
-          ${line.id},
           ST_MakePoint(${line.start_point[0]}, ${line.start_point[1]}),
           ST_MakePoint(${line.end_point[0]}, ${line.end_point[1]})
-        )
-        ON CONFLICT (id) DO NOTHING;
+        );
         `
       )
     );
@@ -419,9 +392,8 @@ async function seedRegionLine(client) {
     const insertedRegionLines = await Promise.all(
       regionLines.map(
         (regionLine) => client.sql`
-        INSERT INTO region_line (id, region_id, line_id)
-        VALUES (${regionLine.id}, ${regionLine.region_id}, ${regionLine.line_id})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO region_line (region_id, line_id)
+        VALUES (${regionLine.region_id}, ${regionLine.line_id});
         `
       )
     );
@@ -435,18 +407,80 @@ async function seedRegionLine(client) {
   }
 };
 
+async function seedPerson(client) {
+  try {
+    const insertedPerson = await Promise.all(
+      persons.map(
+        (person) => client.sql`
+        INSERT INTO person (name, race_id, birth_date, death_date, nickname, gender, history, crrs, abilities_characteristics, brief_description, home)
+        VALUES (${person.name}, ${person.race_id}, ${person.birth_date}, ${person.death_date}, ${person.nickname}, ${person.gender}, ${person.history}, ${person.crrs}, ${person.abilities_characteristics}, ${person.brief_description}, ${person.home});
+        `
+      )
+    );
+
+    return {
+      persons: insertedPerson,
+    }
+  } catch (error) {
+    console.log("Error while inserting person data:", error);
+    throw error;
+  }
+};
+
+async function seedPersonRegion(client) {
+  try {
+    const insertedPersonRegions = await Promise.all(
+      personRegions.map(
+        (personRegion) => client.sql`
+        INSERT INTO person_region (person_id, region_id)
+        VALUES (${personRegion.person_id}, ${personRegion.region_id});
+        `
+      )
+    );
+
+    return {
+      personRegions: insertedPersonRegions,
+    }
+  } catch (error) {
+    console.log("Error while inserting person_region data:", error);
+    throw error;
+  }
+};
+
+async function seedQuote(client) {
+  try {
+    const instertedQuotes = await Promise.all(
+      quotes.map(
+        (quote) => client.sql`
+        INSERT INTO quote (saying, person_id, region_id)
+        VALUES (${quote.saying}, ${quote.person_id}, ${quote.region_id});
+        `
+      ),
+    );
+
+    return {
+      quotes: instertedQuotes,
+    }
+  } catch (error) {
+    console.log("Error while inserting quotes data:", error);
+    throw error;
+  }
+};
+
 async function main() {
   const client = await db.connect();
 
   // await createTable(client);
-  await seedRace(client);
-  await seedLanguage(client);
-  await seedRaceLanguage(client);
-  await seedFamily(client);
-  await seedRegion(client);
-  await seedQuote(client);
-  await seedLine(client);
-  await seedRegionLine(client);
+  // await seedLanguage(client);
+  // await seedRace(client);
+  // await seedRaceLanguage(client);
+  // await seedFamily(client);
+  // await seedRegion(client);
+  // await seedLine(client);
+  // await seedRegionLine(client);
+  // await seedPerson(client);
+  // await seedPersonRegion(client);
+  // await seedQuote(client);
 
   await client.end();
 };
@@ -454,7 +488,7 @@ async function main() {
 
 main().catch((err) => {
   console.log(
-    "An error occurred while creating tables:",
+    "An error occurred:",
     err,
   );
 });

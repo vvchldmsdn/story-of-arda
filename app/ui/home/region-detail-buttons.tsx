@@ -33,7 +33,6 @@ export function Buttons({type}: {type: string}) {
 
   const params = new URLSearchParams(mapCoordParams);
   const detailType = params.get('detail');
-  console.log(type, detailType)
 
   const handleButtonClick = () => {
     params.set('detail', type);

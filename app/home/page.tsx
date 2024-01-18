@@ -13,7 +13,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         <RegionDetail query={query} detail={detail}></RegionDetail>
       </div>
       <div className="h-full basis-3/5 flex-none xl:flex-auto xl:basis-6/12 mr-4 flex flex-col">
-        <div className="w-full mb-8 flex-1 flex items-center">
+        <div className="w-full mb-4 flex-1 flex items-center">
           <div className="w-full h-full rounded-3xl overflow-hidden">
             {/* 맵 들어갈 부분 */}
             <MapSearch></MapSearch>
@@ -21,7 +21,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         </div>
         <div className="w-full h-60 flex-none">
           {/* 대시보드 카드들 들어갈 부분 */}
-          <CardWrapper></CardWrapper>
+          <CardWrapper query={query} detail={detail}></CardWrapper>
         </div>
       </div>
       <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">

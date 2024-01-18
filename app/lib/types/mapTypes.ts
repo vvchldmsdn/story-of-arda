@@ -12,3 +12,7 @@ export type RegionNameType = {
 export type RegionDetailType = {
   description: string;
 };
+
+export type CardSummaryType = {
+  total: number;
+}

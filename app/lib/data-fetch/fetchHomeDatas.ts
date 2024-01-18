@@ -72,3 +72,40 @@ export async function fetchRegionDetail(regionName: string, detailName: string) 
     throw new Error(`Failed to fetch region ${detailName} data`)
   }
 };
+
+export async function fetchCardCharacterSummary(regionName: string) {
+  try {
+    const data = await sql`
+    SELECT COUNT(*) AS total
+    FROM person_region
+    WHERE region_id = (
+      SELECT id
+      FROM region
+      WHERE name = ${regionName}
+    );
+    `;
+    console.log('fetchCardCharacterSummary', data.rows);
+    return data.rows.map(row => ({ total: Number(row.total) }));
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch the number of characters in ${regionName}`);
+  }
+};
+
+export async function fetchCardEventSummary(regionName: string) {
+  try {
+    const data = await sql`
+    SELECT COUNT(*) AS total
+    FROM region_event
+    WHERE region_id = (
+      SELECT id
+      FROM region
+      WHERE name = ${regionName}
+    );
+    `; 
+    return data.rows.map(row => ({ total: Number(row.total) }));
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch the number of events in ${regionName}`);
+  }
+}

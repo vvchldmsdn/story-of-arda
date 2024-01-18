@@ -18,6 +18,8 @@ const config: Config = {
       colors: {
         'eeeeee': '#EEEEEE',
         'ardayellow': '#FEBF4B',
+        'backblack': '#191919',
+        'ardagreen': '#154B42',
       },
       aspectRatio: {
         // '3 / 2' 비율을 나타내는 커스텀 유틸리티
