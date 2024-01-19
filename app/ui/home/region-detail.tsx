@@ -11,8 +11,8 @@ export default async function RegionDetail({ query, detail }: {query: string, de
 
   return (
     <div className="flex flex-col h-full pb-4 xl:px-16">
-      <h1 className="w-full h-40 flex flex-none justify-center items-center text-6xl text-eeeeee">{regionNameData[0].name}</h1>
-      <div className="w-full h-20 flex-none">
+      <h1 className="w-full h-32 flex flex-none justify-center items-center text-5xl text-eeeeee">{regionNameData[0].name}</h1>
+      <div className="w-full h-16 flex-none">
         <ButtonWrapper></ButtonWrapper>
       </div>
       <div className="p-4 flex-auto overflow-hidden">
