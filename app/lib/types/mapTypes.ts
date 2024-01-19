@@ -15,4 +15,11 @@ export type RegionDetailType = {
 
 export type CardSummaryType = {
   total: number;
+};
+
+export type CardPropType = {
+  type: string;
+  num: number;
+  regionName: string;
+  randomName: string;
 }

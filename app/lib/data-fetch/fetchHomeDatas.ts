@@ -84,7 +84,7 @@ export async function fetchCardCharacterSummary(regionName: string) {
       WHERE name = ${regionName}
     );
     `;
-    console.log('fetchCardCharacterSummary', data.rows);
+    
     return data.rows.map(row => ({ total: Number(row.total) }));
   } catch (error) {
     console.log(error);
@@ -107,5 +107,26 @@ export async function fetchCardEventSummary(regionName: string) {
   } catch (error) {
     console.log(error);
     throw new Error(`Failed to fetch the number of events in ${regionName}`);
+  }
+};
+
+export async function fetchRandomCharacterName(regionName: string) {
+  noStore();
+  
+  try {
+    const data = await sql`
+    SELECT person.name
+    FROM person
+    INNER JOIN person_region ON person.id = person_region.person_id
+    INNER JOIN region ON person_region.region_id = region.id
+    WHERE region.name = ${regionName}
+    ORDER BY RANDOM()
+    LIMIT 1;
+    `;
+    console.log(data.rows)
+    return data.rows[0].name;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch a random character name in ${regionName}`)
   }
 }

@@ -1,35 +1,28 @@
 import {Card, CardFooter, Image, Button} from "@nextui-org/react";
-import { CardSummaryType, RegionNameType } from "@/app/lib/types/mapTypes";
-import { fetchCardCharacterSummary, fetchCardEventSummary, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas";
+import { CardSummaryType, RegionNameType, CardPropType } from "@/app/lib/types/mapTypes";
+import { fetchCardCharacterSummary, fetchCardEventSummary, fetchRandomCharacterName, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas";
 import Link from "next/link";
 import clsx from "clsx";
 
-export default async function CardWrapper({ query, detail }: {query: string, detail: string}) {
+export default async function CardWrapper({ query }: {query: string}) {
   const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
   const regionName = regionNameData[0].name;
-  const totalCharacters: CardSummaryType[] = detail === '' ? [{total: 0}] : await fetchCardCharacterSummary(regionName);
-  const totalEvents: CardSummaryType[] = detail === '' ? [{total: 0}] : await fetchCardEventSummary(regionName);
 
+  const totalCharacters: CardSummaryType[] = query === '' ? [{total: 0}] : await fetchCardCharacterSummary(regionName);
+  const totalEvents: CardSummaryType[] = query === '' ? [{total: 0}] : await fetchCardEventSummary(regionName);
+  const randomCharacterName = query === '' ? 'none' : await fetchRandomCharacterName(regionName);
 
-  // const imgUrls = [
-  //   { key: 1, url: '/swordsman.jpeg'},
-  //   { key: 2, url: '/ninja.jpeg' }
-  // ]
+  const whatType = ['character', 'event'];
 
   return (
     <div className="flex flex-row space-x-4 justify-between h-full">
-      <Cards type='character' num={totalCharacters[0].total} regionName={regionName}></Cards>
-      <Cards type='event' num={totalEvents[0].total} regionName={regionName}></Cards>
-      {/* {imgUrls.map((url) => {
-        return (
-          <Cards key={url.key} url={url.url}></Cards>
-        )
-      })} */}
+      <Cards cardProps={{ type: 'character', num: totalCharacters[0].total, regionName: regionName, randomName: randomCharacterName }}></Cards>
+      <Cards cardProps={{ type: 'event', num: totalEvents[0].total, regionName: regionName, randomName: '' }}></Cards>
     </div>
   )
 };
 
-export function Cards({ type, num, regionName }: {type: string, num: number, regionName: string}) {
+export function Cards({ cardProps }: { cardProps: CardPropType }) {
   return (
     <>
       <Card
@@ -41,17 +34,17 @@ export function Cards({ type, num, regionName }: {type: string, num: number, reg
         <div className={clsx(
           "flex flex-col h-full w-full p-8 pt-6",
           {
-            "bg-ardayellow": type === 'character'
+            "bg-ardayellow": cardProps.type === 'character'
           },
           {
-            "bg-ardagreen": type === 'event'
+            "bg-ardagreen": cardProps.type === 'event'
           }
         )}>
-          <p className="text-lg">total {type}s in</p>
-          <p className="text-lg">{regionName}</p>
+          <p className="text-lg">total {cardProps.type}s in</p>
+          <p className="text-lg">{cardProps.regionName}</p>
           <div className="flex flex-row justify-between items-center mt-4">
-            <h1 className="text-7xl text-backblack">{num}</h1>
-            <p className="text-sm">including Aragorn II</p>
+            <h1 className="text-7xl text-backblack">{cardProps.num}</h1>
+            <p className="text-sm">including {cardProps.randomName}</p>
           </div>
         </div>
         {/* <Image
