@@ -5,6 +5,7 @@ import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
+
 export default function MapSearch() {
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();

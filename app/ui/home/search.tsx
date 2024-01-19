@@ -1,34 +1,22 @@
 'use client'
 
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
-import { sortedRegions } from '../../lib/regionNames'
+import { sortedRegions } from '../../lib/regionNames';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 export default function Search() {
-  const tmp = [
-    {value: 'a'},
-    {value: 'b'},
-    {value: 'c'},
-    {value: 'd'},
-    {value: '1'},
-    {value: '2'},
-    {value: '3'},
-    {value: '4'},
-    {value: '5'},
-    {value: '6'},
-    {value: '7'},
-    {value: '8'},
-    {value: '9'},
-    {value: '10'},
-    {value: '11'},
-    {value: '12'},
-    {value: '13'},
-    {value: '14'},
-    {value: '15'},
-    {value: '16'},
-    {value: '17'},
-    {value: '18'},
-    {value: '19'},
-  ];
+  const mapCoordParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  
+  const handleListItemClick = (coords: Array<number>) => {
+    console.log(coords);
+    const params = new URLSearchParams(mapCoordParams);
+    params.set('query', `${coords[0]} ${coords[1]}`);
+    params.set('detail', 'history');
+    replace(`${pathname}?${params.toString()}`)
+  };
+
   return (
     <div className="absolute bottom-0 right-0 w-64">
       <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
@@ -36,14 +24,14 @@ export default function Search() {
         classNames={{
           base: "max-w-xs",
           listboxWrapper: "max-h-[160px]",
-          selectorButton: "text-ardayellow"  // 화살표 버튼 색
+          selectorButton: "text-ardayellow text-2xl"  // 화살표 버튼 색
         }}
         scrollShadowProps={{
           isEnabled: false
         }}
         inputProps={{
           classNames: {
-            input: "ml-1",
+            input: `ml-1`,
             inputWrapper: "h-[48px] bg-backblack text-eeeeee",
           },
         }}
@@ -76,7 +64,9 @@ export default function Search() {
       >
         {sortedRegions.map((region: any) => {
           return (
-            <AutocompleteItem key={region.value} value={region.value}>
+            <AutocompleteItem key={region.value} value={region.value}
+              onClick={() => handleListItemClick(region.coords)}
+            >
               {region.value}
             </AutocompleteItem>
           )

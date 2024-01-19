@@ -3,6 +3,8 @@ import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import ButtonWrapper from "./region-detail-buttons";
 import { firaSans } from "@/app/lib/fonts";
+import Modals from "./modal";
+
 
 export default async function RegionDetail({ query, detail }: {query: string, detail: string}) {
   const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
@@ -10,7 +12,8 @@ export default async function RegionDetail({ query, detail }: {query: string, de
   const regionDetailData: RegionDetailType[] = detail === '' ? [{description: ''}] : await fetchRegionDetail(regionName, detail);
 
   return (
-    <div className="flex flex-col h-full pb-4 xl:px-16">
+    <div className="flex flex-col h-full pb-4 xl:px-16 relative">
+      <Modals></Modals>
       <h1 className="w-full h-32 flex flex-none justify-center items-center text-5xl text-eeeeee">{regionNameData[0].name}</h1>
       <div className="w-full h-16 flex-none">
         <ButtonWrapper></ButtonWrapper>
