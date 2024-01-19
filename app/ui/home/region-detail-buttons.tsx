@@ -45,7 +45,7 @@ export function Buttons({type}: {type: string}) {
       className={clsx(
         'text-xs',
         {
-          'text-ardayellow': detailType === type,
+          'text-ardamint': detailType === type,
         },
         {
           'text-eeeeee': detailType !== type,

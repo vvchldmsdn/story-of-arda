@@ -34,10 +34,10 @@ export function Cards({ cardProps }: { cardProps: CardPropType }) {
         <div className={clsx(
           "flex flex-col h-full w-full p-8 pt-6",
           {
-            "bg-ardayellow": cardProps.type === 'character'
+            "bg-ardamint": cardProps.type === 'character'
           },
           {
-            "bg-ardagreen": cardProps.type === 'event'
+            "bg-ardayellow": cardProps.type === 'event'
           }
         )}>
           <p className="text-lg">total {cardProps.type}s in</p>
