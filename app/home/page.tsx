@@ -1,6 +1,7 @@
 import CardWrapper from "../ui/home/cards";
 import MapSearch from "../ui/home/map-search";
 import RegionDetail from "../ui/home/region-detail";
+import Search from "../ui/home/search";
 
 export default function Home({ searchParams }: { searchParams?: { query?: string, detail?: string } }) {
   const query = searchParams?.query || '';
@@ -14,9 +15,11 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
       </div>
       <div className="h-full basis-3/5 flex-none xl:flex-auto xl:basis-6/12 mr-4 flex flex-col">
         <div className="w-full mb-4 flex-1 flex items-center">
-          <div className="w-full h-full rounded-3xl overflow-hidden">
+          <div className="w-full h-full rounded-3xl overflow-hidden relative">
             {/* 맵 들어갈 부분 */}
             <MapSearch></MapSearch>
+            {/* Search 들어갈 부분 */}
+            <Search></Search>
           </div>
         </div>
         <div className="w-full h-60 flex-none">

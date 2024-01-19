@@ -1,0 +1,26 @@
+const regions = [
+  { value: 'Minas Tirith' },
+  { value: 'Edoras' },
+  { value: `Helm's Deep` },
+  { value: 'Osgiliath' },
+  { value: 'Angmar' },
+  { value: 'Mount Gundabad' },
+  { value: 'Tolfalas' },
+  { value: 'Dol Guldur' },
+  { value: 'Hills of Evendim' },
+  { value: 'Weathertop' },
+  { value: 'Lindon' },
+  { value: 'Rivendell' },
+  { value: 'Erebor' },
+  { value: 'Shire' },
+  { value: 'Numenor' },
+  { value: 'Havens of Sirion' },
+  { value: 'Rohan' },
+  { value: 'Lothlorien' },
+  { value: 'Valinor' },
+  { value: 'The Woodland Realm' },
+  { value: 'Gondolin' },
+  { value: 'Hobbiton' },
+];
+
+export const sortedRegions = regions.sort((a, b) => a.value.localeCompare(b.value));

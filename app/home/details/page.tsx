@@ -1,5 +1,9 @@
+import Search from "@/app/ui/home/search";
+
 export default function Details() {
   return (
-    <div>This is Details</div>
+    <div className="w-64">
+      <Search></Search>
+    </div>
   )
 }
