@@ -123,7 +123,7 @@ export async function fetchRandomCharacterName(regionName: string) {
     ORDER BY RANDOM()
     LIMIT 1;
     `;
-    console.log(data.rows)
+    
     return data.rows[0].name;
   } catch (error) {
     console.log(error);

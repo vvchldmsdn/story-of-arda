@@ -47,11 +47,6 @@ export function Cards({ cardProps }: { cardProps: CardPropType }) {
             <p className="text-sm">including {cardProps.randomName}</p>
           </div>
         </div>
-        {/* <Image
-          alt="Woman listing to music"
-          className="object-cover object-center w-full h-full"
-          src={url}
-        /> */}
         <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
           <p className="text-tiny text-backblack">Go See the Details</p>
           <Link href={'/home/details'}>
