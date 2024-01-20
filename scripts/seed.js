@@ -1,9 +1,5 @@
 const { db } = require('@vercel/postgres');
-const { 
-  languages,
-  races,
-  raceLanguages,
-  families,
+const {
   regions,
   lines,
   regionLines,
@@ -264,85 +260,85 @@ async function createTable(client) {
   }
 };
 
-async function seedLanguage(client) {
-  try {
-    const insertedLanguage = await Promise.all(
-      languages.map(
-        (language) => client.sql`
-        INSERT INTO language (name, description)
-        VALUES (${language.name}, ${language.description});
-        `
-      ),
-    );
+// async function seedLanguage(client) {
+//   try {
+//     const insertedLanguage = await Promise.all(
+//       languages.map(
+//         (language) => client.sql`
+//         INSERT INTO language (name, description)
+//         VALUES (${language.name}, ${language.description});
+//         `
+//       ),
+//     );
 
-    return {
-      languages: insertedLanguage
-    };
-  } catch (error) {
-    console.log("Error while inserting languages data:", error);
-    throw error;
-  }
-};
+//     return {
+//       languages: insertedLanguage
+//     };
+//   } catch (error) {
+//     console.log("Error while inserting languages data:", error);
+//     throw error;
+//   }
+// };
 
-async function seedRace(client) {
-  try {
-    const insertedRaces = await Promise.all(
-      races.map(
-        (race) => client.sql`
-        INSERT INTO race (name, description)
-        VALUES (${race.name}, ${race.description});
-        `
-      ),
-    );
+// async function seedRace(client) {
+//   try {
+//     const insertedRaces = await Promise.all(
+//       races.map(
+//         (race) => client.sql`
+//         INSERT INTO race (name, description)
+//         VALUES (${race.name}, ${race.description});
+//         `
+//       ),
+//     );
 
-    return {
-      races: insertedRaces,
-    }
-  } catch (error) {
-    console.log("Error while inserting races data:", error);
-    throw error;
-  }
-};
+//     return {
+//       races: insertedRaces,
+//     }
+//   } catch (error) {
+//     console.log("Error while inserting races data:", error);
+//     throw error;
+//   }
+// };
 
-async function seedRaceLanguage(client) {
-  try {
-    const insertedRaceLanguages = await Promise.all(
-      raceLanguages.map(
-        (raceLanguage) => client.sql`
-        INSERT INTO race_language (race_id, language_id)
-        VALUES (${raceLanguage.race_id}, ${raceLanguage.language_id});
-        `
-      ),
-    );
+// async function seedRaceLanguage(client) {
+//   try {
+//     const insertedRaceLanguages = await Promise.all(
+//       raceLanguages.map(
+//         (raceLanguage) => client.sql`
+//         INSERT INTO race_language (race_id, language_id)
+//         VALUES (${raceLanguage.race_id}, ${raceLanguage.language_id});
+//         `
+//       ),
+//     );
 
-    return {
-      raceLanguages: insertedRaceLanguages,
-    }
-  } catch (error) {
-    console.log("Error while inserting race_language data:", error);
-    throw error;
-  }
-};
+//     return {
+//       raceLanguages: insertedRaceLanguages,
+//     }
+//   } catch (error) {
+//     console.log("Error while inserting race_language data:", error);
+//     throw error;
+//   }
+// };
 
-async function seedFamily(client) {
-  try {
-    const insertedFamilies = await Promise.all(
-      families.map(
-        (family) => client.sql`
-        INSERT INTO family (race_id, name, description)
-        VALUES (${family.race_id}, ${family.name}, ${family.description});
-        `
-      ),
-    );
+// async function seedFamily(client) {
+//   try {
+//     const insertedFamilies = await Promise.all(
+//       families.map(
+//         (family) => client.sql`
+//         INSERT INTO family (race_id, name, description)
+//         VALUES (${family.race_id}, ${family.name}, ${family.description});
+//         `
+//       ),
+//     );
 
-    return {
-      familis: insertedFamilies,
-    }
-  } catch (error) {
-    console.log("Error while inserting family data:", error);
-    throw error;
-  }
-};
+//     return {
+//       familis: insertedFamilies,
+//     }
+//   } catch (error) {
+//     console.log("Error while inserting family data:", error);
+//     throw error;
+//   }
+// };
 
 async function seedRegion(client) {
   try {
@@ -471,13 +467,10 @@ async function main() {
   const client = await db.connect();
 
   // await createTable(client);
-  // await seedLanguage(client);
-  // await seedRace(client);
-  // await seedRaceLanguage(client);
-  // await seedFamily(client);
-  // await seedRegion(client);
-  // await seedLine(client);
-  // await seedRegionLine(client);
+
+  await seedRegion(client);
+  await seedLine(client);
+  await seedRegionLine(client);
   // await seedPerson(client);
   // await seedPersonRegion(client);
   // await seedQuote(client);

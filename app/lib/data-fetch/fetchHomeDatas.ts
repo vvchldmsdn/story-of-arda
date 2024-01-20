@@ -124,7 +124,8 @@ export async function fetchRandomCharacterName(regionName: string) {
     LIMIT 1;
     `;
     
-    return data.rows[0].name;
+    const result = data.rows.length === 0 ? '' : data.rows[0].name;
+    // return data.rows[0].name;
   } catch (error) {
     console.log(error);
     throw new Error(`Failed to fetch a random character name in ${regionName}`)

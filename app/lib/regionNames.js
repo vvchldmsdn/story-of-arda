@@ -12,7 +12,7 @@ const regions = [
   { value: 'Lindon', coords: [-1, -1] },
   { value: 'Rivendell', coords: [1398.1824, 448.2172] },
   { value: 'Erebor', coords: [1784.0469, 313.6463] },
-  { value: 'Shire', coords: [-1, -1] },
+  { value: 'Shire', coords: [833.9935, 514.8544] },
   { value: 'Numenor', coords: [-1, -1] },
   { value: 'Havens of Sirion', coords: [-1, -1] },
   { value: 'Rohan', coords: [1433.8505, 954.0742] },
