@@ -16,11 +16,20 @@ const regions = [
   { value: 'Numenor', coords: [-1, -1] },
   { value: 'Havens of Sirion', coords: [-1, -1] },
   { value: 'Rohan', coords: [1433.8505, 954.0742] },
-  { value: 'Lothlorien', coords: [-1, -1] },
+  { value: 'Lothlorien', coords: [1433.4286, 725.3515] },
   { value: 'Valinor', coords: [-1, -1] },
-  { value: 'The Woodland Realm', coords: [-1, -1] },
+  { value: 'The Woodland Realm', coords: [1710.9432, 333.9389] },
   { value: 'Gondolin', coords: [-1, -1] },
   { value: 'Hobbiton', coords: [876.1305, 480.644] },
+  { value: 'Isengard', coords: [1237.7246, 913.8391] },
+  { value: 'Bree', coords: [1040.155, 488.7723] },
+  { value: 'Carn Dum', coords: [1159.1567, 160.4307] },
+  { value: 'Iron Hills', coords: [2038.7968, 348.9183] },
+  { value: 'Lake Town', coords: [1766.0946, 354.9338] },
+  { value: 'Fangorn', coords: [1373.0826, 860.2411] },
+  { value: 'Barad Dur', coords: [1930.518, 1108.8843] },
+  { value: 'Minas Morgul', coords: [1814.961, 1171.443] },
+  { value: 'Arnor', coords: [979.2904, 206.8163] },
 ];
 
 export const sortedRegions = regions.sort((a, b) => a.value.localeCompare(b.value));
