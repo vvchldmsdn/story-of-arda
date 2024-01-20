@@ -125,6 +125,7 @@ export async function fetchRandomCharacterName(regionName: string) {
     `;
     
     const result = data.rows.length === 0 ? '' : data.rows[0].name;
+    return result;
     // return data.rows[0].name;
   } catch (error) {
     console.log(error);
