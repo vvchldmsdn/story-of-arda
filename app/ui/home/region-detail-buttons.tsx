@@ -43,7 +43,7 @@ export function Buttons({type}: {type: string}) {
     <div
       onClick={handleButtonClick}
       className={clsx(
-        'text-xs',
+        'text-md',
         {
           'text-ardamint': detailType === type,
         },

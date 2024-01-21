@@ -469,10 +469,10 @@ async function main() {
   // await createTable(client);
 
   // await seedRegion(client);
-  await seedLine(client);
-  await seedRegionLine(client);
+  // await seedLine(client);
+  // await seedRegionLine(client);
   // await seedPerson(client);
-  // await seedPersonRegion(client);
+  await seedPersonRegion(client);
   // await seedQuote(client);
 
   await client.end();
