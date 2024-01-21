@@ -9,11 +9,11 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
 
   return (
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="h-full basis-2/5 flex-shrink xl:flex-auto xl:basis-4/12 mx-4 overflow-hidden">
+      <div className="h-full flex-auto basis-3/12 mx-4 overflow-hidden">
         {/* 지역 이름, 상세설명 들어갈 부분 */}
         <RegionDetail query={query} detail={detail}></RegionDetail>
       </div>
-      <div className="h-full basis-3/5 flex-none xl:flex-auto xl:basis-6/12 mr-4 flex flex-col">
+      <div className="h-full flex-auto basis-7/12 mr-4 flex flex-col">
         <div className="w-full mb-4 flex-1 flex items-center">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             {/* 맵 들어갈 부분 */}
@@ -27,9 +27,9 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
           <CardWrapper query={query}></CardWrapper>
         </div>
       </div>
-      <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">
-        {/* 검색 창, 아이콘들 들어갈 부분 */}
-      </div>
+      {/* <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">
+        
+      </div> */}
     </div>
   )
 };

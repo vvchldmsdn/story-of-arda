@@ -31,7 +31,7 @@ export default function Modals({ regionName, regionDescription }: { regionName: 
               </div>
               <ModalBody className="text-eeeeee">
                 <ScrollShadow hideScrollBar>
-                  <p className={`text-eeeeee whitespace-pre-line ${firaSans.className}`}> 
+                  <p className={`text-eeeeee whitespace-pre-line text-justify ${firaSans.className}`}> 
                     {regionDescription}
                   </p>
                 </ScrollShadow>

@@ -1,28 +1,52 @@
-import { fetchRegionDetail, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
+import { fetchRegionBrief, fetchRegionDetail, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import ButtonWrapper from "./region-detail-buttons";
 import { firaSans } from "@/app/lib/fonts";
 import Modals from "./modal";
-
+import Image from "next/image";
 
 export default async function RegionDetail({ query, detail }: {query: string, detail: string}) {
   const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
   const regionName = regionNameData[0].name;
   const regionDetailData: RegionDetailType[] = detail === '' ? [{description: ''}] : await fetchRegionDetail(regionName, detail);
+  const regionBriefDescription: string = await fetchRegionBrief(regionName);
+
+  const style: React.CSSProperties = {
+    background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
+            radial-gradient(circle at 0 100%, #222831 0, #222831 19px, transparent 19px) 100% 0%/24px 24px no-repeat,
+            radial-gradient(circle at 100% 0, #222831 0, #222831 19px, transparent 19px) 0% 100%/24px 24px no-repeat,
+            radial-gradient(circle at 0 0, #222831 0, #222831 19px, transparent 19px) 100% 100%/24px 24px no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 10px) calc(100% - 48px) no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 48px) calc(100% - 10px) no-repeat,
+            linear-gradient(135deg, #00adb5 18%, #FEBF4B 79%)`,
+    borderRadius: '24px',
+    padding: '9px',
+    boxSizing: 'border-box',
+  };
 
   return (
-    <div className="flex flex-col h-full pb-4 xl:px-16 relative">
+    <div className="xl:grid xl:grid-cols-5 xl:grid-flow-row gap-4 h-full relative flex flex-col">
       <Modals regionName={regionName} regionDescription={regionDetailData[0].description}></Modals>
-      <h1 className="w-full h-32 flex flex-none justify-center items-center text-5xl text-eeeeee">{regionNameData[0].name}</h1>
-      <div className="w-full h-16 flex-none">
-        <ButtonWrapper></ButtonWrapper>
+      <div className="xl:col-span-2 xl:row-span-2 bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center" style={style}>{regionName}</div>
+      <div className="col-span-3 row-span-2 bg-blue-200 hidden xl:block rounded-3xl overflow-hidden relative">
+        <Image
+          fill={true}
+          className="object-cover origin-center hover:scale-125"
+          alt="NextUI hero Image"
+          src="/swordsman.jpeg"
+        />
       </div>
-      <div className="p-4 flex-auto overflow-hidden">
-        <ScrollShadow hideScrollBar className="w-full h-full">
-          <p className={`text-eeeeee whitespace-pre-line text-center ${firaSans.className}`}>{regionDetailData[0].description}</p>
-        </ScrollShadow>
+      <div className="xl:col-span-5 xl:row-span-3 bg-ardagrey flex-1 text-eeeeee rounded-3xl xl:px-8 p-4 overflow-hidden">
+        <div className="w-full h-full flex flex-col">
+          <h1 className="h-16 flex-none text-3xl flex items-center text-ardamint mb-8">Brief Description</h1>
+          <div className="flex-1 overflow-hidden text-lg">
+            <ScrollShadow hideScrollBar className="w-full h-full">
+              <p className="text-justify">{regionBriefDescription}</p>
+            </ScrollShadow>
+          </div>
+        </div>
       </div>
     </div>
   )
-}
+};

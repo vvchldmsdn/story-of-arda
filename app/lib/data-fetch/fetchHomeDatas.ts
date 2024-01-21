@@ -31,6 +31,22 @@ export async function fetchRegionName(query: string) {
   }
 };
 
+export async function fetchRegionBrief(regionName: string) {
+  try {
+    const data = await sql`
+    SELECT brief_description
+    FROM region
+    WHERE name = ${regionName};
+    `;
+
+    const result = data.rows.length === 0 ? '' : data.rows[0].brief_description;
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch brief description of ${regionName}`)
+  }
+}
+
 export async function fetchRegionDetail(regionName: string, detailName: string) {
   // noStore();
 

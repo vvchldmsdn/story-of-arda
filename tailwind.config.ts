@@ -21,7 +21,7 @@ const config: Config = {
         'backblack': '#222831',
         'ardagrey': '#393E46',
         'ardamint': '#00ADB5',
-        'ardaorange': '#128277'
+        'ardaorange': '#C87941'
       },
       aspectRatio: {
         // '3 / 2' 비율을 나타내는 커스텀 유틸리티
