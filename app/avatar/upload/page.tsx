@@ -18,6 +18,7 @@ export default function AvatarUploadPage() {
     const blobs = []; // To store the resulting blobs
 
     for (const file of files) {
+      console.log(file.name);
       const fileNameArray = file.name.split('_');
       const tableName = fileNameArray[0];
       // const dataName = fileNameArray[1].split('.')[0]

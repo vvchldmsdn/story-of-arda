@@ -26,20 +26,21 @@ export default async function RegionDetail({ query, detail }: {query: string, de
   };
 
   return (
-    <div className="xl:grid xl:grid-cols-5 xl:grid-flow-row gap-2 h-full flex flex-col">
+    <div className="xl:grid xl:grid-cols-4 xl:grid-flow-row gap-2 h-full flex flex-col">
       <div className="xl:col-span-2 xl:row-span-2 bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center relative" style={style}>
         {regionName}
         <Modals regionName={regionName} regionDescription={regionDetailData[0].description}></Modals>
       </div>
-      <div className="col-span-3 row-span-2 bg-blue-200 hidden xl:block rounded-3xl overflow-hidden relative">
+      <div className="col-span-2 row-span-5 bg-blue-200 hidden xl:block rounded-3xl overflow-hidden relative">
         <Image
           fill={true}
           className="object-cover origin-center hover:scale-125"
           alt="NextUI hero Image"
           src={randomImage}
+          quality={100}
         />
       </div>
-      <div className="xl:col-span-5 xl:row-span-2 bg-ardagrey flex-1 text-eeeeee rounded-3xl xl:px-8 p-4 overflow-hidden">
+      <div className="xl:col-span-4 xl:row-span-2 bg-ardagrey flex-1 text-eeeeee rounded-3xl xl:px-8 p-4 overflow-hidden">
         <div className="w-full h-full flex flex-col">
           <h1 className="h-16 flex-none text-3xl flex items-center text-ardamint mb-8">Brief Description</h1>
           <div className="flex-1 overflow-hidden text-lg">
