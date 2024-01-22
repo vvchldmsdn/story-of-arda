@@ -424,6 +424,7 @@ async function seedPerson(client) {
 };
 
 async function seedPersonRegion(client) {
+  console.log(personRegions);
   try {
     const insertedPersonRegions = await Promise.all(
       personRegions.map(

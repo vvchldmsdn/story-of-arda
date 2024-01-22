@@ -40,4 +40,4 @@ next-env.d.ts
 /scripts
 
 # data
-/app/lib/data.js
+app/lib/data.js

@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { RegionNameType, RegionDetailType } from "../types/mapTypes";
 
 export async function fetchRegionName(query: string) {
-  // noStore();
+  noStore();
 
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
@@ -32,6 +32,7 @@ export async function fetchRegionName(query: string) {
 };
 
 export async function fetchRegionBrief(regionName: string) {
+  noStore();
   try {
     const data = await sql`
     SELECT brief_description
@@ -48,7 +49,7 @@ export async function fetchRegionBrief(regionName: string) {
 }
 
 export async function fetchRegionDetail(regionName: string, detailName: string) {
-  // noStore();
+  noStore();
 
   try {
     let data: any;
@@ -90,6 +91,7 @@ export async function fetchRegionDetail(regionName: string, detailName: string) 
 };
 
 export async function fetchCardCharacterSummary(regionName: string) {
+  noStore();
   try {
     const data = await sql`
     SELECT COUNT(*) AS total
@@ -109,6 +111,7 @@ export async function fetchCardCharacterSummary(regionName: string) {
 };
 
 export async function fetchCardEventSummary(regionName: string) {
+  noStore();
   try {
     const data = await sql`
     SELECT COUNT(*) AS total
