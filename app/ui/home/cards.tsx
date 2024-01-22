@@ -13,7 +13,7 @@ export default async function CardWrapper({ query }: {query: string}) {
   const randomCharacterName = query === '' ? 'none' : await fetchRandomCharacterName(regionName);
 
   return (
-    <div className="flex flex-row space-x-4 justify-between h-full">
+    <div className="flex flex-row space-x-2 justify-between h-full">
       <Cards cardProps={{ type: 'character', num: totalCharacters[0].total, regionName: regionName, randomName: randomCharacterName }}></Cards>
       <Cards cardProps={{ type: 'event', num: totalEvents[0].total, regionName: regionName, randomName: '' }}></Cards>
     </div>

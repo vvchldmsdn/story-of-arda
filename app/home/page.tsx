@@ -9,12 +9,12 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
 
   return (
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="h-full flex-auto basis-3/12 mx-4 overflow-hidden">
+      <div className="h-full flex-auto basis-3/12 ml-4 mr-2 overflow-hidden">
         {/* 지역 이름, 상세설명 들어갈 부분 */}
         <RegionDetail query={query} detail={detail}></RegionDetail>
       </div>
       <div className="h-full flex-auto basis-7/12 mr-4 flex flex-col">
-        <div className="w-full mb-4 flex-1 flex items-center">
+        <div className="w-full mb-2 flex-1 flex items-center">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             {/* 맵 들어갈 부분 */}
             <MapSearch></MapSearch>
