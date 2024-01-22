@@ -1,4 +1,4 @@
-import { fetchRegionBrief, fetchRegionDetail, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
+import { fetchRegionBrief, fetchRegionDetail, fetchRegionImage, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import { firaSans } from "@/app/lib/fonts";
@@ -10,6 +10,7 @@ export default async function RegionDetail({ query, detail }: {query: string, de
   const regionName = regionNameData[0].name;
   const regionDetailData: RegionDetailType[] = detail === '' ? [{description: ''}] : await fetchRegionDetail(regionName, detail);
   const regionBriefDescription: string = await fetchRegionBrief(regionName);
+  const randomImage: string = await fetchRegionImage(regionName);
 
   const style: React.CSSProperties = {
     background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
@@ -35,7 +36,7 @@ export default async function RegionDetail({ query, detail }: {query: string, de
           fill={true}
           className="object-cover origin-center hover:scale-125"
           alt="NextUI hero Image"
-          src="/swordsman.jpeg"
+          src={randomImage}
         />
       </div>
       <div className="xl:col-span-5 xl:row-span-2 bg-ardagrey flex-1 text-eeeeee rounded-3xl xl:px-8 p-4 overflow-hidden">

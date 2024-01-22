@@ -151,3 +151,27 @@ export async function fetchRandomCharacterName(regionName: string) {
     throw new Error(`Failed to fetch a random character name in ${regionName}`)
   }
 }
+
+export async function fetchRegionImage(regionName: string) {
+  noStore();
+
+  try {
+    const data = await sql`
+      SELECT url
+      FROM region_image
+      WHERE item_id = (
+        SELECT id
+        FROM region
+        WHERE name = ${regionName}
+      )
+      ORDER BY RANDOM()
+      LIMIT 1;
+    `;
+
+    const result = data.rows.length === 0 ? '/swordsman.jpeg' : data.rows[0].url;
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch a random image of ${regionName}`);
+  }
+};
