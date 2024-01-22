@@ -15,8 +15,8 @@ race_language -> 완
 region -> 엑셀 region 기준 35
 line -> 엑셀 line 기준 49
 region_line -> 엑셀 line 기준 49
-person_region -> 엑셀 person 기준 38
-person -> 엑셀 person 기준 38
+person_region -> 엑셀 person 기준 40
+person -> 엑셀 person 기준 40
 */
 
 const regions = [ 
