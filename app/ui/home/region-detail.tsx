@@ -26,9 +26,11 @@ export default async function RegionDetail({ query, detail }: {query: string, de
   };
 
   return (
-    <div className="xl:grid xl:grid-cols-5 xl:grid-flow-row gap-4 h-full relative flex flex-col">
-      <Modals regionName={regionName} regionDescription={regionDetailData[0].description}></Modals>
-      <div className="xl:col-span-2 xl:row-span-2 bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center" style={style}>{regionName}</div>
+    <div className="xl:grid xl:grid-cols-5 xl:grid-flow-row gap-4 h-full flex flex-col">
+      <div className="xl:col-span-2 xl:row-span-2 bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center relative" style={style}>
+        {regionName}
+        <Modals regionName={regionName} regionDescription={regionDetailData[0].description}></Modals>
+      </div>
       <div className="col-span-3 row-span-2 bg-blue-200 hidden xl:block rounded-3xl overflow-hidden relative">
         <Image
           fill={true}
@@ -41,8 +43,8 @@ export default async function RegionDetail({ query, detail }: {query: string, de
         <div className="w-full h-full flex flex-col">
           <h1 className="h-16 flex-none text-3xl flex items-center text-ardamint mb-8">Brief Description</h1>
           <div className="flex-1 overflow-hidden text-lg">
-            <ScrollShadow hideScrollBar className="w-full h-full">
-              <p className="text-justify">{regionBriefDescription}</p>
+            <ScrollShadow hideScrollBar className="w-full h-full" size={100}>
+              <p className={`text-justify text-lg ${firaSans.className}`}>{regionBriefDescription}</p>
             </ScrollShadow>
           </div>
         </div>
