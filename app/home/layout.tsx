@@ -1,4 +1,4 @@
-import Topnav from "../ui/home/topnav";
+import Topnav from "../ui/topnav";
 
 export default function HomeLayout({children}: {children: React.ReactNode}) {
   return (
