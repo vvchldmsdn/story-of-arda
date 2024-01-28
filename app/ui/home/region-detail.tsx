@@ -1,16 +1,15 @@
-import { fetchRegionBrief, fetchRegionDetail, fetchRegionImage, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
+import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import { firaSans } from "@/app/lib/fonts";
 import Modals from "./modal";
 import Image from "next/image";
 
-export default async function RegionDetail({ query, detail }: {query: string, detail: string}) {
-  const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
-  const regionName = regionNameData[0].name;
-  const regionDetailData: RegionDetailType[] = detail === '' ? [{description: ''}] : await fetchRegionDetail(regionName, detail);
-  const regionBriefDescription: string = await fetchRegionBrief(regionName);
-  const randomImage: string = await fetchRegionImage(regionName);
+export default async function RegionDetail({ query }: {query: string}) {
+  const regionData: RegionNameType = await fetchRegionName(query);
+  const regionName = regionData.name;
+  const regionBriefDescription = regionData.brief_description;
+  
 
   const style: React.CSSProperties = {
     background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
@@ -26,21 +25,12 @@ export default async function RegionDetail({ query, detail }: {query: string, de
   };
 
   return (
-    <div className="xl:grid xl:grid-cols-4 xl:grid-flow-row gap-2 h-full flex flex-col">
-      <div className="xl:col-span-2 xl:row-span-2 bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center relative" style={style}>
+    <div className="gap-2 h-full flex flex-col">
+      <div className="bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center relative" style={style}>
         {regionName}
-        <Modals regionName={regionName} regionDescription={regionDetailData[0].description}></Modals>
+        <Modals regionName={regionName} regionDescription={regionBriefDescription}></Modals>
       </div>
-      <div className="col-span-2 row-span-5 bg-blue-200 hidden xl:block rounded-3xl overflow-hidden relative">
-        <Image
-          fill={true}
-          className="object-cover origin-center hover:scale-125"
-          alt="NextUI hero Image"
-          src={randomImage}
-          quality={100}
-        />
-      </div>
-      <div className="xl:col-span-4 xl:row-span-2 bg-ardagrey flex-1 text-eeeeee rounded-3xl xl:px-8 p-4 overflow-hidden">
+      <div className="bg-ardagrey flex-1 text-eeeeee rounded-3xl p-4 overflow-hidden">
         <div className="w-full h-full flex flex-col">
           <h1 className="h-16 flex-none text-3xl flex items-center text-ardamint mb-8">Brief Description</h1>
           <div className="flex-1 overflow-hidden text-lg">

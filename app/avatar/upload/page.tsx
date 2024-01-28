@@ -34,16 +34,16 @@ export default function AvatarUploadPage() {
 
       const newBlob = (await response.json()) as PutBlobResult;
 
-      const storeResponse = await fetch(
-        `/api/avatar/image-link?tablename=${tableName}&dataname=${dataName}&url=${newBlob.url}`,
-        {
-          method: 'POST',
-        },
-      );
+      // const storeResponse = await fetch(
+      //   `/api/avatar/image-link?tablename=${tableName}&dataname=${dataName}&url=${newBlob.url}`,
+      //   {
+      //     method: 'POST',
+      //   },
+      // );
 
-      if (!storeResponse.ok) {
-        throw new Error('Failed to store the url');
-      }
+      // if (!storeResponse.ok) {
+      //   throw new Error('Failed to store the url');
+      // }
 
       blobs.push(newBlob); // Store the blob
     }
