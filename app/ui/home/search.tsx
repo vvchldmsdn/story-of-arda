@@ -18,7 +18,7 @@ export default function Search() {
   };
 
   return (
-    <div className="absolute bottom-0 right-0 w-64">
+    <div className="absolute bottom-0 right-0 w-64 xl:relative">
       <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
         <Autocomplete
           classNames={{

@@ -8,6 +8,7 @@ export async function fetchRegionName(query: string) {
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
   const y: number = parseFloat(parts[1]);
+  console.log('fetchRegionName', x, y)
 
   try {
     const data = await sql<RegionNameType>`
@@ -104,6 +105,22 @@ export async function fetchRandomCharacterName(regionName: string) {
     throw new Error(`Failed to fetch a random character name in ${regionName}`)
   }
 }
+
+export async function fetchMapUrl(mapName: string) {
+  try {
+    const data = await sql`
+    SELECT image_url
+    FROM map
+    WHERE name = ${mapName};
+    `;
+
+    const result = data.rows.length === 0 ? '' : data.rows[0].name;
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch map image of ${mapName}`);
+  }
+};
 
 // export async function fetchRegionImage(regionName: string) {
 //   noStore();
