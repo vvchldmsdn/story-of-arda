@@ -3,9 +3,8 @@ import MapSearch from "../ui/home/map-search";
 import RegionDetail from "../ui/home/region-detail";
 import Search from "../ui/home/search";
 
-export default function Home({ searchParams }: { searchParams?: { query?: string, detail?: string } }) {
+export default function Home({ searchParams }: { searchParams?: { query?: string } }) {
   const query = searchParams?.query || '';
-  const detail = searchParams?.detail || '';
 
   return (
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
@@ -19,7 +18,9 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
             {/* 맵 들어갈 부분 */}
             <MapSearch></MapSearch>
             {/* Search 들어갈 부분 */}
-            <Search></Search>
+            <div className="xl:hidden">
+              <Search></Search>
+            </div>
           </div>
         </div>
         <div className="w-full h-60 flex-none">
@@ -27,9 +28,12 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
           <CardWrapper query={query}></CardWrapper>
         </div>
       </div>
-      {/* <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">
-        
-      </div> */}
+      <div className="bg-sky-600 h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block">
+        {/* 지도 변경 아이콘 */}
+        <div className="hidden xl:block">
+          <Search></Search>
+        </div>
+      </div>
     </div>
   )
 };

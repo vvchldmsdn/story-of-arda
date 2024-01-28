@@ -11,7 +11,7 @@ export async function fetchRegionName(query: string) {
 
   try {
     const data = await sql<RegionNameType>`
-    SELECT p.name, r.brief_description
+    SELECT p.name AS name, r.brief_description AS brief_description
     FROM page AS p
     JOIN region AS r ON r.page_id = p.id
     JOIN line AS l ON l.region_id = r.id

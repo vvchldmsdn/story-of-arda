@@ -26,7 +26,7 @@ export default async function RegionDetail({ query }: {query: string}) {
 
   return (
     <div className="gap-2 h-full flex flex-col">
-      <div className="bg-backblack text-eeeeee text-5xl text-center h-56 xl:h-auto flex justify-center items-center relative" style={style}>
+      <div className="bg-backblack text-eeeeee text-5xl text-center h-56 flex justify-center items-center relative" style={style}>
         {regionName}
         <Modals regionName={regionName} regionDescription={regionBriefDescription}></Modals>
       </div>

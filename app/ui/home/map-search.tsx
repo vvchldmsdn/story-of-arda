@@ -28,7 +28,7 @@ export default function MapSearch() {
     // query=1694.8769+1184.4651&detail=history
     const params = new URLSearchParams(mapCoordParams);
     params.set('query', `1694.8769 1184.4651`);
-    params.set('detail', 'history');
+    params.set('map', '1');
     replace(`${pathname}?${params.toString()}`)
 
     return () => {
@@ -55,7 +55,7 @@ export default function MapSearch() {
       console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
       const params = new URLSearchParams(mapCoordParams);
       params.set('query', `${Math.round(x * 1e4) / 1e4} ${Math.round(y * 1e4) / 1e4}`);
-      params.set('detail', 'history');
+      params.set('map', '1');
       replace(`${pathname}?${params.toString()}`)
     }
   }, [imgRef, isMoved]);
