@@ -14,12 +14,107 @@ async function createTable(client) {
     // await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     await client.sql`CREATE EXTENSION IF NOT EXISTS postgis`;
 
+    // page table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS page (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      counter INT DEFAULT 0
+    );
+    `;
+    console.log('create page table success');
+
+    // text table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS text (
+      page_id INTEGER NOT NULL REFERENCES page(id),
+      text TEXT NOT NULL,
+      h_one INT DEFAULT 0
+    );
+    `;
+    console.log('create text table success');
+    
+    // page-image table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS page_image (
+      page_id INTEGER NOT NULL REFERENCES page(id),
+      url TEXT NOT NULL
+    );
+    `;
+    console.log('create page_image table success');
+
+    // map table
+    await client.sql`
+    CREATE TABLE iF NOT EXISTS map (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      image_url TEXT NOT NULL
+    );
+    `;
+    console.log('create map table success');
+
+    // region table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS region (
+      id SERIAL PRIMARY KEY,
+      page_id INTEGER NOT NULL REFERENCES page(id),
+      map_id INTEGER NOT NULL REFERENCES map(id),
+      brief_description TEXT NOT NULL
+    );
+    `;
+    console.log('create region table success');
+
+    // line table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS line (
+      id SERIAL PRIMARY KEY,
+      region_id INTEGER NOT NULL REFERENCES region(id),
+      start_point GEOMETRY(Point, 4326),
+      end_point GEOMETRY(Point, 4326)
+    );
+    `;
+    console.log('create line table success');
+
+    // Create spatial index on Line table
+    await client.sql`CREATE INDEX line_gix ON line USING GIST (start_point, end_point)`;
+    console.log('create spatial index success');
+
+    // Character Table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS character (
+      id SERIAL PRIMARY KEY,
+      page_id INTEGER NOT NULL REFERENCES page(id),
+      birth_date VARCHAR(255) NOT NULL,
+      death_date VARCHAR(255) NOT NULL,
+      home INTEGER NOT NULL REFERENCES region(id)
+    );
+    `;
+    console.log('create character table success');
+    
+    // Nickname Table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS nickname (
+      character_id INTEGER NOT NULL REFERENCES character(id),
+      nickname VARCHAR(255) NOT NULL
+    );
+    `;
+    console.log('create nickname table success');
+
+    // Tree Table
+    await client.sql`
+    CREATE TABLE IF NOT EXISTS tree (
+      id SERIAL PRIMARY KEY,
+      parent INTEGER NOT NULL REFERENCES character(id),
+      child INTEGER NOT NULL REFERENCES character(id)
+    );
+    `;
+    console.log('create tree table success');
+
     // language table
     await client.sql`
     CREATE TABLE IF NOT EXISTS language (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      description TEXT NOT NULL
+      page_id INTEGER NOT NULL REFERENCES page(id)
     );
     `;
     console.log('create language table success');
@@ -28,165 +123,26 @@ async function createTable(client) {
     await client.sql`
     CREATE TABLE IF NOT EXISTS race (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      description TEXT NOT NULL
+      page_id INTEGER NOT NULL REFERENCES page(id)
     );
     `;
     console.log('create race table success');
-
-    // Race-Language table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS race_language (
-      race_id INTEGER NOT NULL REFERENCES race(id),
-      language_id INTEGER NOT NULL REFERENCES language(id)
-    );
-    `;
-    console.log('create race_language table success');
 
     // Family table
     await client.sql`
     CREATE TABLE IF NOT EXISTS family (
       id SERIAL PRIMARY KEY,
-      race_id INTEGER REFERENCES race(id),
-      name VARCHAR(255) NOT NULL,
-      description TEXT NOT NULL
+      page_id INTEGER NOT NULL REFERENCES page(id),
+      race_id INTEGER REFERENCES race(id)
     );
     `;
     console.log('create family table success');
-    
-    // image table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS image (
-      id SERIAL PRIMARY KEY,
-      url VARCHAR(255) NOT NULL
-    );
-    `;
-    console.log('create image table success');
-
-    // region table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS region (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      brief_description TEXT NOT NULL,
-      history TEXT NOT NULL,
-      geography TEXT NOT NULL,
-      role_in_story TEXT NOT NULL,
-      depiction_in_media TEXT NOT NULL
-    );
-    `;
-    console.log('create region table success');
-
-    // region_image table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS region_image (
-      region_id INTEGER NOT NULL REFERENCES region(id),
-      image_id INTEGER NOT NULL REFERENCES image(id)
-    );
-    `;
-    console.log('create region_image table success');
-
-    // Line table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS line (
-      id SERIAL PRIMARY KEY,
-      start_point GEOMETRY(Point, 4326),
-      end_point GEOMETRY(Point, 4326)
-    );
-    `;
-    console.log('create line table success');
-
-    // Region-Line table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS region_line (
-      region_id INTEGER NOT NULL REFERENCES region(id),
-      line_id INTEGER NOT NULL REFERENCES line(id)
-    );
-    `;
-    console.log('create region_line table success');
-
-    // Create spatial index on Line table
-    await client.sql`CREATE INDEX line_gix ON line USING GIST (start_point, end_point)`;
-    console.log('create spatial index success');
-
-    // Person table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      race_id INTEGER NOT NULL REFERENCES race(id),
-      birth_date VARCHAR(255),
-      death_date VARCHAR(255),
-      nickname VARCHAR(255),
-      gender CHAR(1),
-      history TEXT NOT NULL,
-      crrs TEXT NOT NULL,
-      abilities_characteristics TEXT NOT NULL,
-      brief_description TEXT NOT NULL,
-      home INTEGER REFERENCES region(id)
-    );
-    `;
-    console.log('create person table success');
-
-    // Person-Region table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person_region (
-      person_id INTEGER NOT NULL REFERENCES person(id),
-      region_id INTEGER NOT NULL REFERENCES region(id)
-    );
-    `;
-    console.log('create person_region table success');
-
-    // Tree table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS tree (
-      parent_id INTEGER NOT NULL REFERENCES person(id),
-      spring_id INTEGER NOT NULL REFERENCES person(id)
-    );
-    `;
-    console.log('create tree table success');
-
-    // person_family table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person_family (
-      person_id INTEGER NOT NULL REFERENCES person(id),
-      family_id INTEGER NOT NULL REFERENCES person(id)
-    );
-    `;
-    console.log('create person_family table success');
-
-    // person_image table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person_image (
-      person_id INTEGER NOT NULL REFERENCES person(id),
-      image_id INTEGER NOT NULL REFERENCES image(id)
-    );
-    `;
-    console.log('create person_image table success');
-    
-    // quote table
-    await client.sql`
-    CREATE TABLE quote (
-      id SERIAL PRIMARY KEY,
-      saying VARCHAR(255) NOT NULL,
-      person_id INTEGER REFERENCES person(id),
-      region_id INTEGER REFERENCES region(id),
-      CHECK (
-        (person_id IS NOT NULL AND region_id IS NOT NULL) OR 
-        (person_id IS NOT NULL AND region_id IS NULL) OR 
-        (region_id IS NOT NULL AND person_id IS NULL)
-      )
-    );
-    `;
-    console.log('create quote table success');
 
     // Event table
     await client.sql`
     CREATE TABLE IF NOT EXISTS event (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      detailed_description TEXT NOT NULL,
-      brief_description TEXT NOT NULL
+      page_id INTEGER NOT NULL REFERENCES page(id)
     );
     `;
     console.log('create event table success');
@@ -195,47 +151,28 @@ async function createTable(client) {
     await client.sql`
     CREATE TABLE IF NOT EXISTS item (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      description TEXT NOT NULL
+      page_id INTEGER NOT NULL REFERENCES page(id)
     );
     `;
     console.log('create item table success');
 
-    // event_image table
+    // Others table
     await client.sql`
-    CREATE TABLE IF NOT EXISTS event_image (
-      event_id INTEGER NOT NULL REFERENCES event(id),
-      image_id INTEGER NOT NULL REFERENCES image(id)
+    CREATE TABLE IF NOT EXISTS others (
+      id SERIAL PRIMARY KEY,
+      page_id INTEGER NOT NULL REFERENCES page(id)
     );
     `;
-    console.log('create event_image table success');
+    console.log('create others table success');
 
-    // item_image table
+    // Character-Region table
     await client.sql`
-    CREATE TABLE IF NOT EXISTS item_image (
-      item_id INTEGER NOT NULL REFERENCES item(id),
-      image_id INTEGER NOT NULL REFERENCES image(id)
+    CREATE TABLE IF NOT EXISTS character_region (
+      character_id INTEGER NOT NULL REFERENCES character(id),
+      region_id INTEGER NOT NULL REFERENCES region(id)
     );
     `;
-    console.log('create item_image table success');
-
-    // Person-Event table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person_event (
-      person_id INTEGER NOT NULL REFERENCES person(id),
-      event_id INTEGER NOT NULL REFERENCES event(id)
-    );
-    `;
-    console.log('create person_event table success');
-
-    // Person-Item table
-    await client.sql`
-    CREATE TABLE IF NOT EXISTS person_item (
-      person_id INTEGER NOT NULL REFERENCES person(id),
-      item_id INTEGER NOT NULL REFERENCES item(id)
-    );
-    `;
-    console.log('create person_item table success');
+    console.log('create character_region table success');
 
     // region_event table
     await client.sql`
@@ -246,14 +183,23 @@ async function createTable(client) {
     `;
     console.log('create region_event table success');
 
-    // Event-Item table
+    // Character-Event table
     await client.sql`
-    CREATE TABLE IF NOT EXISTS event_item (
-      event_id INTEGER NOT NULL REFERENCES event(id),
-      item_id INTEGER NOT NULL REFERENCES item(id)
-    );`;
-    console.log('create event_item table success')
+    CREATE TABLE IF NOT EXISTS character_event (
+      character_id INTEGER NOT NULL REFERENCES character(id),
+      event_id INTEGER NOT NULL REFERENCES event(id)
+    );
+    `;
+    console.log('create character_event table success');
 
+    // // Quote Table
+    // await client.sql`
+    // CREATE TABLE IF NOT EXISTS quote (
+    //   id SERIAL PRIMARY KEY,
+    //   quote VARCHAR(255) NOT NULL
+    // );
+    // `;
+    // console.log('create quote table success');
   } catch (error) {
     console.log(error);
     throw new Error('error occurred while creating tables');
@@ -467,13 +413,13 @@ async function seedQuote(client) {
 async function main() {
   const client = await db.connect();
 
-  // await createTable(client);
+  await createTable(client);
 
   // await seedRegion(client);
   // await seedLine(client);
   // await seedRegionLine(client);
   // await seedPerson(client);
-  await seedPersonRegion(client);
+  // await seedPersonRegion(client);
   // await seedQuote(client);
 
   await client.end();

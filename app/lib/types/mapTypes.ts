@@ -7,6 +7,7 @@ export type MapType = {
 
 export type RegionNameType = {
   name: string;
+  brief_description: string;
 };
 
 export type RegionDetailType = {

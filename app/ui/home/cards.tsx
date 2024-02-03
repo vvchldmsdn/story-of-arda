@@ -5,17 +5,17 @@ import Link from "next/link";
 import clsx from "clsx";
 
 export default async function CardWrapper({ query }: {query: string}) {
-  const regionNameData: RegionNameType[] = query === '' ? [{name: ''}] : await fetchRegionName(query);
-  const regionName = regionNameData[0].name;
+  const regionData: RegionNameType = await fetchRegionName(query);
+  const regionName = regionData.name;
 
-  const totalCharacters: CardSummaryType[] = query === '' ? [{total: 0}] : await fetchCardCharacterSummary(regionName);
-  const totalEvents: CardSummaryType[] = query === '' ? [{total: 0}] : await fetchCardEventSummary(regionName);
-  const randomCharacterName = query === '' ? 'none' : await fetchRandomCharacterName(regionName);
+  const totalCharacters = await fetchCardCharacterSummary(regionName);
+  const totalEvents = await fetchCardEventSummary(regionName);
+  const randomCharacterName = await fetchRandomCharacterName(regionName);
 
   return (
     <div className="flex flex-row space-x-2 justify-between h-full">
-      <Cards cardProps={{ type: 'character', num: totalCharacters[0].total, regionName: regionName, randomName: randomCharacterName }}></Cards>
-      <Cards cardProps={{ type: 'event', num: totalEvents[0].total, regionName: regionName, randomName: '' }}></Cards>
+      <Cards cardProps={{ type: 'character', num: totalCharacters, regionName: regionName, randomName: randomCharacterName }}></Cards>
+      <Cards cardProps={{ type: 'event', num: totalEvents, regionName: regionName, randomName: '' }}></Cards>
     </div>
   )
 };

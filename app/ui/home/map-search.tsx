@@ -4,12 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { fetchMapUrl } from "@/app/lib/data-fetch/fetchHomeDatas";
 
 
-export default function MapSearch() {
+export default function MapSearch({ map }: { map: string}) {
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  // const [mapUrl, setMapUrl] = useState<string>('https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Middle%20Earth-fN9BbkSngmUHyQxXiLeCaBC44TGvcL.jpg');
+
+  let mapUrl;
+  switch (map) {
+    case 'Middle Earth':
+      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Middle%20Earth-fN9BbkSngmUHyQxXiLeCaBC44TGvcL.jpg';
+      break;
+    case 'Beleriand':
+      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Beleriand-9Mu1NL1WgBuWbAKj0EhAu3GRPm13va.jpg';
+      break;
+    case 'Numenor':
+      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Numenor-Br32ujnodGSO0iQGQYXhEoBMM87BtJ.jpg';
+      break;
+  }
 
   const divRef = useRef<HTMLImageElement>(null);
   const [mapData, setMapData] = useState<MapType>({ width: 0, height: 0, top: 0, left: 0 });
@@ -28,7 +43,7 @@ export default function MapSearch() {
     // query=1694.8769+1184.4651&detail=history
     const params = new URLSearchParams(mapCoordParams);
     params.set('query', `1694.8769 1184.4651`);
-    params.set('detail', 'history');
+    params.set('map', 'Middle Earth');
     replace(`${pathname}?${params.toString()}`)
 
     return () => {
@@ -55,7 +70,6 @@ export default function MapSearch() {
       console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
       const params = new URLSearchParams(mapCoordParams);
       params.set('query', `${Math.round(x * 1e4) / 1e4} ${Math.round(y * 1e4) / 1e4}`);
-      params.set('detail', 'history');
       replace(`${pathname}?${params.toString()}`)
     }
   }, [imgRef, isMoved]);
@@ -67,7 +81,7 @@ export default function MapSearch() {
     >
       <img
         ref={imgRef}
-        src="/SoA.jpeg"
+        src="/Middle Earth.jpg"
         alt="Home Map Image"
         onClick={getRegionByClick}
         onMouseDown={handleMouseDown}
