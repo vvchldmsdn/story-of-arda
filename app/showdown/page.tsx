@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { pages } from "../lib/regionNames";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import Link from "next/link";
+import { motion } from 'framer-motion';
+
 
 export default function ShowDown() {
   const mapCoordParams = useSearchParams();
@@ -14,25 +17,39 @@ export default function ShowDown() {
   const [markdown, setMarkdown] = useState('');
   const tmp = require('showdown');
 
-  // const getPages = async () => {
-  //   const 
-  // }
+  tmp.extension('customBr', function() {
+    return [
+      {
+        type: 'lang',
+        filter: function(text: any) {
+          return text.replace(/(\n)/g, '<br/>');
+        }
+      }
+    ];
+  });
 
-  const converter = new tmp.Converter();
+  const converter = new tmp.Converter({simpleLineBreaks: true});
+  
 
   const options = {
     replace: (domNode: any) => {
       switch (domNode.name) {
         case 'p':
-          return <p className="my-4">{domToReact(domNode.children, options)}</p>;
+          return <p className="my-4 mx-2">{domToReact(domNode.children, options)}</p>;
         case 'h1':
-          return <h1 className="text-5xl my-4 text-ardayellow">{domToReact(domNode.children, options)}</h1>;
+          return <h1 className="text-5xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
-          return <h2 className="text-3xl my-4">{domToReact(domNode.children, options)}</h2>;
+          return <h2 className="text-3xl mt-8 mb-2 mx-2">{domToReact(domNode.children, options)}</h2>;
         case 'a':
-          return <a className="text-ardamint hover:cursor-pointer">{domToReact(domNode.children, options)}</a>;
+          return <Link className="text-ardayellow hover:cursor-pointer" href={`/detail/${domNode.attribs.href}`}>{domToReact(domNode.children, options)}</Link>
         case 'blockquote':
-          return <blockquote className="bg-ardagrey rounded-lg mx-4 px-2">{domToReact(domNode.children, options)}</blockquote>
+          return <blockquote className="bg-ardagrey rounded-lg m-2 mx-4 p-2">{domToReact(domNode.children, options)}</blockquote>;
+        case 'ul':
+          return <ul className="list-disc pl-5">{domToReact(domNode.children, options)}</ul>;
+        case 'li':
+          return <li className="mb-1">{domToReact(domNode.children, options)}</li>;
+        case 'hr':
+          return <hr className="mx-4"></hr>
       };
     }
   };
@@ -149,6 +166,7 @@ export default function ShowDown() {
       {/* <div style={{ width: '50%', border: '1px solid black', minHeight: '200px' }}>
         {parse(converter.makeHtml(dbMarkdown), options)}
       </div> */}
+      <div className="my-16">{markdown}</div>
     </div>
   )
 }

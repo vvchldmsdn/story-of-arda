@@ -81,7 +81,7 @@ export default function MapSearch({ map }: { map: string}) {
     >
       <img
         ref={imgRef}
-        src={mapUrl}
+        src="/Middle Earth.jpg"
         alt="Home Map Image"
         onClick={getRegionByClick}
         onMouseDown={handleMouseDown}

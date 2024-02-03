@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     await sql`
       INSERT INTO text (page_id, text, h_one)
-      VALUES (1, ${markdown}, 2);
+      VALUES (8, ${markdown}, 4);
     `;
 
     return NextResponse.json({markdown}, { status: 201 });
