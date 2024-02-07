@@ -1,10 +1,13 @@
 import { fetchDetailMarkdown } from "@/app/lib/data-fetch/fetchDetailDatas";
+import TableOfContent from "@/app/ui/detail/table-of- content";
 import parse, { domToReact } from 'html-react-parser';
 import Link from "next/link";
 
-export default async function Detail({ params }: { params: { subject: string }}) {
+export default async function Detail({ params, searchParams }: { params: { subject: string }, searchParams?: { heading?: string } }) {
+  const heading = searchParams?.heading || '0';
+
   const showdown = require('showdown');
-  const converter = new showdown.Converter({simpleLineBreaks: true});
+  const converter = new showdown.Converter({ simpleLineBreaks: true });
   const options = {
     replace: (domNode: any) => {
       switch (domNode.name) {
@@ -29,7 +32,37 @@ export default async function Detail({ params }: { params: { subject: string }})
   };
 
   const getMarkdown = await fetchDetailMarkdown(params.subject);
-  const markDowns = getMarkdown['sa'];
+  const markdown = getMarkdown.text;
+  
+  // h1 태그(#)로 시작하는 줄을 찾는 정규표현식
+  const regex = /(?<=\n|^)#\s(.+)(?=\n)/g;
+  let match;
+  let lastIndex = 0;
+  const titles = [];
+  const contents = [];
+
+  while ((match = regex.exec(markdown)) !== null) {
+    const title = match[1];
+    const start = match.index;
+
+    // 이전에 찾은 h1 태그가 있으면 그 사이의 텍스트를 content로 저장
+    if (titles.length > 0) {
+      contents[contents.length - 1] = markdown.substring(lastIndex, start).trim();
+    }
+
+    // 새로운 섹션 시작
+    titles.push(title);
+    contents.push('');
+    lastIndex = regex.lastIndex;
+  }
+
+  // 마지막 섹션의 content 저장
+  if (titles.length > 0) {
+    contents[contents.length - 1] = markdown.substring(lastIndex).trim();
+  }
+
+  console.log(titles);
+  console.log(contents);
 
   /* 
   {markDowns.map((markdown: string) => return (<Content/>))}
@@ -47,16 +80,21 @@ export default async function Detail({ params }: { params: { subject: string }})
   4. 
   */
 
-
-  console.log(getMarkdown);
   return (
-    <div>
-      This is Detail page of {params.subject}
-      {markDowns.map((markdown: string) => {
-        return (
-          <div>{parse(converter.makeHtml(markdown), options)}</div>
-        )
-      })}
+    <div className="flex">
+      <div className="flex-none w-72 text-eeeeee">
+        <TableOfContent contentHeadings={titles}></TableOfContent>
+      </div>
+      <div className="flex-1">
+        {parse(converter.makeHtml(titles[Number(heading)] + contents[Number(heading)]), options)}
+      </div>
+      {/* <div className="flex-auto w-96">
+        {markDowns.map((markdown: string) => {
+          return (
+            <div key={markdown}>{parse(converter.makeHtml(markdown), options)}</div>
+          )
+        })}
+      </div> */}
     </div>
   )
 }
