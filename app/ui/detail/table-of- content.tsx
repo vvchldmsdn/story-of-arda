@@ -25,7 +25,7 @@ export default function TableOfContent({ contentHeadings }: { contentHeadings: A
   }, [])
 
   return (
-    <div className="flex flex-col justify-center items-center pt-12">
+    <div className="flex flex-col justify-center items-center pt-12 bg-ardagrey mx-4 rounded-lg">
       {contentHeadings.map((contentHeading: string, idx: number) => {
         return (
           <div className='w-9/12 flex flex-row items-center h-12 mb-12' key={contentHeading}>

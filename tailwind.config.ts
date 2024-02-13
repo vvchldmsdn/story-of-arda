@@ -18,8 +18,8 @@ const config: Config = {
       colors: {
         'eeeeee': '#EEEEEE',
         'ardayellow': '#FEBF4B',
-        'backblack': '#222831',
-        'ardagrey': '#393E46',
+        'backblack': '#191919',
+        'ardagrey': '#222831',
         'ardamint': '#00ADB5',
         'ardaorange': '#C87941'
       },
@@ -30,6 +30,8 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [nextui(), require('@tailwindcss/aspect-ratio'),]
+  plugins: [nextui({
+    addCommonColors: true,
+  }), require('@tailwindcss/aspect-ratio'),]
 }
 export default config

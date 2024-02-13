@@ -17,3 +17,13 @@ export const SelectedCircle = (props: React.SVGProps<SVGSVGElement>) => {
     width="2rem"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.0001 2.84955C17.0538 2.84955 21.1506 6.94636 21.1506 12C21.1506 17.0537 17.0538 21.1505 12.0001 21.1505C6.94642 21.1505 2.84961 17.0537 2.84961 12C2.84961 6.94636 6.94642 2.84955 12.0001 2.84955Z" stroke="#EEEEEE" strokeWidth="1.69904"></path> <path d="M10.1831 13.0449L10.6943 13.5561C10.9767 13.8384 11.4344 13.8384 11.7168 13.5561L14.2729 11" stroke="#FEBF4B" strokeWidth="1.7" strokeLinecap="round"></path> </g></svg>
   )
 };
+
+export const RightArrow = (props: React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)" aria-hidden="true"
+    focusable="false"
+    height="2rem"
+    role="presentation"
+    width="2rem"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.096"></g><g id="SVGRepo_iconCarrier"> <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#EEEEEE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+  )
+}

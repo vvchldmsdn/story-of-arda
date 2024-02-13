@@ -1,36 +1,10 @@
 import { fetchDetailMarkdown } from "@/app/lib/data-fetch/fetchDetailDatas";
 import TableOfContent from "@/app/ui/detail/table-of- content";
-import parse, { domToReact } from 'html-react-parser';
-import Link from "next/link";
-import { ScrollShadow, Divider, Image } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
+import DetailContents from "@/app/ui/detail/detail-contents";
 
 export default async function Detail({ params, searchParams }: { params: { subject: string }, searchParams?: { heading?: string } }) {
   const heading = searchParams?.heading || '0';
-
-  const showdown = require('showdown');
-  const converter = new showdown.Converter({ simpleLineBreaks: true });
-  const options = {
-    replace: (domNode: any) => {
-      switch (domNode.name) {
-        case 'p':
-          return <p className="my-4 mx-2 text-eeeeee">{domToReact(domNode.children, options)}</p>;
-        case 'h1':
-          return <h1 className="text-5xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
-        case 'h2':
-          return <h2 className="text-3xl mt-8 mb-2 mx-2">{domToReact(domNode.children, options)}</h2>;
-        case 'a':
-          return <Link className="text-ardayellow hover:cursor-pointer" href={`/detail/${domNode.attribs.href}`}>{domToReact(domNode.children, options)}</Link>
-        case 'blockquote':
-          return <blockquote className="bg-ardagrey rounded-lg m-2 mx-4 p-2">{domToReact(domNode.children, options)}</blockquote>;
-        case 'ul':
-          return <ul className="list-disc pl-5">{domToReact(domNode.children, options)}</ul>;
-        case 'li':
-          return <li className="my-4 text-eeeeee">{domToReact(domNode.children, options)}</li>;
-        case 'hr':
-          return <hr className="mx-4"></hr>
-      };
-    }
-  };
 
   const getMarkdown = await fetchDetailMarkdown(params.subject);
   const markdown = getMarkdown.text;
@@ -62,9 +36,6 @@ export default async function Detail({ params, searchParams }: { params: { subje
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
-  // console.log(titles);
-  // console.log(contents);
-
   /* 
   {markDowns.map((markdown: string) => return (<Content/>))}
   로 데이터 넘겨주기.
@@ -83,18 +54,11 @@ export default async function Detail({ params, searchParams }: { params: { subje
 
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="flex-none w-72 text-eeeeee h-full">
+      <div className="flex-none w-64 text-eeeeee h-full ">
         <TableOfContent contentHeadings={titles}></TableOfContent>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee"/>
-      <div className="flex-1 h-full flex justify-center">
-        <ScrollShadow hideScrollBar className="h-full w-11/12">
-          <Image src="/tmp.jpg" alt="asdf" width={300}></Image>
-          <div className="text-justify">
-            {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
-          </div>
-        </ScrollShadow>
-      </div>
+      <DetailContents titles={titles} contents={contents} heading={heading}></DetailContents>
     </div>
   )
-}
+} 
