@@ -1,13 +1,20 @@
-import { fetchDetailMarkdown } from "@/app/lib/data-fetch/fetchDetailDatas";
+import { fetchDetailMarkdown, fetchOverviewBriefDescription } from "@/app/lib/data-fetch/fetchDetailDatas";
 import TableOfContent from "@/app/ui/detail/table-of- content";
 import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
 
-export default async function Detail({ params, searchParams }: { params: { subject: string }, searchParams?: { heading?: string } }) {
+export default async function Detail({ params, searchParams }: 
+  {
+    params: { subject: string },
+    searchParams?: { heading?: string, overview?: string }
+  }) {
   const heading = searchParams?.heading || '0';
+  const overview = searchParams?.overview || '';
 
   const getMarkdown = await fetchDetailMarkdown(params.subject);
   const markdown = getMarkdown.text;
+
+  const getBriefDescription = await fetchOverviewBriefDescription(overview);
 
   // h1 태그(#)로 시작하는 줄을 찾는 정규표현식
   const regex = /(?<=\n|^)#\s(.+)(?=\n)/g;
@@ -54,11 +61,11 @@ export default async function Detail({ params, searchParams }: { params: { subje
 
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="flex-none w-64 text-eeeeee h-full ">
+      <div className="flex-none w-72 text-eeeeee h-full ">
         <TableOfContent contentHeadings={titles}></TableOfContent>
       </div>
-      <Divider orientation="vertical" className="bg-eeeeee"/>
-      <DetailContents titles={titles} contents={contents} heading={heading}></DetailContents>
+      <Divider orientation="vertical" className="bg-eeeeee" />
+      <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
     </div>
   )
 } 

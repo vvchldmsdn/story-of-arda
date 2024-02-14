@@ -24,6 +24,6 @@ export const RightArrow = (props: React.SVGProps<SVGSVGElement>) => {
     focusable="false"
     height="2rem"
     role="presentation"
-    width="2rem"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.096"></g><g id="SVGRepo_iconCarrier"> <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#EEEEEE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+    width="2rem"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="0.096"></g><g id="SVGRepo_iconCarrier"> <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#EEEEEE" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
   )
 }

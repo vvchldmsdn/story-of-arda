@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { fetchMapUrl } from "@/app/lib/data-fetch/fetchHomeDatas";
 
 
 export default function MapSearch({ map }: { map: string}) {
