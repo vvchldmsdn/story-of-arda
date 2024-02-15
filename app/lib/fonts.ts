@@ -1,4 +1,4 @@
-import { Inter, Gugi, Fira_Sans } from "next/font/google";
+import { Inter, Gugi, Fira_Sans, Noto_Sans_KR } from "next/font/google";
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -16,3 +16,9 @@ export const firaSans = Fira_Sans({
   weight: ['400', '700'],
   display: 'swap',
 });
+
+export const notoSansKr = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+})

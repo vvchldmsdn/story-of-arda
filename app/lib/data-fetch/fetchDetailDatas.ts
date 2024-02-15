@@ -1,19 +1,22 @@
 import { sql } from "@vercel/postgres";
 
 export async function fetchDetailMarkdown(subject: string) {
+  const decodedSubject = decodeURIComponent(subject);
+  console.log(decodedSubject)
   try {
     const data = await sql`
     SELECT text, h_one
     FROM text AS t
     JOIN page AS p ON p.id = t.page_id
-    WHERE p.en_name = ${subject};
+    WHERE p.en_name = ${decodedSubject};
     `;
 
     const result = data.rows.length === 0 ? { text: '', h_one: 0 } : data.rows[0];
+    console.log('마크다운 받아오기', result.text)
     return result;
   } catch (error) {
     console.log(error);
-    throw new Error(`Failed to fetch markdown text about ${subject}`);
+    throw new Error(`Failed to fetch markdown text about ${decodedSubject}`);
   }
 };
 
@@ -44,7 +47,6 @@ export async function fetchOverviewBriefDescription(enName: string) {
     `;
 
     const result = data.rows.length === 0 ? '' : data.rows[0].bd;
-    console.log('제발제발제발제발제발', result);
     return result
   } catch (error) {
     console.log(error);

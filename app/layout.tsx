@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { inter, gugi } from './lib/fonts';
+import { inter, gugi, notoSansKr } from './lib/fonts';
 import './globals.css';
 import {Providers} from "./providers";
 import Topnav from './ui/topnav';
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={gugi.className}>
+      <body className={notoSansKr.className}>
         <Providers>
         <div className="flex-col">
           <div className="flex-none h-24">

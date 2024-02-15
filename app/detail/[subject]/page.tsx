@@ -62,6 +62,9 @@ export default async function Detail({ params, searchParams }:
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full ">
+        <div className="bg-ardagrey mx-4 mb-4 py-4 rounded-lg">
+          <h1 className="text-center text-4xl text-ardayellow">{decodeURIComponent(params.subject)}</h1>
+        </div>
         <TableOfContent contentHeadings={titles}></TableOfContent>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
