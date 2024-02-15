@@ -23,18 +23,19 @@ export async function POST(request: Request): Promise<NextResponse> {
 };
 
 export async function GET(request: Request): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const subject = searchParams.get('subject');
+  console.log('api에 들어왔음', subject)
+
   try {
     const data = await sql`
-      SELECT content
-      FROM text
-      WHERE id = 1;
+      SELECT text
+      FROM text AS t
+      INNER JOIN page AS p ON t.page_id = p.id
+      WHERE p.en_name=${subject};
     `;
+    const result = data.rows.length === 0 ? 'no text yet. Be the First' : data.rows[0].text;
 
-    if (data.rows.length === 0) {
-      return NextResponse.json({ error: 'no data matching'}, {status: 503})
-    }
-    
-    const result = data.rows[0].content;
     return NextResponse.json({result}, {status: 201})
   } catch (error) {
     console.error('에러 상세 정보:', error);

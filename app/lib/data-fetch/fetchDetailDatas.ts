@@ -5,14 +5,14 @@ export async function fetchDetailMarkdown(subject: string) {
   console.log(decodedSubject)
   try {
     const data = await sql`
-    SELECT text, h_one
+    SELECT text
     FROM text AS t
     JOIN page AS p ON p.id = t.page_id
     WHERE p.en_name = ${decodedSubject};
     `;
 
-    const result = data.rows.length === 0 ? { text: '', h_one: 0 } : data.rows[0];
-    console.log('마크다운 받아오기', result.text)
+    const result = data.rows.length === 0 ? { text: '' } : data.rows[0];
+    // console.log('마크다운 받아오기', result.text)
     return result;
   } catch (error) {
     console.log(error);

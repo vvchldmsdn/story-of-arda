@@ -2,6 +2,7 @@ import { fetchDetailMarkdown, fetchOverviewBriefDescription } from "@/app/lib/da
 import TableOfContent from "@/app/ui/detail/table-of- content";
 import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
+import Link from "next/link";
 
 export default async function Detail({ params, searchParams }: 
   {
@@ -66,6 +67,11 @@ export default async function Detail({ params, searchParams }:
           <h1 className="text-center text-4xl text-ardayellow">{decodeURIComponent(params.subject)}</h1>
         </div>
         <TableOfContent contentHeadings={titles}></TableOfContent>
+        <div className="mx-4 mt-6 text-center">
+          <Link href={{
+            pathname: `/showdown/${params.subject}`,
+          }}>편집</Link>
+        </div>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
       <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
