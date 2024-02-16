@@ -30,7 +30,7 @@ export const RightArrow = (props: React.SVGProps<SVGSVGElement>) => {
 
 export const GlobeIcon = (props: React.SVGProps<SVGSVGElement>) => {
  return (
-  <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xmlSpace="preserve" fill="#000000"
+  <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" enableBackground="new 0 0 64 64" xmlSpace="preserve" fill="#000000"
   aria-hidden="true"
   focusable="false"
   height="2rem"

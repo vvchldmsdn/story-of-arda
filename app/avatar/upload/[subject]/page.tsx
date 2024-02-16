@@ -17,12 +17,14 @@ export default function AvatarUploadPage({params}: { params: {subject: string}})
     const files = Array.from(inputFileRef.current.files); // Convert FileList to Array
     const blobs = []; // To store the resulting blobs
 
+    /* 
+    이제 파일이름을 지정해줄 필욘 없음 아무거나 괜찮 -> POST request 뒤에 parameter 제거하기
+    대신 page_image 테이블에 저장할 때 어느 페이지인지 정보 필요 -> parameter로 page의 en_name넘겨주기 -> params.subject를 parameter로
+    `/api/avatar/image-link?subject=${params.subject}&url=${newBlob.url}`
+    */
+
     for (const file of files) {
       console.log(file.name);
-      const fileNameArray = file.name.split('_');
-      const tableName = fileNameArray[0];
-      // const dataName = fileNameArray[1].split('.')[0]
-      const dataName = fileNameArray[1];
 
       const response = await fetch(
         `/api/avatar/upload?filename=${file.name}`,
@@ -34,16 +36,16 @@ export default function AvatarUploadPage({params}: { params: {subject: string}})
 
       const newBlob = (await response.json()) as PutBlobResult;
 
-      // const storeResponse = await fetch(
-      //   `/api/avatar/image-link?tablename=${tableName}&dataname=${dataName}&url=${newBlob.url}`,
-      //   {
-      //     method: 'POST',
-      //   },
-      // );
+      const storeResponse = await fetch(
+        `/api/avatar/image-link?subject=${params.subject}&url=${newBlob.url}`,
+        {
+          method: 'POST',
+        },
+      );
 
-      // if (!storeResponse.ok) {
-      //   throw new Error('Failed to store the url');
-      // }
+      if (!storeResponse.ok) {
+        throw new Error('Failed to store the url');
+      }
 
       blobs.push(newBlob); // Store the blob
     }

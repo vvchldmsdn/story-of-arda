@@ -1,10 +1,11 @@
 'use client'
 
-import { Popover, PopoverTrigger, PopoverContent, ScrollShadow, Image, Card, CardHeader, CardBody, Button } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent, ScrollShadow, Image, Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
 import parse, { domToReact } from 'html-react-parser';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
 import Link from "next/link";
+import ContentImages from "./content-images";
 
 
 export default function DetailContents({ titles, contents, heading, overview }: { titles: Array<string>, contents: Array<string>, heading: string, overview: string }) {
@@ -94,9 +95,11 @@ export default function DetailContents({ titles, contents, heading, overview }: 
   };
 
   return (
-    <div className="flex-1 h-full flex justify-center">
-      <ScrollShadow hideScrollBar className="h-full w-11/12">
-        <Image src="/tmp.jpg" alt="asdf" width={300}></Image>
+    <div className="flex-1 h-full flex flex-col justify-center items-center">
+      <div className="flex-none h-48">
+        <ContentImages></ContentImages>
+      </div>
+      <ScrollShadow hideScrollBar className="flex-1 w-11/12">
         <div className="text-justify">
           {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
         </div>

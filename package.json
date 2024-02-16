@@ -23,6 +23,7 @@
     "react-dom": "^18",
     "showdown": "^2.1.0",
     "styled-components": "^6.1.8",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

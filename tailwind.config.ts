@@ -32,6 +32,9 @@ const config: Config = {
   darkMode: "class",
   plugins: [nextui({
     addCommonColors: true,
-  }), require('@tailwindcss/aspect-ratio'),]
+  }), 
+  require('@tailwindcss/aspect-ratio'),
+  require('tailwind-scrollbar-hide')
+  ]
 }
 export default config

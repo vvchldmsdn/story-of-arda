@@ -34,7 +34,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       INNER JOIN page AS p ON t.page_id = p.id
       WHERE p.en_name=${subject};
     `;
-    const result = data.rows.length === 0 ? 'no text yet. Be the First' : data.rows[0].text;
+    const result = data.rows.length === 0 ? 'No text yet. Be the First' : data.rows[0].text;
 
     return NextResponse.json({result}, {status: 201})
   } catch (error) {
