@@ -5,7 +5,6 @@ import parse, { domToReact } from 'html-react-parser';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
 import Link from "next/link";
-import ContentImages from "./content-images";
 
 
 export default function DetailContents({ titles, contents, heading, overview }: { titles: Array<string>, contents: Array<string>, heading: string, overview: string }) {
@@ -29,7 +28,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
         case 'p':
           return <p className="my-4 mx-2 text-eeeeee">{domToReact(domNode.children, options)}</p>;
         case 'h1':
-          return <h1 className="text-5xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
+          return <h1 className="text-5xl mt-8 mb-4 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
           return <h2 className="text-3xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h2>;
         case 'a':
@@ -95,15 +94,10 @@ export default function DetailContents({ titles, contents, heading, overview }: 
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col justify-center items-center">
-      <div className="flex-none h-48">
-        <ContentImages></ContentImages>
+    <ScrollShadow hideScrollBar className="flex-1 w-11/12">
+      <div className="text-justify">
+        {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
       </div>
-      <ScrollShadow hideScrollBar className="flex-1 w-11/12">
-        <div className="text-justify">
-          {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
-        </div>
-      </ScrollShadow>
-    </div>
+    </ScrollShadow>
   )
 }

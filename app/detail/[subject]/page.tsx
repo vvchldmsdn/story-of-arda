@@ -3,6 +3,7 @@ import TableOfContent from "@/app/ui/detail/table-of- content";
 import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
 import Link from "next/link";
+import ContentImages from "@/app/ui/detail/content-images";
 
 export default async function Detail({ params, searchParams }: 
   {
@@ -44,22 +45,6 @@ export default async function Detail({ params, searchParams }:
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
-  /* 
-  {markDowns.map((markdown: string) => return (<Content/>))}
-  로 데이터 넘겨주기.
-  일단 전체 다 map으로 렌더링 하고 현재 선택한 목차만 보여주고 나머지는 hidden처리 할 건지,
-  아님 선택한 목차에 따라 데이터 새로 넘겨줘서 렌더링 할 건지
-  즉 {markDowns.map((markdown: string) => return (<Content/>))} OR <Content/>
-
-  목차는 page.tsx에서 처리 => markDowns의 각 요소에서 h1태그 추출 => how?
-  => 목차 생성
-
-  목차 기능 - 1. 목차 이름끼리 선으로 연결
-  2. 현재 보고 있는 목차 활성화 UI 처리
-  3. 클릭 시 Content 이동
-  4. 
-  */
-
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full ">
@@ -74,7 +59,10 @@ export default async function Detail({ params, searchParams }:
         </div>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
-      <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
+      <div className="flex-1 h-full flex flex-col justify-center items-center">
+        <ContentImages></ContentImages>
+        <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
+      </div>
     </div>
   )
 } 
