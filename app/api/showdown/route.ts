@@ -4,6 +4,8 @@ const { sql } = require('@vercel/postgres');
 export async function POST(request: Request): Promise<NextResponse> {
   const { markdown } = await request.json();
   console.log('markdown', markdown)
+  const { searchParams } = new URL(request.url);
+  const subject = searchParams.get('subject');
 
   if (!markdown) {
     return NextResponse.json({ error: 'markdown parameter is required' }, { status: 400});
@@ -11,8 +13,10 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     await sql`
-      INSERT INTO text (page_id, text, h_one)
-      VALUES (8, ${markdown}, 4);
+      INSERT INTO text (page_id, text)
+      SELECT p.id, ${markdown}
+      FROM page AS p
+      WHERE p.en_name=${subject};
     `;
 
     return NextResponse.json({markdown}, { status: 201 });

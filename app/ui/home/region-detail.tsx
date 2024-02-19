@@ -1,7 +1,7 @@
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
-import { firaSans } from "@/app/lib/fonts";
+import { firaSans, notoSansKr } from "@/app/lib/fonts";
 import Modals from "./modal";
 import Image from "next/image";
 
@@ -35,7 +35,7 @@ export default async function RegionDetail({ query }: {query: string}) {
           <h1 className="h-16 flex-none text-3xl flex items-center text-ardamint mb-8">Brief Description</h1>
           <div className="flex-1 overflow-hidden text-lg">
             <ScrollShadow hideScrollBar className="w-full h-full" size={100}>
-              <p className={`text-justify text-lg ${firaSans.className}`}>{regionBriefDescription}</p>
+              <p className={`text-justify text-lg ${notoSansKr.className}`}>{regionBriefDescription}</p>
             </ScrollShadow>
           </div>
         </div>

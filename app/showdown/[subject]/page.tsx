@@ -54,9 +54,11 @@ export default function ShowDown({params}: {params: {subject: string}}) {
         case 'p':
           return <p className="my-4 mx-2">{domToReact(domNode.children, options)}</p>;
         case 'h1':
-          return <h1 className="text-5xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
+          return <h1 className="text-5xl mt-8 mb-4 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
-          return <h2 className="text-3xl mt-8 mb-2 mx-2">{domToReact(domNode.children, options)}</h2>;
+          return <h2 className="text-3xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h2>;
+        case 'h3':
+          return <h3 className="text-xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h3>
         case 'a':
           return <Link className="text-ardayellow hover:cursor-pointer" href={`/detail/${domNode.attribs.href}`}>{domToReact(domNode.children, options)}</Link>
         case 'blockquote':
@@ -74,7 +76,7 @@ export default function ShowDown({params}: {params: {subject: string}}) {
   const handleSave = async () => {
     console.log('in page.tsx, markdown =', markdown);
     const storeShowDown = await fetch(
-      `/api/showdown`,
+      `/api/showdown?subject=${params.subject}`,
       {
         method: 'POST',
         headers: {

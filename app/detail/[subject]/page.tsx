@@ -45,6 +45,8 @@ export default async function Detail({ params, searchParams }:
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
+  console.log('titles', titles)
+
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full ">
@@ -57,10 +59,15 @@ export default async function Detail({ params, searchParams }:
             pathname: `/showdown/${params.subject}`,
           }}>편집</Link>
         </div>
+        <div className="mx-4 mt-6 text-center">
+          <Link href={{
+            pathname: `/avatar/upload/${params.subject}`,
+          }}>이미지 추가</Link>
+        </div>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
       <div className="flex-1 h-full flex flex-col justify-center items-center">
-        <ContentImages></ContentImages>
+        <ContentImages subject={params.subject}></ContentImages>
         <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
       </div>
     </div>

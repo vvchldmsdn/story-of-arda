@@ -1,6 +1,10 @@
+import { fetchContentImages } from "@/app/lib/data-fetch/fetchDetailDatas";
 import { ScrollShadow, Image } from "@nextui-org/react";
 
-export default function ContentImages() {
+export default async function ContentImages({ subject }: { subject: string }) {
+  const images = await fetchContentImages(subject);
+  console.log(images);
+
   const size = 10;
   const tmp = Array.from({ length: size }, (v, i) => ({ key: i + 1 }));
 

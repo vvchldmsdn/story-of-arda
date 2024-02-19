@@ -21,6 +21,7 @@ const config: Config = {
         'backblack': '#191919',
         'ardagrey': '#222831',
         'ardamint': '#00ADB5',
+        'ardalowmint': '#33C8B3',
         'ardaorange': '#C87941'
       },
       aspectRatio: {

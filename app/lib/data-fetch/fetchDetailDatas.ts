@@ -1,8 +1,10 @@
 import { sql } from "@vercel/postgres";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchDetailMarkdown(subject: string) {
+  noStore();
   const decodedSubject = decodeURIComponent(subject);
-  console.log(decodedSubject)
+  console.log('subject 이름', decodedSubject)
   try {
     const data = await sql`
     SELECT text
@@ -12,7 +14,6 @@ export async function fetchDetailMarkdown(subject: string) {
     `;
 
     const result = data.rows.length === 0 ? { text: '' } : data.rows[0];
-    // console.log('마크다운 받아오기', result.text)
     return result;
   } catch (error) {
     console.log(error);
@@ -53,3 +54,20 @@ export async function fetchOverviewBriefDescription(enName: string) {
     throw new Error(`Failed to fetch brief description of ${enName} in overview Card`);
   }
 };
+
+export async function fetchContentImages(subject: string) {
+  try {
+    const data = await sql`
+    SELECT url
+    FROM page_image AS pi
+    INNER JOIN page AS p ON p.id = pi.page_id
+    WHERE p.en_name = ${subject};
+    `;
+
+    const result = data.rows.length === 0 ? [] : data.rows;
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch images of ${subject}`);
+  }
+}
