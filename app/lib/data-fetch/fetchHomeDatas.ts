@@ -11,8 +11,8 @@ export async function fetchRegionName(query: string) {
   console.log('fetchRegionName', x, y)
 
   try {
-    const data = await sql<RegionNameType>`
-    SELECT p.name AS name, p.brief_description AS brief_description
+    const data = await sql`
+    SELECT p.name AS name, p.brief_description AS brief_description, p.en_name AS en_name
     FROM page AS p
     JOIN region AS r ON r.page_id = p.id
     JOIN line AS l ON l.region_id = r.id
@@ -23,7 +23,7 @@ export async function fetchRegionName(query: string) {
     LIMIT 1;
     `;
 
-    const result = data.rows.length === 0 ? { name: "", brief_description: ""} : { name: data.rows[0].name, brief_description: data.rows[0].brief_description};
+    const result = data.rows.length === 0 ? { name: "", brief_description: "", en_name: ""} : { name: data.rows[0].name, brief_description: data.rows[0].brief_description, en_name: data.rows[0].en_name};
     return result;
   } catch (error) {
     console.log(error);

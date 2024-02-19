@@ -3,13 +3,19 @@ import { RegionDetailType, RegionNameType } from "@/app/lib/types/mapTypes";
 import {ScrollShadow} from "@nextui-org/react";
 import { firaSans, notoSansKr } from "@/app/lib/fonts";
 import Modals from "./modal";
-import Image from "next/image";
 
 export default async function RegionDetail({ query }: {query: string}) {
-  const regionData: RegionNameType = await fetchRegionName(query);
+  const regionData = await fetchRegionName(query);
   const regionName = regionData.name;
   const regionBriefDescription = regionData.brief_description;
+  let regionEnName = regionData.en_name;
   
+  function convertString(str: string) {
+    return str.split('-')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+              .join(' ');
+  };
+  regionEnName = convertString(regionEnName)
 
   const style: React.CSSProperties = {
     background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
@@ -26,8 +32,11 @@ export default async function RegionDetail({ query }: {query: string}) {
 
   return (
     <div className="gap-2 h-full flex flex-col">
-      <div className="bg-backblack text-eeeeee text-5xl text-center h-56 flex justify-center items-center relative" style={style}>
-        {regionName}
+      <div className="bg-backblack text-eeeeee text-center h-56 flex justify-center items-center relative" style={style}>
+        <div className="flex flex-col gap-4">
+          <h1 className="text-5xl">{regionName}</h1>
+          <p className="text-xl">{regionEnName}</p>
+        </div>
         <Modals regionName={regionName} regionDescription={regionBriefDescription}></Modals>
       </div>
       <div className="bg-ardagrey flex-1 text-eeeeee rounded-3xl p-4 overflow-hidden">
