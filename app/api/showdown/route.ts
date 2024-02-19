@@ -26,6 +26,34 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 };
 
+export async function PUT(request: Request): Promise<NextResponse> {
+  const { markdown } = await request.json();
+  console.log('markdown', markdown)
+  const { searchParams } = new URL(request.url);
+  const subject = searchParams.get('subject');
+
+  if (!markdown) {
+    return NextResponse.json({ error: 'markdown parameter is required' }, { status: 400});
+  };
+
+  try {
+    await sql`
+    UPDATE text
+    SET text = ${markdown}
+    WHERE page_id IN (
+      SELECT id
+      FROM page
+      WHERE en_name = ${subject}
+    );
+    `;
+
+    return NextResponse.json({markdown}, { status: 201});
+  } catch (error) {
+    console.log('에러 상세 정보:', error);
+    return NextResponse.json({error}, {status: 500})
+  }
+}
+
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const subject = searchParams.get('subject');
@@ -38,7 +66,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       INNER JOIN page AS p ON t.page_id = p.id
       WHERE p.en_name=${subject};
     `;
-    const result = data.rows.length === 0 ? 'No text yet. Be the First' : data.rows[0].text;
+    const result = data.rows.length === 0 ? { text: 'No text yet. Be the First', edit: false} : { text: data.rows[0].text, edit: true};
 
     return NextResponse.json({result}, {status: 201})
   } catch (error) {

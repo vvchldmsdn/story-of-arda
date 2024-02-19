@@ -5,16 +5,17 @@ import parse, { domToReact } from 'html-react-parser';
 import { useEffect, useState } from 'react';
 import Link from "next/link";
 
-export default function ShowDown({params}: {params: {subject: string}}) {
+export default function ShowDown({ params }: { params: { subject: string } }) {
   const [markdown, setMarkdown] = useState('');
+  const [isEditting, setIsEditting] = useState<Boolean>(false);
 
   useEffect(() => {
     async function fetchMarkdown() {
       try {
         const getShowDown = await fetch(
-          `/api/showdown?subject=${params.subject}`,{
-            method: 'GET',
-          }
+          `/api/showdown?subject=${params.subject}`, {
+          method: 'GET',
+        }
         );
 
         if (!getShowDown.ok) {
@@ -22,7 +23,8 @@ export default function ShowDown({params}: {params: {subject: string}}) {
         };
 
         const data = await getShowDown.json();
-        setMarkdown(data.result);
+        setIsEditting(data.result.edit);
+        setMarkdown(data.result.text);
       } catch (error) {
         console.log(error);
         throw new Error(`Failed to fetch markdown data`)
@@ -34,19 +36,19 @@ export default function ShowDown({params}: {params: {subject: string}}) {
 
   const tmp = require('showdown');
 
-  tmp.extension('customBr', function() {
+  tmp.extension('customBr', function () {
     return [
       {
         type: 'lang',
-        filter: function(text: any) {
+        filter: function (text: any) {
           return text.replace(/(\n)/g, '<br/>');
         }
       }
     ];
   });
 
-  const converter = new tmp.Converter({simpleLineBreaks: true});
-  
+  const converter = new tmp.Converter({ simpleLineBreaks: true });
+
 
   const options = {
     replace: (domNode: any) => {
@@ -75,20 +77,37 @@ export default function ShowDown({params}: {params: {subject: string}}) {
 
   const handleSave = async () => {
     console.log('in page.tsx, markdown =', markdown);
-    const storeShowDown = await fetch(
-      `/api/showdown?subject=${params.subject}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ markdown })
-      }
-    );
+    if (!isEditting) {
+      const storeShowDown = await fetch(
+        `/api/showdown?subject=${params.subject}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ markdown })
+        }
+      );
 
-    if (!storeShowDown.ok) {
-      throw new Error('Failed to store the url');
-    };
+      if (!storeShowDown.ok) {
+        throw new Error('Failed to store the url');
+      };
+    } else {
+      const updateShowDown = await fetch(
+        `/api/showdown?subject=${params.subject}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ markdown })
+        }
+      );
+
+      if (!updateShowDown.ok) {
+        throw new Error('Failed to store the url');
+      };
+    }
   };
 
   return (
@@ -99,12 +118,15 @@ export default function ShowDown({params}: {params: {subject: string}}) {
           onChange={e => setMarkdown(e.target.value)}
           className="bg-backblack flex-auto border-2 border-ardamint rounded-lg"
         />
-        <div className="flex-auto border-eeeeee border-2 rounded-lg overflow-hidden w-72 break-words flex-col" style={{overflow: "auto"}}>
+        <div className="flex-auto border-eeeeee border-2 rounded-lg overflow-hidden w-72 break-words flex-col" style={{ overflow: "auto" }}>
           {parse(converter.makeHtml(markdown), options)}
         </div>
       </div>
       <div className="flex-none h-8 border-ardayellow border-2 rounded-md flex flex-row">
         <button onClick={handleSave}>저장</button>
+      </div>
+      <div>
+        {isEditting ? '업데이트 중' : '새로 등록 중'}
       </div>
     </div>
   )
