@@ -4,6 +4,7 @@ import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
 import Link from "next/link";
 import ContentImages from "@/app/ui/detail/content-images";
+import { EditIcon, UploadImageIcon } from "@/app/lib/icons";
 
 export default async function Detail({ params, searchParams }: 
   {
@@ -45,24 +46,32 @@ export default async function Detail({ params, searchParams }:
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
-  console.log('titles', titles)
-
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="flex-none w-72 text-eeeeee h-full ">
-        <div className="bg-ardagrey mx-4 mb-4 py-4 rounded-lg">
+      <div className="flex-none w-72 text-eeeeee h-full flex flex-col pb-8">
+        <div className="bg-ardagrey mx-4 mb-4 py-4 rounded-lg flex-none h-40 flex justify-center items-center">
           <h1 className="text-center text-4xl text-ardayellow">{decodeURIComponent(params.subject)}</h1>
         </div>
         <TableOfContent contentHeadings={titles}></TableOfContent>
-        <div className="mx-4 mt-6 text-center">
-          <Link href={{
-            pathname: `/showdown/${params.subject}`,
-          }}>편집</Link>
-        </div>
-        <div className="mx-4 mt-6 text-center">
-          <Link href={{
-            pathname: `/avatar/upload/${params.subject}`,
-          }}>이미지 추가</Link>
+        <div className="mx-4 mt-6 text-center flex-shrink h-24">
+          <div className="flex flex-row justify-between px-10">
+            <Link href={{
+              pathname: `/showdown/${params.subject}`,
+            }}>
+              <div className="flex flex-col gap-2 items-center">
+                <EditIcon/>
+                <p>편집</p>
+              </div>
+            </Link>
+            <Link href={{
+              pathname: `/avatar/upload/${params.subject}`,
+            }}>
+              <div className="flex flex-col gap-2 items-center">
+                <UploadImageIcon/>
+                <p>이미지 추가</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
@@ -72,4 +81,4 @@ export default async function Detail({ params, searchParams }:
       </div>
     </div>
   )
-} 
+}

@@ -77,37 +77,22 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
 
   const handleSave = async () => {
     console.log('in page.tsx, markdown =', markdown);
-    if (!isEditting) {
-      const storeShowDown = await fetch(
-        `/api/showdown?subject=${params.subject}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ markdown })
-        }
-      );
+    const method = isEditting ? 'PUT' : 'POST';
 
-      if (!storeShowDown.ok) {
-        throw new Error('Failed to store the url');
-      };
-    } else {
-      const updateShowDown = await fetch(
-        `/api/showdown?subject=${params.subject}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ markdown })
-        }
-      );
+    const storeShowDown = await fetch(
+      `/api/showdown?subject=${params.subject}`,
+      {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ markdown })
+      }
+    );
 
-      if (!updateShowDown.ok) {
-        throw new Error('Failed to store the url');
-      };
-    }
+    if (!storeShowDown.ok) {
+      throw new Error('Failed to store the url');
+    };
   };
 
   return (
@@ -123,10 +108,7 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
         </div>
       </div>
       <div className="flex-none h-8 border-ardayellow border-2 rounded-md flex flex-row">
-        <button onClick={handleSave}>저장</button>
-      </div>
-      <div>
-        {isEditting ? '업데이트 중' : '새로 등록 중'}
+        <button onClick={handleSave}>저장 // {isEditting ? '업데이트 중' : '새로 등록 중'}</button>
       </div>
     </div>
   )

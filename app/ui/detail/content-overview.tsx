@@ -24,7 +24,7 @@ export default function ContentOverview({ enName }: { enName: string }) {
               <Link href={`/detail/${enName}`}><RightArrow /></Link>
             </Button>
           </div>
-          <p className="text-default-400 line-clamp-3 text-justify">
+          <p className="text-default-400 line-clamp-6 text-justify">
             asdfsdfawefsdvv wae
           </p>
         </div>

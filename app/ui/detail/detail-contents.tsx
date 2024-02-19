@@ -53,7 +53,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
               </PopoverTrigger>
               <PopoverContent>
                 <div className="mx-0">
-                  <Card className="py-4 w-[300px] bg-ardagrey">
+                  <Card className="py-4 w-[330px] bg-ardagrey">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start flex justify-center">
                       <div className="whitespace-normal w-full">
                         <div className="flex justify-between items-center mb-4 text-eeeeee w-full">
@@ -62,7 +62,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
                             <Link href={`/detail/${domNode.attribs.href}`}><RightArrow /></Link>
                           </Button>
                         </div>
-                        <p className="text-default-400 line-clamp-3 text-justify">
+                        <p className="text-default-400 line-clamp-5 text-justify">
                           {overview}
                         </p>
                       </div>
