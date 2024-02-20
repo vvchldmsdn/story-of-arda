@@ -15,13 +15,13 @@ export default function MapSearch({ map }: { map: string}) {
   let mapUrl;
   switch (map) {
     case 'Middle Earth':
-      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Middle%20Earth-fN9BbkSngmUHyQxXiLeCaBC44TGvcL.jpg';
+      mapUrl = '/Middle Earth.jpg';
       break;
     case 'Beleriand':
-      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Beleriand-9Mu1NL1WgBuWbAKj0EhAu3GRPm13va.jpg';
+      mapUrl = '/Beleriand.jpg';
       break;
     case 'Numenor':
-      mapUrl = 'https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Numenor-Br32ujnodGSO0iQGQYXhEoBMM87BtJ.jpg';
+      mapUrl = '/Numenor.jpg';
       break;
   }
 
@@ -80,7 +80,7 @@ export default function MapSearch({ map }: { map: string}) {
     >
       <img
         ref={imgRef}
-        src="/Middle Earth.jpg"
+        src={mapUrl}
         alt="Home Map Image"
         onClick={getRegionByClick}
         onMouseDown={handleMouseDown}

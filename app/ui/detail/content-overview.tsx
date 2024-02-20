@@ -1,18 +1,7 @@
-import { fetchOverviewBriefDescription, fetchOverviewImage } from "@/app/lib/data-fetch/fetchDetailDatas";
-import { RightArrow } from "@/app/lib/icons";
-import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
-import Link from "next/link";
-import { useState } from "react";
+import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import DetailLinkArrow from "../atoms/DetailLinkArrow";
 
 export default function ContentOverview({ enName }: { enName: string }) {
-  console.log('여기입니다',enName)
-  
-
-  // console.log(enName);
-
-  // const overviewImage: string = await fetchOverviewImage(enName);
-  // const briefDescription: string = await fetchOverviewBriefDescription(enName);
-  // console.log(briefDescription);
 
   return (
     <Card className="py-4 w-[300px] bg-ardagrey">
@@ -20,9 +9,7 @@ export default function ContentOverview({ enName }: { enName: string }) {
         <div className="whitespace-normal w-full">
           <div className="flex justify-between items-center mb-4 text-eeeeee w-full">
             <h4 className="font-bold text-2xl">{enName}</h4>
-            <Button className="ml-2" href="/target-page" variant="light">
-              <Link href={`/detail/${enName}`}><RightArrow /></Link>
-            </Button>
+            <DetailLinkArrow subject={enName}></DetailLinkArrow>
           </div>
           <p className="text-default-400 line-clamp-6 text-justify">
             asdfsdfawefsdvv wae

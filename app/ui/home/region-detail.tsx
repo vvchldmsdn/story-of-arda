@@ -1,20 +1,19 @@
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
-import {ScrollShadow, Divider, Button} from "@nextui-org/react";
-import Link from "next/link";
-import { RightArrow } from "@/app/lib/icons";
-import { firaSans, notoSansKr } from "@/app/lib/fonts";
+import { ScrollShadow, Divider } from "@nextui-org/react";
+import { notoSansKr } from "@/app/lib/fonts";
 import Modals from "./modal";
+import DetailLinkArrow from "../atoms/DetailLinkArrow";
 
-export default async function RegionDetail({ query }: {query: string}) {
+export default async function RegionDetail({ query }: { query: string }) {
   const regionData = await fetchRegionName(query);
   const regionName = regionData.name;
   const regionBriefDescription = regionData.brief_description;
   const regionEnName = regionData.en_name;
-  
+
   function convertString(str: string) {
     return str.split('-')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-              .join(' ');
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   };
 
   const convertedRegionEnName = convertString(regionEnName)
@@ -46,9 +45,7 @@ export default async function RegionDetail({ query }: {query: string}) {
         <div className="w-full h-full flex flex-col gap-4">
           <div className="flex flex-row justify-between items-center">
             <h1 className="h-16 flex-none text-2xl flex items-center text-ardamint">Brief Description</h1>
-            <Button className="ml-2" href="/target-page" variant="light">
-              <Link href={`/detail/${regionEnName}`}><RightArrow /></Link>
-            </Button>
+            <DetailLinkArrow subject={regionEnName}></DetailLinkArrow>
           </div>
           <div className="flex-1 overflow-hidden">
             <ScrollShadow hideScrollBar className="w-full h-full" size={100}>
