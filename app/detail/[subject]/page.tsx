@@ -19,6 +19,13 @@ export default async function Detail({ params, searchParams }:
 
   const getBriefDescription = await fetchOverviewBriefDescription(overview);
 
+  function convertString(str: string) {
+    return str.split('-')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+              .join(' ');
+  };
+  const convertedSubject = convertString(decodeURIComponent(params.subject));
+
   // h1 태그(#)로 시작하는 줄을 찾는 정규표현식
   const regex = /(?<=\n|^)#\s(.+)(?=\n)/g;
   let match;
@@ -50,7 +57,7 @@ export default async function Detail({ params, searchParams }:
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full flex flex-col pb-8">
         <div className="bg-ardagrey mx-4 mb-4 py-4 rounded-lg flex-none h-40 flex justify-center items-center">
-          <h1 className="text-center text-4xl text-ardayellow">{decodeURIComponent(params.subject)}</h1>
+          <h1 className="text-center text-4xl text-ardayellow">{convertedSubject}</h1>
         </div>
         <TableOfContent contentHeadings={titles}></TableOfContent>
         <div className="mx-4 mt-6 text-center flex-shrink h-24">
