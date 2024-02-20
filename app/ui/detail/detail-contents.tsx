@@ -5,6 +5,7 @@ import parse, { domToReact } from 'html-react-parser';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
 import Link from "next/link";
+import { convertString } from "@/app/lib/utils";
 
 
 export default function DetailContents({ titles, contents, heading, overview }: { titles: Array<string>, contents: Array<string>, heading: string, overview: string }) {
@@ -57,7 +58,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start flex justify-center">
                       <div className="whitespace-normal w-full">
                         <div className="flex justify-between items-center mb-4 text-eeeeee w-full">
-                          <h4 className="font-bold text-2xl">{domNode.attribs.href}</h4>
+                          <h4 className="font-bold text-2xl">{convertString(domNode.attribs.href)}</h4>
                           <Button className="ml-2" href="/target-page" variant="light">
                             <Link href={`/detail/${domNode.attribs.href}`}><RightArrow /></Link>
                           </Button>

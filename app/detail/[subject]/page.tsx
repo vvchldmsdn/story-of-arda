@@ -5,6 +5,7 @@ import DetailContents from "@/app/ui/detail/detail-contents";
 import Link from "next/link";
 import ContentImages from "@/app/ui/detail/content-images";
 import { EditIcon, UploadImageIcon } from "@/app/lib/icons";
+import { convertString } from "@/app/lib/utils";
 
 export default async function Detail({ params, searchParams }: 
   {
@@ -18,12 +19,7 @@ export default async function Detail({ params, searchParams }:
   const markdown = getMarkdown.text;
 
   const getBriefDescription = await fetchOverviewBriefDescription(overview);
-
-  function convertString(str: string) {
-    return str.split('-')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-              .join(' ');
-  };
+  
   const convertedSubject = convertString(decodeURIComponent(params.subject));
 
   // h1 태그(#)로 시작하는 줄을 찾는 정규표현식

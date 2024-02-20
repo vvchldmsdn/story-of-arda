@@ -3,6 +3,7 @@ import { ScrollShadow, Divider } from "@nextui-org/react";
 import { notoSansKr } from "@/app/lib/fonts";
 import Modals from "./modal";
 import DetailLinkArrow from "../atoms/DetailLinkArrow";
+import { convertString } from "@/app/lib/utils";
 
 export default async function RegionDetail({ query }: { query: string }) {
   const regionData = await fetchRegionName(query);
@@ -10,13 +11,7 @@ export default async function RegionDetail({ query }: { query: string }) {
   const regionBriefDescription = regionData.brief_description;
   const regionEnName = regionData.en_name;
 
-  function convertString(str: string) {
-    return str.split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
-  };
-
-  const convertedRegionEnName = convertString(regionEnName)
+  const convertedRegionEnName = convertString(regionEnName);
 
   const style: React.CSSProperties = {
     background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
