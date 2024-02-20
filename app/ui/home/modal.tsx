@@ -2,8 +2,7 @@
 
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 import {ScrollShadow} from "@nextui-org/react";
-import ButtonWrapper from "./region-detail-buttons";
-import { firaSans } from "@/app/lib/fonts";
+import { notoSansKr } from "@/app/lib/fonts";
 
 export default function Modals({ regionName, regionDescription }: { regionName: string, regionDescription: string}) {
 
@@ -26,12 +25,9 @@ export default function Modals({ regionName, regionDescription }: { regionName: 
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-eeeeee text-center text-3xl mb-4">{regionName}</ModalHeader>
-              <div className="mb-4">
-                <ButtonWrapper></ButtonWrapper>
-              </div>
               <ModalBody className="text-eeeeee">
                 <ScrollShadow hideScrollBar>
-                  <p className={`text-eeeeee whitespace-pre-line text-justify ${firaSans.className}`}> 
+                  <p className={`text-eeeeee whitespace-pre-line text-justify ${notoSansKr.className}`}> 
                     {regionDescription}
                   </p>
                 </ScrollShadow>
