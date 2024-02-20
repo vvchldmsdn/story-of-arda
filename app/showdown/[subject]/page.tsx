@@ -36,17 +36,6 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
 
   const tmp = require('showdown');
 
-  tmp.extension('customBr', function () {
-    return [
-      {
-        type: 'lang',
-        filter: function (text: any) {
-          return text.replace(/(\n)/g, '<br/>');
-        }
-      }
-    ];
-  });
-
   const converter = new tmp.Converter({ simpleLineBreaks: true });
 
 
