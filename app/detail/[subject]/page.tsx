@@ -79,7 +79,10 @@ export default async function Detail({ params, searchParams }:
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
       <div className="flex-1 h-full flex flex-col justify-center items-center">
-        <ContentImages subject={params.subject}></ContentImages>
+        <div>
+          <ContentImages subject={params.subject}></ContentImages>
+        </div>
+        
         <DetailContents titles={titles} contents={contents} heading={heading} overview={getBriefDescription}></DetailContents>
       </div>
     </div>
