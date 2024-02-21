@@ -1,4 +1,4 @@
-import { fetchDetailMarkdown, fetchOverviewBriefDescription } from "@/app/lib/data-fetch/fetchDetailDatas";
+import { fetchDetailMarkdown, fetchName, fetchOverviewBriefDescription } from "@/app/lib/data-fetch/fetchDetailDatas";
 import TableOfContent from "@/app/ui/detail/table-of- content";
 import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
@@ -6,6 +6,7 @@ import Link from "next/link";
 import ContentImages from "@/app/ui/detail/content-images";
 import { EditIcon, UploadImageIcon } from "@/app/lib/icons";
 import { convertString } from "@/app/lib/utils";
+import NameBox from "@/app/ui/molcules/name-box";
 
 export default async function Detail({ params, searchParams }: 
   {
@@ -15,12 +16,16 @@ export default async function Detail({ params, searchParams }:
   const heading = searchParams?.heading || '0';
   const overview = searchParams?.overview || '';
 
+  const getPageInfo = await fetchName(params.subject);
+  const pageName = getPageInfo.name;
+  const pageBriefDescription = getPageInfo.brief_description;
+
   const getMarkdown = await fetchDetailMarkdown(params.subject);
   const markdown = getMarkdown.text;
 
   const getBriefDescription = await fetchOverviewBriefDescription(overview);
   
-  const convertedSubject = convertString(decodeURIComponent(params.subject));
+  const convertedSubjectEnName = convertString(decodeURIComponent(params.subject));
 
   // h1 태그(#)로 시작하는 줄을 찾는 정규표현식
   const regex = /(?<=\n|^)#\s(.+)(?=\n)/g;
@@ -49,11 +54,28 @@ export default async function Detail({ params, searchParams }:
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
+  const style: React.CSSProperties = {
+    background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
+            radial-gradient(circle at 0 100%, #222831 0, #222831 19px, transparent 19px) 100% 0%/24px 24px no-repeat,
+            radial-gradient(circle at 100% 0, #222831 0, #222831 19px, transparent 19px) 0% 100%/24px 24px no-repeat,
+            radial-gradient(circle at 0 0, #222831 0, #222831 19px, transparent 19px) 100% 100%/24px 24px no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 10px) calc(100% - 48px) no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 48px) calc(100% - 10px) no-repeat,
+            linear-gradient(135deg, #00adb5 18%, #FEBF4B 79%)`,
+    borderRadius: '24px',
+    padding: '9px',
+    boxSizing: 'border-box',
+  };
+
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full flex flex-col pb-8">
-        <div className="bg-ardagrey mx-4 mb-4 py-4 rounded-lg flex-none h-40 flex justify-center items-center">
-          <h1 className="text-center text-4xl text-ardayellow">{convertedSubject}</h1>
+        <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-40 flex justify-center items-center relative" style={style}>
+          <NameBox
+            regionName={pageName}
+            convertedRegionEnName={convertedSubjectEnName}
+            regionBriefDescription={pageBriefDescription}
+          ></NameBox>
         </div>
         <TableOfContent contentHeadings={titles}></TableOfContent>
         <div className="mx-4 mt-6 text-center flex-shrink h-24">

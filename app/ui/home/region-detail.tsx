@@ -1,9 +1,10 @@
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { ScrollShadow, Divider } from "@nextui-org/react";
 import { notoSansKr } from "@/app/lib/fonts";
-import Modals from "./modal";
+import Modals from "../atoms/modal";
 import DetailLinkArrow from "../atoms/DetailLinkArrow";
 import { convertString } from "@/app/lib/utils";
+import NameBox from "../molcules/name-box";
 
 export default async function RegionDetail({ query }: { query: string }) {
   const regionData = await fetchRegionName(query);
@@ -29,13 +30,21 @@ export default async function RegionDetail({ query }: { query: string }) {
   return (
     <div className="gap-2 h-full flex flex-col">
       <div className="bg-backblack text-eeeeee text-center h-56 flex justify-center items-center relative" style={style}>
+        <NameBox 
+          regionName={regionName}
+          convertedRegionEnName={convertedRegionEnName}
+          regionBriefDescription={regionBriefDescription}
+        ></NameBox>
+      </div>
+      {/*       
+      <div className="bg-backblack text-eeeeee text-center h-56 flex justify-center items-center relative" style={style}>
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl">{regionName}</h1>
           <Divider orientation="horizontal" className="bg-ardayellow" />
           <p className="text-xl">{convertedRegionEnName}</p>
         </div>
         <Modals regionName={regionName} regionDescription={regionBriefDescription}></Modals>
-      </div>
+      </div> */}
       <div className="bg-ardagrey flex-1 text-eeeeee rounded-3xl p-4 overflow-hidden">
         <div className="w-full h-full flex flex-col gap-4">
           <div className="flex flex-row justify-between items-center">

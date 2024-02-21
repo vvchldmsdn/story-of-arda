@@ -21,6 +21,25 @@ export async function fetchDetailMarkdown(subject: string) {
   }
 };
 
+export async function fetchName(subject: string) {
+  noStore();
+
+  const decodedSubject = decodeURIComponent(subject);
+  try {
+    const data = await sql`
+    SELECT name, brief_description
+    FROM page AS p
+    WHERE p.en_name = ${decodedSubject};
+    `;
+
+    const result = data.rows.length === 0 ? { name: '', brief_description: '' } : { name: data.rows[0].name, brief_description: data.rows[0].brief_description };
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Failed to fetch name of ${decodedSubject}`);
+  }
+}
+
 export async function fetchOverviewImage(enName: string) {
   try {
     const data = await sql`
