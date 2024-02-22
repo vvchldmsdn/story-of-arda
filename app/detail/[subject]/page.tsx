@@ -70,7 +70,7 @@ export default async function Detail({ params, searchParams }:
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="flex-none w-72 text-eeeeee h-full flex flex-col pb-8">
-        <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-40 flex justify-center items-center relative" style={style}>
+        <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-48 flex justify-center items-center relative" style={style}>
           <NameBox
             regionName={pageName}
             convertedRegionEnName={convertedSubjectEnName}

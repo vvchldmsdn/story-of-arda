@@ -6,6 +6,8 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
 import Link from "next/link";
 import { convertString } from "@/app/lib/utils";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useRef, useEffect } from "react";
 
 export default function DetailContents({ titles, contents, heading, overview }: { titles: Array<string>, contents: Array<string>, heading: string, overview: string }) {
 
@@ -30,7 +32,9 @@ export default function DetailContents({ titles, contents, heading, overview }: 
         case 'h1':
           return <h1 className="text-5xl mt-8 mb-4 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
-          return <h2 className="text-3xl mt-8 mb-2 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h2>;
+          return <h2 className="text-3xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h2>;
+        case 'h3':
+          return <h3 className="text-xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h3>;
         case 'a':
           return (
             <Popover className="inline-block" showArrow backdrop="opaque"
@@ -93,11 +97,32 @@ export default function DetailContents({ titles, contents, heading, overview }: 
     }
   };
 
+  const scrollShadowRef = useRef(null);
+  
+
+  useEffect(() => {
+    console.log('here',scrollShadowRef.current);  // 이 부분을 추가
+  }, []);
+  const { scrollYProgress } = useScroll({
+    container: scrollShadowRef
+  });
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  
+
   return (
-    <ScrollShadow hideScrollBar className="flex-1 w-11/12">
-      <div className="text-justify">
-        {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
-      </div>
-    </ScrollShadow>
+    <>
+      <motion.div className="progress-bar w-full h-2" style={{ scaleX }} />
+      <ScrollShadow hideScrollBar className="flex-1 w-11/12" ref={scrollShadowRef}>
+        <div className="text-justify">
+          {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
+        </div>
+      </ScrollShadow>
+    </>
+    
   )
 } 

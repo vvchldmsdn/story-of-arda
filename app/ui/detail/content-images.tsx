@@ -23,7 +23,7 @@ export default function ContentImages({ subject }: { subject: string }) {
         orientation="horizontal" 
         hideScrollBar 
         className={clsx(
-          "mx-6 flex-none transition-height duration-500 ease-in-out",
+          "mx-6 flex-none transition-height duration-700 ease-in-out",
           {
             "h-0 overflow-hidden": isClosed
           },

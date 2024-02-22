@@ -42,7 +42,7 @@ export default function TableOfContent({ contentHeadings }: { contentHeadings: A
                 }
               </div>
               <div className={clsx(
-                "text-center h-full flex items-center text-xl",
+                "text-center h-full flex items-center text-lg",
                 {
                   "text-ardayellow": selectedIdx === idx
                 },
