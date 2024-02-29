@@ -10,20 +10,7 @@ export default function MapSearch({ map }: { map: string}) {
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  // const [mapUrl, setMapUrl] = useState<string>('https://7n4o607yk61qs6d9.public.blob.vercel-storage.com/Middle%20Earth-fN9BbkSngmUHyQxXiLeCaBC44TGvcL.jpg');
 
-  let mapUrl;
-  switch (map) {
-    case 'Middle Earth':
-      mapUrl = '/Middle Earth.jpg';
-      break;
-    case 'Beleriand':
-      mapUrl = '/Beleriand.jpg';
-      break;
-    case 'Numenor':
-      mapUrl = '/Numenor.jpg';
-      break;
-  }
 
   const divRef = useRef<HTMLImageElement>(null);
   const [mapData, setMapData] = useState<MapType>({ width: 0, height: 0, top: 0, left: 0 });
@@ -41,7 +28,7 @@ export default function MapSearch({ map }: { map: string}) {
 
     // query=1694.8769+1184.4651&detail=history
     const params = new URLSearchParams(mapCoordParams);
-    params.set('query', `1694.8769 1184.4651`);
+    params.set('query', `2436.3901 1957.8402`);
     params.set('map', 'Middle Earth');
     replace(`${pathname}?${params.toString()}`)
 
@@ -80,7 +67,7 @@ export default function MapSearch({ map }: { map: string}) {
     >
       <img
         ref={imgRef}
-        src={mapUrl}
+        src={`/${map}.jpg`}
         alt="Home Map Image"
         onClick={getRegionByClick}
         onMouseDown={handleMouseDown}

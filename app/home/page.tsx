@@ -5,8 +5,8 @@ import RegionDetail from "../ui/home/region-detail";
 import Search from "../ui/home/search";
 
 export default function Home({ searchParams }: { searchParams?: { query?: string, map?: string } }) {
-  const query = searchParams?.query || '';
-  const map = searchParams?.map || '';
+  const query = searchParams?.query || '2436.3901 1957.8402';
+  const map = searchParams?.map || 'Middle Earth';
 
   return (
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
@@ -30,7 +30,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
           <CardWrapper query={query}></CardWrapper>
         </div>
       </div>
-      <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col text-center items-center">
+      <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col text-center">
         {/* 지도 변경 아이콘 */}
         <div className="hidden xl:block mt-8">
           <Search></Search>

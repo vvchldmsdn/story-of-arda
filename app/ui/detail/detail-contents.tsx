@@ -1,13 +1,11 @@
 'use client'
 
-import { Popover, PopoverTrigger, PopoverContent, ScrollShadow, Image, Card, CardHeader, CardBody, Button, Divider } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent, ScrollShadow, Image, Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 import parse, { domToReact } from 'html-react-parser';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
 import Link from "next/link";
 import { convertString } from "@/app/lib/utils";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { useRef, useEffect } from "react";
 
 export default function DetailContents({ titles, contents, heading, overview }: { titles: Array<string>, contents: Array<string>, heading: string, overview: string }) {
 
@@ -86,38 +84,22 @@ export default function DetailContents({ titles, contents, heading, overview }: 
             </Popover>
           )
         case 'blockquote':
-          return <blockquote className="bg-ardagrey rounded-lg m-2 mx-4 p-2">{domToReact(domNode.children, options)}</blockquote>;
+          return <blockquote className="bg-ardagrey rounded-lg m-2 mx-4 p-2 border-l-8 border-ardayellow">{domToReact(domNode.children, options)}</blockquote>;
         case 'ul':
           return <ul className="list-disc pl-5">{domToReact(domNode.children, options)}</ul>;
         case 'li':
           return <li className="my-4 text-eeeeee">{domToReact(domNode.children, options)}</li>;
         case 'hr':
           return <hr className="mx-4"></hr>
+        case 'img':
+          return <img src='/swordsman.jpeg' alt={domNode.attribs.alt} className="float-right w-40 ml-4"></img>
       };
     }
   };
 
-  const scrollShadowRef = useRef(null);
-  
-
-  useEffect(() => {
-    console.log('here',scrollShadowRef.current);  // 이 부분을 추가
-  }, []);
-  const { scrollYProgress } = useScroll({
-    container: scrollShadowRef
-  });
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  
-
   return (
     <>
-      <motion.div className="progress-bar w-full h-2" style={{ scaleX }} />
-      <ScrollShadow hideScrollBar className="flex-1 w-11/12" ref={scrollShadowRef}>
+      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-4xl">
         <div className="text-justify">
           {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
         </div>

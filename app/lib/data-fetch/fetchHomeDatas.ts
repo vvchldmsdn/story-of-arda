@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { RegionNameType, RegionDetailType } from "../types/mapTypes";
 
 export async function fetchRegionName(query: string) {
-  // noStore();
+  noStore();
 
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
