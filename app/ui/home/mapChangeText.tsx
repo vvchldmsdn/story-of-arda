@@ -2,43 +2,49 @@
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import clsx from "clsx";
+import { Tabs, Tab } from '@nextui-org/react';
+import { useState, useEffect } from 'react';
 
 export default function MapChange({ map }: { map: string }) {
   const mapIdParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   
+  const [selected, setSelected] = useState<string>('Middle Earth');
+
   const maps = [
     { name: 'Middle Earth', id: 4 },
     { name: 'Beleriand', id: 3 },
     { name: 'Numenor', id: 5 }
   ];
 
-  const handleMapTypeClick = (map: string) => {
+  useEffect(() => {
     const params = new URLSearchParams(mapIdParams);
-    params.set('map', map);
+    params.set('map', selected);
     replace(`${pathname}?${params.toString()}`);
+  }, [selected]);
+
+  const handleSelectionChange = (key: string | number) => {
+    setSelected(String(key));
   };
 
   return (
-    <div>
-      {maps.map((item) => {
-          return (
-            <div
-              key={item.id}
-              className={clsx(
-                "mt-16 text-4xl hover:cursor-pointer",
-                {
-                  "text-eeeeee": map !== item.name
-                },
-                {
-                  "text-ardayellow": map === item.name
-                }
-              )}
-              onClick={() => handleMapTypeClick(item.name)}
-            >{item.name}</div>
-          )
-        })}
-    </div>
+    <>
+      <Tabs variant='light' color='warning' size='lg'
+        selectedKey={selected}
+        onSelectionChange={handleSelectionChange}
+      >
+        {maps.map((item) => {
+            return (
+              <Tab
+                className='text-2xl h-20'
+                key={item.name}
+                title={item.name}
+              />
+            )
+          })}
+      </Tabs>
+      
+    </>
   )
 }
