@@ -13,7 +13,7 @@ export default async function CardWrapper({ query }: {query: string}) {
   const randomCharacterName = await fetchRandomCharacterName(regionName);
 
   return (
-    <div className="flex flex-row space-x-2 justify-between h-full">
+    <div className="flex flex-col gap-2">
       <Cards cardProps={{ type: 'character', num: totalCharacters, regionName: regionName, randomName: randomCharacterName }}></Cards>
       <Cards cardProps={{ type: 'event', num: totalEvents, regionName: regionName, randomName: '' }}></Cards>
     </div>
@@ -45,14 +45,14 @@ export function Cards({ cardProps }: { cardProps: CardPropType }) {
             <p className="text-sm">including {cardProps.randomName}</p>
           </div>
         </div>
-        <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+        {/* <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
           <p className="text-tiny text-backblack">Go See the Details</p>
           <Link href={'/home/details'}>
             <Button className="text-tiny text-backblack bg-black/20" variant="flat" color="default" radius="lg" size="sm">
               go
             </Button>
           </Link>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </>
   )
