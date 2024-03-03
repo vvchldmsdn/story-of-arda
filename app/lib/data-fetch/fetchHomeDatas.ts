@@ -2,13 +2,29 @@ import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from 'next/cache';
 import { RegionNameType, RegionDetailType } from "../types/mapTypes";
 
-export async function fetchRegionName(query: string) {
+export async function fetchRegionName(query: string, map: string) {
   noStore();
 
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
   const y: number = parseFloat(parts[1]);
-  console.log('fetchRegionName', x, y)
+  console.log('fetch', map)
+
+  let mapId: number;
+  switch(map) {
+    case 'Middle Earth':
+      mapId = 6;
+      break;
+    case 'Beleriand':
+      mapId = 7;
+      break;
+    case 'Numenor':
+      mapId = 8;
+      break;
+    default:
+      mapId = 6;
+  }
+  console.log('맵 아이디', mapId)
 
   try {
     const data = await sql`
@@ -16,6 +32,7 @@ export async function fetchRegionName(query: string) {
     FROM page AS p
     JOIN region AS r ON r.page_id = p.id
     JOIN line AS l ON l.region_id = r.id
+    WHERE r.map_id = ${mapId}
     ORDER BY ST_Distance(
       ST_MakeLine(l.start_point, l.end_point),
       ST_SetSRID(ST_MakePoint(${x}, ${y}), 4326)
@@ -83,7 +100,7 @@ export async function fetchRandomCharacterName(regionName: string) {
     WITH region_page AS (
       SELECT id 
       FROM region 
-      WHERE page_id = (SELECT id FROM page WHERE name = 'region_name')
+      WHERE page_id = (SELECT id FROM page WHERE name = ${regionName})
     ), character_names AS (
       SELECT p.name
       FROM character AS c

@@ -13,7 +13,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
     <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
       <div className="h-full flex-auto basis-3/12 ml-4 mr-2 overflow-hidden">
         {/* 지역 이름, 상세설명 들어갈 부분 */}
-        <RegionDetail query={query}></RegionDetail>
+        <RegionDetail query={query} map={map}></RegionDetail>
       </div>
       <div className="h-full flex-auto basis-7/12 mr-4 flex flex-col">
 
@@ -38,7 +38,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
       </div>
       <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col">
         <div className={`bg-ardagrey text-eeeeee text-3xl h-56 mb-2 rounded-2xl text-center p-8 flex items-center ${lobster.className}`}>{`Gondor has no king, Gondor needs no king\n - Boromir -`}</div>
-        <CardWrapper query={query}></CardWrapper>
+        <CardWrapper query={query} map={map}></CardWrapper>
       </div>
     </div>
   )

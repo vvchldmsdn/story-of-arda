@@ -6,8 +6,8 @@ import DetailLinkArrow from "../atoms/DetailLinkArrow";
 import { convertString } from "@/app/lib/utils";
 import NameBox from "../molcules/name-box";
 
-export default async function RegionDetail({ query }: { query: string }) {
-  const regionData = await fetchRegionName(query);
+export default async function RegionDetail({ query, map }: { query: string, map: string }) {
+  const regionData = await fetchRegionName(query, map);
   const regionName = regionData.name;
   const regionBriefDescription = regionData.brief_description;
   const regionEnName = regionData.en_name;

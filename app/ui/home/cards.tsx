@@ -4,8 +4,8 @@ import { fetchCardCharacterSummary, fetchCardEventSummary, fetchRandomCharacterN
 import Link from "next/link";
 import clsx from "clsx";
 
-export default async function CardWrapper({ query }: {query: string}) {
-  const regionData: RegionNameType = await fetchRegionName(query);
+export default async function CardWrapper({ query, map }: {query: string, map:string}) {
+  const regionData: RegionNameType = await fetchRegionName(query, map);
   const regionName = regionData.name;
 
   const totalCharacters = await fetchCardCharacterSummary(regionName);
