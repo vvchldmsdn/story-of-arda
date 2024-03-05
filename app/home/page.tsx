@@ -31,7 +31,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         <div className="w-full mt-2 flex-1 flex items-center">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             {/* 맵 들어갈 부분 */}
-            <MapSearch map={map}></MapSearch>
+            <MapSearch map={map} query={query}></MapSearch>
           </div>
         </div>
 

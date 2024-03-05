@@ -1,16 +1,15 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 
-export default function MapSearch({ map }: { map: string}) {
+export default function MapSearch({ map, query }: { map: string, query: string}) {
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-
 
   const divRef = useRef<HTMLImageElement>(null);
   const [mapData, setMapData] = useState<MapType>({ width: 0, height: 0, top: 0, left: 0 });
@@ -26,7 +25,7 @@ export default function MapSearch({ map }: { map: string}) {
     window.addEventListener("resize", handleResize);
     handleResize(); // initial position
 
-    // query=1694.8769+1184.4651&detail=history
+    // query=1694.8769+1184.4651
     const params = new URLSearchParams(mapCoordParams);
     params.set('query', `2436.3901 1957.8402`);
     params.set('map', 'Middle Earth');
@@ -45,20 +44,9 @@ export default function MapSearch({ map }: { map: string}) {
     handleMouseMove,
     handleMouseUp,
     handleZoomIn,
+    getRegionByClick,
     isMoved
   } = useMap(mapData);
-
-  const getRegionByClick = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    if (imgRef.current && !isMoved) {
-      const rect = imgRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) * (imgRef.current.naturalWidth / rect.width);
-      const y = (e.clientY - rect.top) * (imgRef.current.naturalHeight / rect.height);
-      console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
-      const params = new URLSearchParams(mapCoordParams);
-      params.set('query', `${Math.round(x * 1e4) / 1e4} ${Math.round(y * 1e4) / 1e4}`);
-      replace(`${pathname}?${params.toString()}`)
-    }
-  }, [imgRef, isMoved]);
 
   return (
     <div
@@ -69,7 +57,8 @@ export default function MapSearch({ map }: { map: string}) {
         ref={imgRef}
         src={`/${map}.jpg`}
         alt="Home Map Image"
-        onClick={getRegionByClick}
+        // onClick={getRegionByClick}
+        onClick={(e) => getRegionByClick(e.clientX, e.clientY, imgRef, isMoved)}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
@@ -80,3 +69,4 @@ export default function MapSearch({ map }: { map: string}) {
     </div>
   )
 }
+

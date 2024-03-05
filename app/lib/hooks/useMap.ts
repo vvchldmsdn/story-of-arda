@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { MapType } from "../types/mapTypes";
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useLocateCenter } from "./useLocateCenter";
 
 type PositionType = { x: number, y: number };
 
@@ -18,7 +20,7 @@ const usePosition = (initialPosition: PositionType) => {
 export const useMap = (mapData: MapType) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [scale, setScale] = useState<number>(1);
-  const [dragging, setDragging] = useState<boolean>(false); 
+  const [dragging, setDragging] = useState<boolean>(false);
   const [mapPosition, setMapPosition] = usePosition({ x: 0, y: 0 });
   const [mouseStart, setMouseStart] = usePosition({ x: 0, y: 0 });
   const [mapTopLeft, setMapTopLeft] = usePosition({ x: 0, y: 0 });
@@ -54,14 +56,15 @@ export const useMap = (mapData: MapType) => {
     setDragging(true);
     setIsMoved(false);
     if (imgRef.current) {
-      const rect = imgRef.current.getBoundingClientRect(); 
-      setMouseStart({ x: e.clientX - rect.left, y: e.clientY - rect.top }); 
+      const rect = imgRef.current.getBoundingClientRect();
+      setMouseStart({ x: e.clientX - rect.left, y: e.clientY - rect.top });  // 이미지 안에서의 상대적 포지션
     }
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     setIsMoved(true);
     if (dragging && imgRef.current) {
+      console.log(e.clientX, e.clientY)
       const rect = imgRef.current.getBoundingClientRect();
       const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
       setMapPosition(newPosition);
@@ -74,6 +77,7 @@ export const useMap = (mapData: MapType) => {
 
   const handleZoomIn = useCallback((e: React.WheelEvent<HTMLImageElement>) => {
     if (imgRef.current) {
+      // 확대
       if (e.deltaY < 0 && scale < 5) {
         const newScale: number = scale + 0.5;
         const rect = imgRef.current.getBoundingClientRect();
@@ -83,7 +87,9 @@ export const useMap = (mapData: MapType) => {
           , imageCenter[1] - (imageCenter[1] - rect.top) * (newScale / scale)]
         setMapTopLeft({ x: mapPosition.x + mapData.left - newRectLeft, y: mapPosition.y + mapData.top - newRectTop });
         setScale(prev => prev + 0.5);
-      } else if (e.deltaY > 0 && scale > 1) {
+      }
+      // 축소
+      else if (e.deltaY > 0 && scale > 1) {
         const newScale = scale - 0.5;
         const ratio = newScale / scale;
         const rect = imgRef.current.getBoundingClientRect();
@@ -116,6 +122,8 @@ export const useMap = (mapData: MapType) => {
       }
     }
   }, [scale, imgRef, mapPosition, mapData]);
+
+  const getRegionByClick = useLocateCenter(imgRef, isMoved, calculateNewPosition, mapData, mapPosition, setMapPosition, setMouseStart);
 
   useEffect(() => {
     if (imgRef.current) {
@@ -166,6 +174,7 @@ export const useMap = (mapData: MapType) => {
     handleMouseUp,
     handleZoomIn,
     isMoved,
+    getRegionByClick,
     // handleZoomOut
   }
 }

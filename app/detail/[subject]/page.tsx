@@ -55,16 +55,16 @@ export default async function Detail({ params, searchParams }:
   }
 
   const style: React.CSSProperties = {
-    background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 19px, transparent 19px) 0% 0%/24px 24px no-repeat,
-            radial-gradient(circle at 0 100%, #222831 0, #222831 19px, transparent 19px) 100% 0%/24px 24px no-repeat,
-            radial-gradient(circle at 100% 0, #222831 0, #222831 19px, transparent 19px) 0% 100%/24px 24px no-repeat,
-            radial-gradient(circle at 0 0, #222831 0, #222831 19px, transparent 19px) 100% 100%/24px 24px no-repeat,
-            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 10px) calc(100% - 48px) no-repeat,
-            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 48px) calc(100% - 10px) no-repeat,
-            linear-gradient(135deg, #00adb5 18%, #FEBF4B 79%)`,
-    borderRadius: '24px',
-    padding: '9px',
-    boxSizing: 'border-box',
+    background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 17px, transparent 17px) 0% 0%/20px 20px no-repeat,
+            radial-gradient(circle at 0 100%, #222831 0, #222831 17px, transparent 17px) 100% 0%/20px 20px no-repeat,
+            radial-gradient(circle at 100% 0, #222831 0, #222831 17px, transparent 17px) 0% 100%/20px 20px no-repeat,
+            radial-gradient(circle at 0 0, #222831 0, #222831 17px, transparent 17px) 100% 100%/20px 20px no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 6px) calc(100% - 40px) no-repeat,
+            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 40px) calc(100% - 6px) no-repeat,
+            linear-gradient(300deg, #febf4b 0%, #00adb5 100%)`,
+    borderRadius: `20px`,
+    padding: `13px`,
+    boxSizing: `border-box`,
   };
 
   return (
