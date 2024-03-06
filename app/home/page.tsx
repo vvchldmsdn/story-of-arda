@@ -4,6 +4,38 @@ import MapChange from "../ui/home/mapChangeText";
 import RegionDetail from "../ui/home/region-detail";
 import Search from "../ui/home/search";
 import { lobster } from "../lib/fonts";
+import { Metadata } from 'next';
+import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
+
+type Props = {
+  searchParams: {
+    query?: string,
+    map?: string,
+  }
+}
+
+
+export async function generateMetadata(
+  { searchParams }: Props,
+): Promise<Metadata> {
+  const query = searchParams?.query || '2436.3901 1957.8402';
+  const map = searchParams?.map || 'Middle Earth';
+  const regionData = await fetchRegionName(query, map);
+  const regionName = regionData.name;
+  const regionBriefDescription = regionData.brief_description;
+
+  return {
+    title: regionName,
+    description: regionBriefDescription,
+    generator: 'Next.js',
+    keywords: ['lord of the rings', 'silmarilion', regionName],
+    openGraph: {
+      title: regionName,
+    }
+  }
+}
+
+
 
 export default function Home({ searchParams }: { searchParams?: { query?: string, map?: string } }) {
   const query = searchParams?.query || '2436.3901 1957.8402';

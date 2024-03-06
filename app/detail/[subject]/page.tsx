@@ -7,12 +7,48 @@ import ContentImages from "@/app/ui/detail/content-images";
 import { EditIcon, UploadImageIcon } from "@/app/lib/icons";
 import { convertString } from "@/app/lib/utils";
 import NameBox from "@/app/ui/molcules/name-box";
+import { Metadata, ResolvingMetadata } from 'next';
 
-export default async function Detail({ params, searchParams }: 
-  {
-    params: { subject: string },
-    searchParams?: { heading?: string, overview?: string }
-  }) {
+
+type Props = {
+  params: { subject: string }
+  searchParams: {
+    heading?: string,
+    overview?: string,
+  }
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const subject = params.subject;
+  const overview = searchParams?.overview || '';
+
+  const getPageInfo = await fetchName(params.subject);
+  const pageName = getPageInfo.name;
+  const pageBriefDescription = getPageInfo.brief_description;
+
+  const getMarkdown = await fetchDetailMarkdown(params.subject);
+  const markdown = getMarkdown.text;
+
+  const getBriefDescription = await fetchOverviewBriefDescription(overview);
+
+  return {
+    title: pageName,
+    description: pageBriefDescription,
+    generator: 'Next.js',
+    keywords: ['lord of the rings', 'silmarilion', pageName],
+    openGraph: {
+      title: pageName,
+    }
+  }
+}
+
+
+
+
+export default async function Detail({ params, searchParams }: Props) {
   const heading = searchParams?.heading || '0';
   const overview = searchParams?.overview || '';
 
