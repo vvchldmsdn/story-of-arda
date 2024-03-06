@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { Head } from 'next/document';
 
 export const metadata: Metadata = {
   title: 'lord of the rings',
@@ -9,8 +10,14 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className='text-eeeeee'>
-      <Link href="/home">지도화면으로</Link>
-    </div>
+    <>
+      <Head>
+        <meta name="naver-site-verification" content="dbdac0d25f4b9daf8ff5944a4ad5b8634643bad3" />
+      </Head>
+      <div className='text-eeeeee'>
+        <Link href="/home">지도화면으로</Link>
+      </div>
+    </>
+    
   )
 }
