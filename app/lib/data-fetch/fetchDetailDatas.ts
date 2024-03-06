@@ -2,7 +2,7 @@ import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchDetailMarkdown(subject: string) {
-  noStore();
+  // noStore();
   const decodedSubject = decodeURIComponent(subject);
   console.log('subject 이름', decodedSubject)
   try {
@@ -22,7 +22,7 @@ export async function fetchDetailMarkdown(subject: string) {
 };
 
 export async function fetchName(subject: string) {
-  noStore();
+  // noStore();
 
   const decodedSubject = decodeURIComponent(subject);
   try {
