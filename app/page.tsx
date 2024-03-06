@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import Head from 'next/head';
 
 export const metadata: Metadata = {
-  title: 'lord of the rings',
-  description: '반지의 제왕 세계관의 지역들을 지도를 통해 탐험하세요!'
+  title: 'naver-site-verification',
+  description: 'dbdac0d25f4b9daf8ff5944a4ad5b8634643bad3'
 }
 
 export default function Home() {
