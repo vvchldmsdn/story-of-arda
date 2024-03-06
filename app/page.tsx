@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { Head } from 'next/document';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'lord of the rings',
