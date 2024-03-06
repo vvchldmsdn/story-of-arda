@@ -1,9 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from 'next/cache';
-import { RegionNameType, RegionDetailType } from "../types/mapTypes";
 
 export async function fetchRegionName(query: string, map: string) {
-  noStore();
+  // noStore();
 
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
@@ -121,44 +120,4 @@ export async function fetchRandomCharacterName(regionName: string) {
     console.log(error);
     throw new Error(`Failed to fetch a random character name in ${regionName}`)
   }
-}
-
-export async function fetchMapUrl(mapName: string) {
-  try {
-    const data = await sql`
-    SELECT image_url
-    FROM map
-    WHERE name = ${mapName};
-    `;
-
-    const result = data.rows.length === 0 ? '' : data.rows[0].name;
-    return result;
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Failed to fetch map image of ${mapName}`);
-  }
 };
-
-// export async function fetchRegionImage(regionName: string) {
-//   noStore();
-
-//   try {
-//     const data = await sql`
-//       SELECT url
-//       FROM page_image
-//       WHERE page_id = (
-//         SELECT id
-//         FROM page
-//         WHERE name = ${regionName}
-//       )
-//       ORDER BY RANDOM()
-//       LIMIT 1;
-//     `;
-
-//     const result = data.rows.length === 0 ? '/swordsman.jpeg' : data.rows[0].url;
-//     return result;
-//   } catch (error) {
-//     console.log(error);
-//     throw new Error(`Failed to fetch a random image of ${regionName}`);
-//   }
-// };
