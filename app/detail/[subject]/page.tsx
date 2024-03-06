@@ -23,16 +23,10 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const subject = params.subject;
-  const overview = searchParams?.overview || '';
 
-  const getPageInfo = await fetchName(params.subject);
+  const getPageInfo = await fetchName(subject);
   const pageName = getPageInfo.name;
   const pageBriefDescription = getPageInfo.brief_description;
-
-  const getMarkdown = await fetchDetailMarkdown(params.subject);
-  const markdown = getMarkdown.text;
-
-  const getBriefDescription = await fetchOverviewBriefDescription(overview);
 
   return {
     title: pageName,
