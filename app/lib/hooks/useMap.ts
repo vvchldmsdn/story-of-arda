@@ -64,7 +64,7 @@ export const useMap = (mapData: MapType) => {
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     setIsMoved(true);
     if (dragging && imgRef.current) {
-      console.log(e.clientX, e.clientY)
+     
       const rect = imgRef.current.getBoundingClientRect();
       const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
       setMapPosition(newPosition);

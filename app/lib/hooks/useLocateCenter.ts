@@ -24,10 +24,12 @@ export const useLocateCenter = (
     isMoved: boolean
   ) => {
     if (imgRef.current && !isMoved) {
-      console.log('여기까진 들어옴')
+      
       const rect = imgRef.current.getBoundingClientRect();
       const x = (clientX - rect.left) * (imgRef.current.naturalWidth / rect.width);
       const y = (clientY - rect.top) * (imgRef.current.naturalHeight / rect.height);
+
+      console.log(`[${Math.round(x * 1e4) / 1e4}, ${Math.round(y * 1e4) / 1e4}]`);
 
       const divCenter = { x: mapData.left + mapData.width / 2, y: mapData.top + mapData.height / 2}
       setMouseStart({ x: clientX - rect.left, y: clientY - rect.top });

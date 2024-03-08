@@ -9,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: 'https://story-of-arda.vercel.app/',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 1,
+    },
+    {
       url: 'https://story-of-arda.vercel.app/home/',
       lastModified: new Date(),
       changeFrequency: 'monthly',
