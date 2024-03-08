@@ -121,3 +121,18 @@ export async function fetchRandomCharacterName(regionName: string) {
     throw new Error(`Failed to fetch a random character name in ${regionName}`)
   }
 };
+
+export async function fetchAllEnname() {
+  try {
+    const data = await sql`
+    SELECT en_name AS name
+    FROM page;
+    `;
+
+    const result = data.rows.length === 0 ? [] : data.rows;
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to fetch page names for sitemap.xml');
+  }
+}
