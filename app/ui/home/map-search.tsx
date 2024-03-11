@@ -7,7 +7,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 
 export default function MapSearch({ map, query }: { map: string, query: string}) {
-  const mapSrc = map === null || map == undefined ? 'middle Earth' : map;
+  let mapSrc = map === null || map == undefined ? 'Middle Earth' : map;
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -31,6 +31,7 @@ export default function MapSearch({ map, query }: { map: string, query: string})
     params.set('query', `2436.3901 1957.8402`);
     params.set('map', 'Middle Earth');
     replace(`${pathname}?${params.toString()}`)
+    mapSrc = 'Middle Earth'
 
     return () => {
       window.removeEventListener("resize", handleResize);
