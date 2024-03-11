@@ -1,7 +1,6 @@
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { ScrollShadow, Divider } from "@nextui-org/react";
 import { notoSansKr } from "@/app/lib/fonts";
-import Modals from "../atoms/modal";
 import DetailLinkArrow from "../atoms/DetailLinkArrow";
 import { convertString } from "@/app/lib/utils";
 import NameBox from "../molcules/name-box";

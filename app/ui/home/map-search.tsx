@@ -7,6 +7,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 
 export default function MapSearch({ map, query }: { map: string, query: string}) {
+  const mapSrc = map === null || map == undefined ? 'middle Earth' : map;
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -55,7 +56,7 @@ export default function MapSearch({ map, query }: { map: string, query: string})
     >
       <img
         ref={imgRef}
-        src={`/${map}.jpg`}
+        src={`/${mapSrc}.jpg`}
         alt="Home Map Image"
         // onClick={getRegionByClick}
         onClick={(e) => getRegionByClick(e.clientX, e.clientY, imgRef, isMoved)}

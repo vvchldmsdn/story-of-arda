@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { inter, gugi, notoSansKr } from './lib/fonts';
+import { notoSansKr } from './lib/fonts';
 import './globals.css';
 import {Providers} from "./providers";
 import Topnav from './ui/topnav';

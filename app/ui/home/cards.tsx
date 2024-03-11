@@ -1,7 +1,6 @@
-import {Card, CardFooter, Image, Button} from "@nextui-org/react";
-import { CardSummaryType, RegionNameType, CardPropType } from "@/app/lib/types/mapTypes";
+import {Card} from "@nextui-org/react";
+import {  RegionNameType, CardPropType } from "@/app/lib/types/mapTypes";
 import { fetchCardCharacterSummary, fetchCardEventSummary, fetchRandomCharacterName, fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas";
-import Link from "next/link";
 import clsx from "clsx";
 
 export default async function CardWrapper({ query, map }: {query: string, map:string}) {

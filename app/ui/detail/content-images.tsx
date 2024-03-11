@@ -1,10 +1,8 @@
 'use client'
 
-import { fetchContentImages } from "@/app/lib/data-fetch/fetchDetailDatas";
 import { ScrollShadow, Image } from "@nextui-org/react";
 import { useState } from "react";
 import clsx from "clsx";
-import { ChevronUp } from "@/app/lib/icons";
 
 export default function ContentImages({ subject }: { subject: string }) {
   const [isClosed, setIsClosed] = useState<Boolean>(false);

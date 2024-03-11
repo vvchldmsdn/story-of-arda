@@ -3,7 +3,6 @@
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { sortedRegions } from '../../lib/regionNames';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useLocateCenter } from "@/app/lib/hooks/useLocateCenter";
 
 export default function Search() {
   const mapCoordParams = useSearchParams();

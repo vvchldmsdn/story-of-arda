@@ -32,7 +32,7 @@ export async function generateMetadata(
     title: pageName,
     description: pageBriefDescription,
     generator: 'Next.js',
-    keywords: ['lord of the rings', 'silmarilion', pageName],
+    keywords: ['lord of the rings', 'silmarilion', pageName, '반지의 제왕', '실마릴리온', '중간계'],
     openGraph: {
       title: pageName,
     }

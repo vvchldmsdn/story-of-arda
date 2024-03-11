@@ -28,7 +28,7 @@ export async function generateMetadata(
     title: regionName,
     description: regionBriefDescription,
     generator: 'Next.js',
-    keywords: ['lord of the rings', 'silmarilion', regionName],
+    keywords: ['lord of the rings', 'silmarilion', regionName, '반지의 제왕', '실마릴리온', '중간계'],
     openGraph: {
       title: regionName,
     }

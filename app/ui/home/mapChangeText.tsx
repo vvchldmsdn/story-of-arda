@@ -1,7 +1,6 @@
 'use client';
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import clsx from "clsx";
 import { Tabs, Tab } from '@nextui-org/react';
 import { useState, useEffect } from 'react';
 
