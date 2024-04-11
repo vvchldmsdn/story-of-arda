@@ -99,8 +99,8 @@ export default async function Detail({ params, searchParams }: Props) {
 
   return (
     <div className="flex" style={{ height: 'calc(100vh - 6rem)' }}>
-      <div className="flex-none w-72 text-eeeeee h-full flex flex-col pb-8">
-        <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-48 flex justify-center items-center relative" style={style}>
+      <div className="flex-auto basis-3/12 text-eeeeee h-full flex flex-col pb-8">
+        <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-56 flex justify-center items-center relative" style={style}>
           <NameBox
             regionName={pageName}
             convertedRegionEnName={convertedSubjectEnName}
@@ -130,7 +130,7 @@ export default async function Detail({ params, searchParams }: Props) {
         </div>
       </div>
       <Divider orientation="vertical" className="bg-eeeeee" />
-      <div className="flex-1 h-full flex flex-col justify-center items-center">
+      <div className="flex-auto basis-7/12 h-full flex flex-col justify-center items-center">
         <div>
           <ContentImages subject={params.subject}></ContentImages>
         </div>

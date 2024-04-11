@@ -3,7 +3,6 @@ import MapSearch from "../ui/home/map-search";
 import MapChange from "../ui/home/mapChangeText";
 import RegionDetail from "../ui/home/region-detail";
 import Search from "../ui/home/search";
-import { lobster } from "../lib/fonts";
 import { Metadata } from 'next';
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 
@@ -69,7 +68,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
 
       </div>
       <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col">
-        <div className={`bg-ardagrey text-eeeeee text-3xl h-56 mb-2 rounded-2xl text-center p-8 flex items-center ${lobster.className}`}>{`Gondor has no king, Gondor needs no king\n - Boromir -`}</div>
+        <div className={`bg-ardagrey text-eeeeee text-3xl h-56 mb-2 rounded-2xl text-center p-8 flex items-center `}>{`Gondor has no king, Gondor needs no king\n - Boromir -`}</div>
         <CardWrapper query={query} map={map}></CardWrapper>
       </div>
     </div>
