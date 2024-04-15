@@ -99,7 +99,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
 
   return (
     <>
-      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-4xl">
+      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-4xl bg-ardagrey rounded-3xl px-4">
         <div className="text-justify">
           {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
         </div>
