@@ -7,7 +7,7 @@ import clsx from 'clsx';
 const links = [
   { name: "map-search", href: '/home' },
   { name: 'community', href: '/community' },
-  { name: 'details', href: '/details/person' }
+  { name: 'details', href: '/detail/osgiliath' }
 ];
 
 export default function NavLinks() {
