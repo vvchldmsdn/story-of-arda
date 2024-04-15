@@ -15,6 +15,7 @@ export default function MapSearch({ map, query }: { map: string, query: string})
   const divRef = useRef<HTMLImageElement>(null);
   const [mapData, setMapData] = useState<MapType>({ width: 0, height: 0, top: 0, left: 0 });
 
+  // 브라우저 리사이징 이벤트 리스너 삽입 및 제거 로직 
   useEffect(() => {
     const handleResize = () => {
       if (divRef.current && imgRef.current) {
@@ -38,6 +39,8 @@ export default function MapSearch({ map, query }: { map: string, query: string})
     }
   }, []);
 
+  
+
   const {
     imgRef,
     mapPosition,
@@ -49,6 +52,14 @@ export default function MapSearch({ map, query }: { map: string, query: string})
     getRegionByClick,
     isMoved
   } = useMap(mapData);
+
+  useEffect(() => {
+    console.log('맵 서치', query);
+    const parts: Array<string> = query.split(' ');
+    const x: number = parseFloat(parts[0]);
+    const y: number = parseFloat(parts[1]);
+    // getRegionByClick(x, y, imgRef, isMoved)
+  }, [query])
 
   return (
     <div

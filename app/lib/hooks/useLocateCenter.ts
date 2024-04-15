@@ -23,7 +23,9 @@ export const useLocateCenter = (
     imgRef: React.RefObject<HTMLImageElement>,
     isMoved: boolean
   ) => {
+    console.log('inside getRegionByClick')
     if (imgRef.current && !isMoved) {
+      console.log('pass if phrase in getRegionByClick')
       
       const rect = imgRef.current.getBoundingClientRect();
       const x = (clientX - rect.left) * (imgRef.current.naturalWidth / rect.width);

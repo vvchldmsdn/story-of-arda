@@ -46,6 +46,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         {/* 지역 이름, 상세설명 들어갈 부분 */}
         <RegionDetail query={query} map={map}></RegionDetail>
       </div>
+
       <div className="h-full flex-auto basis-7/12 mr-4 flex flex-col">
 
         <div className="h-56 flex-none w-full flex flex-col justify-between">
@@ -67,6 +68,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         </div>
 
       </div>
+      
       <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col">
         <div className={`bg-ardagrey text-eeeeee text-3xl h-56 mb-2 rounded-2xl text-center p-8 flex items-center `}>{`Gondor has no king, Gondor needs no king\n - Boromir -`}</div>
         <CardWrapper query={query} map={map}></CardWrapper>
