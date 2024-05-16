@@ -23,9 +23,6 @@ export default function RootLayout({
       <body className={notoSansKr.className}>
         <Providers>
         <div className="flex-col">
-          <div className="flex-none h-24">
-            <Topnav></Topnav>
-          </div>
           <div>{children}</div>
         </div>
         </Providers>
