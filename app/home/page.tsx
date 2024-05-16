@@ -41,7 +41,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
   const map = searchParams?.map || 'Middle Earth';
 
   return (
-    <div className="flex flex-row pb-4" style={{ height: 'calc(100vh - 6rem)' }}>
+    <div className="flex flex-row py-8 h-screen">
       <div className="h-full flex-auto basis-3/12 ml-4 mr-2 overflow-hidden">
         {/* 지역 이름, 상세설명 들어갈 부분 */}
         <RegionDetail query={query} map={map}></RegionDetail>

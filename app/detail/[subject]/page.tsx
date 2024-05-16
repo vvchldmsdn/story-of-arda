@@ -98,7 +98,7 @@ export default async function Detail({ params, searchParams }: Props) {
   };
 
   return (
-    <div className="flex pb-8" style={{ height: 'calc(100vh - 6rem)' }}>
+    <div className="flex pb-8 h-screen">
       <div className="flex-auto basis-3/12 text-eeeeee h-full flex flex-col pb-8">
         <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-56 flex justify-center items-center relative" style={style}>
           <NameBox
