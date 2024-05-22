@@ -98,8 +98,12 @@ export default async function Detail({ params, searchParams }: Props) {
   };
 
   return (
-    <div className="flex pb-8 h-screen">
+    <div className="flex py-8 h-screen">
+
+      {/* 좌측 네브바 */}
       <div className="flex-auto basis-3/12 text-eeeeee h-full flex flex-col pb-8">
+
+        {/* 이름 정보 칸 */}
         <div className="bg-backblack text-center mx-4 mb-4 py-4 rounded-lg flex-none h-56 flex justify-center items-center relative" style={style}>
           <NameBox
             regionName={pageName}
@@ -107,8 +111,9 @@ export default async function Detail({ params, searchParams }: Props) {
             regionBriefDescription={pageBriefDescription}
           ></NameBox>
         </div>
+        {/* 목차 칸 */}
         <TableOfContent contentHeadings={titles}></TableOfContent>
-        <div className="mx-4 mt-6 text-center flex-shrink h-24">
+        {/* <div className="mx-4 mt-6 text-center flex-shrink h-24">
           <div className="flex flex-row justify-between px-10">
             <Link href={{
               pathname: `/showdown/${params.subject}`,
@@ -127,9 +132,11 @@ export default async function Detail({ params, searchParams }: Props) {
               </div>
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
-      <Divider orientation="vertical" className="bg-eeeeee" />
+      {/* <Divider orientation="vertical" className="bg-eeeeee" /> */}
+
+      {/* detail 정보 칸 */}
       <div className="flex-auto basis-7/12 h-full flex flex-col justify-center items-center">
         <div className="mb-8">
           <ContentImages subject={params.subject}></ContentImages>

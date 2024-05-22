@@ -84,7 +84,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
             </Popover>
           )
         case 'blockquote':
-          return <blockquote className="bg-ardagrey rounded-lg m-2 mx-4 p-2 border-l-8 border-ardayellow">{domToReact(domNode.children, options)}</blockquote>;
+          return <blockquote className="bg-backblack rounded-lg m-2 mx-4 p-2 border-l-8 border-ardayellow">{domToReact(domNode.children, options)}</blockquote>;
         case 'ul':
           return <ul className="list-disc pl-5">{domToReact(domNode.children, options)}</ul>;
         case 'li':
@@ -99,7 +99,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
 
   return (
     <>
-      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-4xl bg-ardagrey rounded-3xl px-4">
+      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-3xl bg-ardagrey rounded-3xl px-4">
         <div className="text-justify">
           {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
         </div>
