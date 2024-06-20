@@ -7,7 +7,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 
 export default function MapSearch({ map, query }: { map: string, query: string}) {
-  let mapSrc = map === null || map == undefined ? 'Middle Earth' : map;
+  let mapSrc = map === null || map === undefined ? 'Middle Earth' : map;
   const mapCoordParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -53,13 +53,13 @@ export default function MapSearch({ map, query }: { map: string, query: string})
     isMoved
   } = useMap(mapData);
 
-  useEffect(() => {
-    console.log('맵 서치', query);
-    const parts: Array<string> = query.split(' ');
-    const x: number = parseFloat(parts[0]);
-    const y: number = parseFloat(parts[1]);
-    // getRegionByClick(x, y, imgRef, isMoved)
-  }, [query])
+  // useEffect(() => {
+  //   console.log('맵 서치', query);
+  //   const parts: Array<string> = query.split(' ');
+  //   const x: number = parseFloat(parts[0]);
+  //   const y: number = parseFloat(parts[1]);
+  //   // getRegionByClick(x, y, imgRef, isMoved)
+  // }, [query])
 
   return (
     <div
