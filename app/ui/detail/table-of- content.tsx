@@ -1,7 +1,6 @@
 'use client'
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { EmptyCircle, SelectedCircle } from '@/app/lib/icons';
 import { ScrollShadow } from '@nextui-org/react';
 import clsx from 'clsx';
@@ -10,20 +9,14 @@ export default function TableOfContent({ contentHeadings }: { contentHeadings: A
   const headingParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [selectedIdx, setSelectedIdx] = useState<number>(0);
+  const heading = Number(headingParams.get('heading') || '0');
+  const selectedIdx = Number.isInteger(heading) && heading >= 0 ? heading : 0;
 
-  const setHeading: any = (idx: number) => {
+  const setHeading = (idx: number) => {
     const params = new URLSearchParams(headingParams);
     params.set('heading', String(idx));
     replace(`${pathname}?${params.toString()}`);
-    setSelectedIdx(idx);
   };
-
-  useEffect(() => {
-    const params = new URLSearchParams(headingParams);
-    params.set('heading', '0');
-    replace(`${pathname}?${params.toString()}`)
-  }, [])
 
   return (
     <ScrollShadow hideScrollBar>

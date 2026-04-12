@@ -2,29 +2,25 @@
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Tabs, Tab } from '@nextui-org/react';
-import { useState, useEffect } from 'react';
 
 export default function MapChange({ map }: { map: string }) {
   const mapIdParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  
-  const [selected, setSelected] = useState<string>('Middle Earth');
 
   const maps = [
-    { name: 'Middle Earth', id: 4 },
-    { name: 'Beleriand', id: 3 },
-    { name: 'Numenor', id: 5 }
+    { name: 'Middle Earth' },
+    { name: 'Beleriand' },
+    { name: 'Numenor' }
   ];
 
-  useEffect(() => {
-    const params = new URLSearchParams(mapIdParams);
-    params.set('map', selected);
-    replace(`${pathname}?${params.toString()}`);
-  }, [selected]);
+  const selected = maps.some((item) => item.name === map) ? map : 'Middle Earth';
 
   const handleSelectionChange = (key: string | number) => {
-    setSelected(String(key));
+    const selectedMap = String(key);
+    const params = new URLSearchParams(mapIdParams);
+    params.set('map', selectedMap);
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (

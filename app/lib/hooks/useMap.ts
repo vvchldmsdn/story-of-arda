@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { MapType } from "../types/mapTypes";
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useLocateCenter } from "./useLocateCenter";
 
 type PositionType = { x: number, y: number };
@@ -10,7 +9,9 @@ const usePosition = (initialPosition: PositionType) => {
   const [position, setPosition] = useState<PositionType>(initialPosition);
 
   const updatePosition = useCallback((newPosition: PositionType) => {
-    setPosition(newPosition);
+    setPosition((prev) => (
+      prev.x === newPosition.x && prev.y === newPosition.y ? prev : newPosition
+    ));
   }, []);
 
   return [position, updatePosition] as const;
@@ -59,7 +60,7 @@ export const useMap = (mapData: MapType) => {
       const rect = imgRef.current.getBoundingClientRect();
       setMouseStart({ x: e.clientX - rect.left, y: e.clientY - rect.top });  // 이미지 안에서의 상대적 포지션
     }
-  }, []);
+  }, [setMouseStart]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     setIsMoved(true);
@@ -69,7 +70,7 @@ export const useMap = (mapData: MapType) => {
       const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
       setMapPosition(newPosition);
     }
-  }, [dragging, calculateNewPosition]);
+  }, [dragging, calculateNewPosition, setMapPosition]);
 
   const handleMouseUp = useCallback(() => {
     setDragging(false);
@@ -121,9 +122,9 @@ export const useMap = (mapData: MapType) => {
         setScale(newScale);
       }
     }
-  }, [scale, imgRef, mapPosition, mapData]);
+  }, [scale, imgRef, mapPosition, mapData, setMapTopLeft, setMapPosition]);
 
-  const getRegionByClick = useLocateCenter(imgRef, isMoved, calculateNewPosition, mapData, mapPosition, setMapPosition, setMouseStart);
+  const getRegionByClick = useLocateCenter(imgRef, isMoved, calculateNewPosition, mapData, setMapPosition, setMouseStart);
 
   useEffect(() => {
     if (imgRef.current) {
@@ -155,7 +156,7 @@ export const useMap = (mapData: MapType) => {
       setMapTopLeft({ x: mapPosition.x - newRect.left + mapData.left, y: mapPosition.y + mapData.top - newRect.top });
       setMapPosition({ x: newX, y: newY });
     }
-  }, [mapData]);
+  }, [mapData, mapPosition.x, mapPosition.y, setMapTopLeft, setMapPosition]);
 
   return {
     imgRef,

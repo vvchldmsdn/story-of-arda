@@ -1,10 +1,13 @@
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 
+type ContentImage = {
+  url: string;
+};
+
 export async function fetchDetailMarkdown(subject: string) {
   noStore();
   const decodedSubject = decodeURIComponent(subject);
-  console.log('subject 이름', decodedSubject)
   try {
     const data = await sql`
     SELECT text
@@ -58,7 +61,6 @@ export async function fetchOverviewImage(enName: string) {
 };
 
 export async function fetchOverviewBriefDescription(enName: string) {
-  console.log(enName)
   try {
     const data = await sql`
     SELECT brief_description AS bd
@@ -74,19 +76,22 @@ export async function fetchOverviewBriefDescription(enName: string) {
   }
 };
 
-export async function fetchContentImages(subject: string) {
+export async function fetchContentImages(subject: string): Promise<ContentImage[]> {
+  noStore();
+  const decodedSubject = decodeURIComponent(subject);
+
   try {
     const data = await sql`
     SELECT url
     FROM page_image AS pi
     INNER JOIN page AS p ON p.id = pi.page_id
-    WHERE p.en_name = ${subject};
+    WHERE p.en_name = ${decodedSubject};
     `;
 
-    const result = data.rows.length === 0 ? [] : data.rows;
+    const result = data.rows.length === 0 ? [] : data.rows.map((row) => ({ url: String(row.url) }));
     return result;
   } catch (error) {
     console.log(error);
-    throw new Error(`Failed to fetch images of ${subject}`);
+    throw new Error(`Failed to fetch images of ${decodedSubject}`);
   }
 }

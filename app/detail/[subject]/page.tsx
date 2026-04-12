@@ -1,6 +1,5 @@
 import { fetchDetailMarkdown, fetchName, fetchOverviewBriefDescription } from "@/app/lib/data-fetch/fetchDetailDatas";
 import TableOfContent from "@/app/ui/detail/table-of- content";
-import { Divider } from "@nextui-org/react";
 import DetailContents from "@/app/ui/detail/detail-contents";
 import Link from "next/link";
 import ContentImages from "@/app/ui/detail/content-images";
@@ -113,7 +112,7 @@ export default async function Detail({ params, searchParams }: Props) {
         </div>
         {/* 목차 칸 */}
         <TableOfContent contentHeadings={titles}></TableOfContent>
-        {/* <div className="mx-4 mt-6 text-center flex-shrink h-24">
+        <div className="mx-4 mt-6 text-center flex-shrink h-24">
           <div className="flex flex-row justify-between px-10">
             <Link href={{
               pathname: `/showdown/${params.subject}`,
@@ -132,7 +131,7 @@ export default async function Detail({ params, searchParams }: Props) {
               </div>
             </Link>
           </div>
-        </div> */}
+        </div>
       </div>
       {/* <Divider orientation="vertical" className="bg-eeeeee" /> */}
 

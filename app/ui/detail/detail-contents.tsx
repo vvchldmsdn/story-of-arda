@@ -14,7 +14,6 @@ export default function DetailContents({ titles, contents, heading, overview }: 
   const { replace } = useRouter();
 
   const handleClick = (urlParam: string) => {
-    console.log('in click handler')
     const params = new URLSearchParams(overviewParams);
     params.set('overview', urlParam);
     replace(`${pathname}?${params.toString()}`)
@@ -92,7 +91,7 @@ export default function DetailContents({ titles, contents, heading, overview }: 
         case 'hr':
           return <hr className="mx-4"></hr>
         case 'img':
-          return <img src='/swordsman.jpeg' alt={domNode.attribs.alt} className="float-right w-40 ml-4"></img>
+          return <Image src='/swordsman.jpeg' alt={domNode.attribs.alt || 'Content image'} className="float-right w-40 ml-4"></Image>
       };
     }
   };
