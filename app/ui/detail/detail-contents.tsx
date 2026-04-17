@@ -1,6 +1,6 @@
 'use client'
 
-import { Popover, PopoverTrigger, PopoverContent, ScrollShadow, Image, Card, CardHeader, CardBody, Button } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent, Image, Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 import parse, { domToReact } from 'html-react-parser';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RightArrow } from "@/app/lib/icons";
@@ -19,51 +19,54 @@ export default function DetailContents({ titles, contents, heading, overview }: 
     replace(`${pathname}?${params.toString()}`)
   };
 
+  const headingNumber = Number(heading);
+  const activeIndex = Number.isInteger(headingNumber) && headingNumber >= 0 && headingNumber < titles.length ? headingNumber : 0;
+  const activeTitle = titles[activeIndex] || '기록 없음';
+  const activeContent = contents[activeIndex] || '아직 작성된 기록이 없습니다.';
+
   const showdown = require('showdown');
   const converter = new showdown.Converter({ simpleLineBreaks: true });
   const options = {
     replace: (domNode: any) => {
       switch (domNode.name) {
         case 'p':
-          return <p className="my-4 mx-2 text-eeeeee">{domToReact(domNode.children, options)}</p>;
+          return <p className="my-5 text-base leading-8 text-[#1B1D18]/86">{domToReact(domNode.children, options)}</p>;
         case 'h1':
-          return <h1 className="text-5xl mt-8 mb-4 mx-2 text-ardamint">{domToReact(domNode.children, options)}</h1>;
+          return <h1 className="mb-8 text-4xl font-semibold leading-tight text-[#1B1D18]">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
-          return <h2 className="text-3xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h2>;
+          return <h2 className="mb-3 mt-10 text-2xl font-semibold text-[#274B3D]">{domToReact(domNode.children, options)}</h2>;
         case 'h3':
-          return <h3 className="text-xl mt-8 mb-2 mx-2 text-ardalowmint">{domToReact(domNode.children, options)}</h3>;
+          return <h3 className="mb-2 mt-8 text-xl font-semibold text-[#274B3D]">{domToReact(domNode.children, options)}</h3>;
         case 'a':
           return (
             <Popover className="inline-block" showArrow backdrop="opaque"
               classNames={{
                 base: [
-                  // arrow color
-                  "before:bg-default-200"
+                  "before:bg-[#D6A526]"
                 ],
                 content: [
-                  "py-0 px-0 border-2 border-ardamint",
-                  "bg-ardamint",
+                  "border border-[#D6A526]/45 bg-[#F5F0DF] px-0 py-0",
                 ],
               }}
             >
               <PopoverTrigger className="inline-block">
                 <p 
-                  className="text-ardayellow hover:cursor-pointer inline-block"
+                  className="inline-block text-[#B23A48] underline decoration-[#D6A526]/60 underline-offset-4 hover:cursor-pointer"
                   onClick={() => handleClick(domNode.attribs.href)}
                 >{domToReact(domNode.children, options)}</p>
               </PopoverTrigger>
               <PopoverContent>
                 <div className="mx-0">
-                  <Card className="py-4 w-[330px] bg-ardagrey">
+                  <Card className="w-[330px] bg-[#F5F0DF] py-4">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start flex justify-center">
                       <div className="whitespace-normal w-full">
-                        <div className="flex justify-between items-center mb-4 text-eeeeee w-full">
+                        <div className="mb-4 flex w-full items-center justify-between text-[#1B1D18]">
                           <h4 className="font-bold text-2xl">{convertString(domNode.attribs.href)}</h4>
                           <Button className="ml-2" href="/target-page" variant="light">
                             <Link href={`/detail/${domNode.attribs.href}`}><RightArrow /></Link>
                           </Button>
                         </div>
-                        <p className="text-default-400 line-clamp-5 text-justify">
+                        <p className="line-clamp-5 text-justify text-sm leading-6 text-[#1B1D18]/70">
                           {overview}
                         </p>
                       </div>
@@ -83,27 +86,25 @@ export default function DetailContents({ titles, contents, heading, overview }: 
             </Popover>
           )
         case 'blockquote':
-          return <blockquote className="bg-backblack rounded-lg m-2 mx-4 p-2 border-l-8 border-ardayellow">{domToReact(domNode.children, options)}</blockquote>;
+          return <blockquote className="my-6 rounded-md border-l-4 border-[#D6A526] bg-[#D6A526]/12 p-4 text-[#1B1D18]/80">{domToReact(domNode.children, options)}</blockquote>;
         case 'ul':
-          return <ul className="list-disc pl-5">{domToReact(domNode.children, options)}</ul>;
+          return <ul className="my-5 list-disc space-y-2 pl-6 text-[#1B1D18]/86">{domToReact(domNode.children, options)}</ul>;
         case 'li':
-          return <li className="my-4 text-eeeeee">{domToReact(domNode.children, options)}</li>;
+          return <li className="leading-7">{domToReact(domNode.children, options)}</li>;
         case 'hr':
-          return <hr className="mx-4"></hr>
+          return <hr className="my-8 border-[#1B1D18]/15"></hr>
         case 'img':
-          return <Image src='/swordsman.jpeg' alt={domNode.attribs.alt || 'Content image'} className="float-right w-40 ml-4"></Image>
+          return <Image src='/swordsman.jpeg' alt={domNode.attribs.alt || 'Content image'} className="float-right ml-4 mt-2 w-40 rounded-md"></Image>
       };
     }
   };
 
   return (
-    <>
-      <ScrollShadow hideScrollBar className="flex-1 w-11/12 max-w-3xl bg-ardagrey rounded-3xl px-4">
-        <div className="text-justify">
-          {parse(converter.makeHtml('# ' + titles[Number(heading)] + `\n\n` + contents[Number(heading)]), options)}
-        </div>
-      </ScrollShadow>
-    </>
+    <article className="rounded-lg bg-[#F5F0DF] px-5 py-6 text-[#1B1D18] shadow-2xl shadow-black/25 sm:px-8 lg:px-12 lg:py-10">
+      <div className="mx-auto max-w-3xl text-justify">
+        {parse(converter.makeHtml('# ' + activeTitle + `\n\n` + activeContent), options)}
+      </div>
+    </article>
     
   )
 } 

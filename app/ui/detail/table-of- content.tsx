@@ -1,8 +1,6 @@
 'use client'
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { EmptyCircle, SelectedCircle } from '@/app/lib/icons';
-import { ScrollShadow } from '@nextui-org/react';
 import clsx from 'clsx';
 
 export default function TableOfContent({ contentHeadings }: { contentHeadings: Array<string> }) {
@@ -18,72 +16,35 @@ export default function TableOfContent({ contentHeadings }: { contentHeadings: A
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const getHeadingText = (contentHeading: string) => {
+    return contentHeading.replace(/^\*\*/, '').replace(/\*\*$/, '');
+  };
+
   return (
-    <ScrollShadow hideScrollBar>
-      <div className="flex-auto flex flex-col flex-nowrap justify-center items-center pt-12 bg-ardagrey mx-4 rounded-3xl">
+    <nav className="rounded-lg border border-[#D6A526]/25 bg-[#121812]/90 p-4 text-[#F5F0DF] shadow-xl shadow-black/25">
+      <p className="mb-4 text-xs uppercase tracking-[0.22em] text-[#D6A526]">목차</p>
+      <div className="flex max-h-[calc(100vh-9rem)] flex-col gap-2 overflow-auto pr-1">
         {contentHeadings.map((contentHeading: string, idx: number) => {
           return (
-            <div className='w-9/12 flex flex-row items-center h-12 mb-12' key={contentHeading}>
-              <div className={clsx('mr-6 h-full flex items-center relative',
+            <button
+              type="button"
+              className={clsx(
+                "rounded-md border px-3 py-3 text-left text-sm leading-5 transition",
                 {
-                  'before:content-[""] before:absolute before:bg-eeeeee before:w-0.5 before:bg-black before:top-10 before:left-3.5 before:h-16': idx < contentHeadings.length - 1,
-                }
-              )}>
-                {selectedIdx === idx
-                  ? <SelectedCircle></SelectedCircle>
-                  : <div style={{marginLeft: '0.5em', marginRight: '0.5em'}}><EmptyCircle></EmptyCircle></div> 
-                }
-              </div>
-              <div className={clsx(
-                "text-center h-full flex items-center text-lg",
-                {
-                  "text-ardayellow": selectedIdx === idx
+                  "border-[#D6A526] bg-[#D6A526] text-[#0F1411]": selectedIdx === idx
                 },
                 {
-                  "text-eeeeee": selectedIdx !== idx
+                  "border-[#F5F0DF]/10 text-[#F5F0DF]/72 hover:border-[#D6A526]/60 hover:text-[#F5F0DF]": selectedIdx !== idx
                 }
               )}
-                
-                onClick={() => setHeading(idx)}
-              >
-                {contentHeading.slice(2,-2)}
-              </div>
-            </div>
+              key={contentHeading}
+              onClick={() => setHeading(idx)}
+            >
+              {getHeadingText(contentHeading)}
+            </button>
           )
         })}
       </div>
-    </ScrollShadow>
-    // <div className="flex-auto flex flex-col flex-nowrap justify-center items-center pt-12 bg-ardagrey mx-4 rounded-lg">
-    //   {contentHeadings.map((contentHeading: string, idx: number) => {
-    //     return (
-    //       <div className='w-9/12 flex flex-row items-center h-12 mb-12' key={contentHeading}>
-    //         <div className={clsx('mr-6 h-full flex items-center relative',
-    //           {
-    //             'before:content-[""] before:absolute before:bg-eeeeee before:w-0.5 before:bg-black before:top-10 before:left-3.5 before:h-16': idx < contentHeadings.length - 1,
-    //           }
-    //         )}>
-    //           {selectedIdx === idx
-    //             ? <SelectedCircle></SelectedCircle>
-    //             : <div style={{marginLeft: '0.5em', marginRight: '0.5em'}}><EmptyCircle></EmptyCircle></div> 
-    //           }
-    //         </div>
-    //         <div className={clsx(
-    //           "text-center h-full flex items-center text-xl",
-    //           {
-    //             "text-ardayellow": selectedIdx === idx
-    //           },
-    //           {
-    //             "text-eeeeee": selectedIdx !== idx
-    //           }
-    //         )}
-              
-    //           onClick={() => setHeading(idx)}
-    //         >
-    //           {contentHeading.slice(2,-2)}
-    //         </div>
-    //       </div>
-    //     )
-    //   })}
-    // </div>
+    </nav>
   )
 }

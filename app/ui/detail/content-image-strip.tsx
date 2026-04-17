@@ -20,12 +20,12 @@ export default function ContentImageStrip({ images }: { images: ContentImage[] }
   };
 
   return (
-    <div>
+    <div className="rounded-lg border border-[#D6A526]/25 bg-[#121812]/80 p-3 shadow-xl shadow-black/20">
       <ScrollShadow
         orientation="horizontal"
         hideScrollBar
         className={clsx(
-          "mx-6 flex-none transition-height duration-700 ease-in-out",
+          "flex-none transition-height duration-700 ease-in-out",
           {
             "h-0 overflow-hidden": isClosed
           },
@@ -33,7 +33,6 @@ export default function ContentImageStrip({ images }: { images: ContentImage[] }
             "h-48": !isClosed
           }
         )}
-        style={{ width: 'calc(100vw - 24rem)' }}
       >
         <div className="flex flex-row flex-nowrap gap-4">
           {images.map((image) => {
@@ -43,16 +42,16 @@ export default function ContentImageStrip({ images }: { images: ContentImage[] }
                 alt="Detail image"
                 isZoomed
                 key={image.url}
-                style={{ minWidth: '300px' }}
-                className="object-cover rounded-xl max-h-[180px]"
-                width={300}
+                style={{ minWidth: '260px' }}
+                className="max-h-[180px] rounded-md object-cover"
+                width={260}
               ></Image>
             )
           })}
         </div>
       </ScrollShadow>
       <p
-        className="text-eeeeee hover:cursor-pointer mx-6 text-center"
+        className="mt-3 text-center text-sm text-[#F5F0DF]/74 hover:cursor-pointer hover:text-[#F5F0DF]"
         onClick={handleClick}
       >이미지 창 {isClosed ? '열기' : '닫기'}</p>
     </div>
