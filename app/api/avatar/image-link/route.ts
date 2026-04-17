@@ -7,7 +7,6 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const subject = searchParams.get('subject');
   const url = searchParams.get('url');
-  console.log('넘겨받은 데이터 확인', subject, url);
 
 
   if (!subject) {
@@ -22,7 +21,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     await sql`
     INSERT INTO page_image (page_id, url)
-    SELECT id, ${url}
+    SELECT id, ${decodeURIComponent(url)}
     FROM page
     WHERE page.en_name = ${subject};
     `;
