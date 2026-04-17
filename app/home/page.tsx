@@ -1,4 +1,3 @@
-import CardWrapper from "../ui/home/cards";
 import MapSearch from "../ui/home/map-search";
 import MapChange from "../ui/home/mapChangeText";
 import RegionDetail from "../ui/home/region-detail";
@@ -41,38 +40,31 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
   const map = searchParams?.map || 'Middle Earth';
 
   return (
-    <div className="flex flex-row py-8 h-screen">
-      <div className="h-full flex-auto basis-3/12 ml-4 mr-2 overflow-hidden">
-        {/* 지역 이름, 상세설명 들어갈 부분 */}
-        <RegionDetail query={query} map={map}></RegionDetail>
+    <main className="relative h-screen overflow-hidden bg-[#101214] text-[#F5F7EF]">
+      <div className="absolute inset-0">
+        <MapSearch map={map}></MapSearch>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#101214]/80 via-[#101214]/10 to-[#101214]/85"></div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#101214]/85 via-[#101214]/20 to-transparent lg:w-1/2"></div>
       </div>
 
-      <div className="h-full flex-auto basis-7/12 mr-4 flex flex-col">
-
-        <div className="h-56 flex-none w-full flex flex-col justify-between">
-          {/* 검색 창 부분 */}
-          <div className="mx-auto my-auto">
+      <div className="pointer-events-none absolute left-0 right-0 top-0 z-20 px-4 py-4 sm:px-6 sm:py-6">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="pointer-events-auto w-full max-w-xl">
             <Search></Search>
           </div>
-          {/* 맵 변경 Tabs 부분 */}
-          <div className="flex flex-row gap-8 justify-center">
+          <div className="pointer-events-auto">
             <MapChange map={map}></MapChange>
           </div>
         </div>
-    
-        <div className="w-full mt-2 flex-1 flex items-center">
-          <div className="w-full h-full rounded-3xl overflow-hidden relative">
-            {/* 맵 들어갈 부분 */}
-            <MapSearch map={map} query={query}></MapSearch>
-          </div>
-        </div>
+      </div>
 
+      <section className="absolute bottom-4 left-4 right-4 z-20 max-h-[46vh] md:bottom-6 md:left-6 md:right-auto md:top-28 md:max-h-none md:w-[420px]">
+        <RegionDetail query={query} map={map}></RegionDetail>
+      </section>
+
+      <div className="pointer-events-none absolute bottom-6 right-6 z-10 hidden max-w-xs border-l border-[#D6A526]/40 pl-4 text-sm leading-6 text-[#F5F7EF]/75 lg:block">
+        지도를 끌어 이동하고, 휠로 확대하세요. 궁금한 땅을 누르면 기록이 열립니다.
       </div>
-      
-      <div className="h-full xl:basis-2/12 xl:flex-none xl:mr-4 hidden xl:block flex flex-col">
-        <div className={`bg-ardagrey text-eeeeee text-3xl h-56 mb-2 rounded-2xl text-center p-8 flex items-center `}>{`Gondor has no king, Gondor needs no king\n - Boromir -`}</div>
-        <CardWrapper query={query} map={map}></CardWrapper>
-      </div>
-    </div>
+    </main>
   )
 };

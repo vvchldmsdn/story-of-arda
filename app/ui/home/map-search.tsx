@@ -5,7 +5,7 @@ import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
 
 
-export default function MapSearch({ map }: { map: string, query: string}) {
+export default function MapSearch({ map }: { map: string }) {
   const mapSrc = map || 'Middle Earth';
 
   const divRef = useRef<HTMLDivElement>(null);

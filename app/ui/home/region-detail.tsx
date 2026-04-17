@@ -1,61 +1,66 @@
-import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
-import { ScrollShadow, Divider } from "@nextui-org/react";
+import {
+  fetchCardCharacterSummary,
+  fetchCardEventSummary,
+  fetchRandomCharacterName,
+  fetchRegionName
+} from "@/app/lib/data-fetch/fetchHomeDatas"
+import { ScrollShadow } from "@nextui-org/react";
 import { notoSansKr } from "@/app/lib/fonts";
-import DetailLinkArrow from "../atoms/DetailLinkArrow";
 import { convertString } from "@/app/lib/utils";
-import NameBox from "../molcules/name-box";
+import Link from "next/link";
 
 export default async function RegionDetail({ query, map }: { query: string, map: string }) {
   const regionData = await fetchRegionName(query, map);
   const regionName = regionData.name;
   const regionBriefDescription = regionData.brief_description;
   const regionEnName = regionData.en_name;
-
   const convertedRegionEnName = convertString(regionEnName);
-
-  const style: React.CSSProperties = {
-    background: `radial-gradient(circle at 100% 100%, #222831 0, #222831 17px, transparent 17px) 0% 0%/20px 20px no-repeat,
-            radial-gradient(circle at 0 100%, #222831 0, #222831 17px, transparent 17px) 100% 0%/20px 20px no-repeat,
-            radial-gradient(circle at 100% 0, #222831 0, #222831 17px, transparent 17px) 0% 100%/20px 20px no-repeat,
-            radial-gradient(circle at 0 0, #222831 0, #222831 17px, transparent 17px) 100% 100%/20px 20px no-repeat,
-            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 6px) calc(100% - 40px) no-repeat,
-            linear-gradient(#222831, #222831) 50% 50%/calc(100% - 40px) calc(100% - 6px) no-repeat,
-            linear-gradient(300deg, #febf4b 0%, #00adb5 100%)`,
-    borderRadius: `20px`,
-    padding: `13px`,
-    boxSizing: `border-box`,
-  };
+  const [totalCharacters, totalEvents, randomCharacterName] = await Promise.all([
+    fetchCardCharacterSummary(regionName),
+    fetchCardEventSummary(regionName),
+    fetchRandomCharacterName(regionName)
+  ]);
 
   return (
-    <div className="gap-2 h-full flex flex-col">
-      <div className="bg-backblack text-eeeeee text-center h-56 flex justify-center items-center relative" style={style}>
-        <NameBox 
-          regionName={regionName}
-          convertedRegionEnName={convertedRegionEnName}
-          regionBriefDescription={regionBriefDescription}
-        ></NameBox>
+    <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#D6A526]/35 bg-[#101214]/90 p-5 shadow-2xl shadow-black/40 backdrop-blur-md">
+      <div className="flex items-center justify-between gap-4 border-b border-[#F5F7EF]/15 pb-4">
+        <div>
+          <p className="mb-2 text-xs uppercase tracking-[0.24em] text-[#D6A526]">{map}</p>
+          <h1 className="text-3xl font-semibold leading-tight text-[#F5F7EF]">{regionName || '알 수 없는 지역'}</h1>
+          <p className="mt-2 text-sm text-[#F5F7EF]/65">{convertedRegionEnName}</p>
+        </div>
+        <Link
+          href={`/detail/${regionEnName}`}
+          className="flex-none rounded-md border border-[#D6A526]/50 px-3 py-2 text-sm text-[#F5F7EF] transition hover:border-[#D6A526] hover:bg-[#D6A526] hover:text-[#101214]"
+        >
+          상세 기록
+        </Link>
       </div>
-      {/*       
-      <div className="bg-backblack text-eeeeee text-center h-56 flex justify-center items-center relative" style={style}>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl">{regionName}</h1>
-          <Divider orientation="horizontal" className="bg-ardayellow" />
-          <p className="text-xl">{convertedRegionEnName}</p>
+
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="rounded-md border border-[#F5F7EF]/15 bg-[#F5F7EF]/8 p-3">
+          <p className="text-xs text-[#F5F7EF]/60">등장 인물</p>
+          <p className="mt-1 text-3xl font-semibold text-[#F5F7EF]">{totalCharacters}</p>
         </div>
-        <Modals regionName={regionName} regionDescription={regionBriefDescription}></Modals>
-      </div> */}
-      <div className="bg-ardagrey flex-1 text-eeeeee rounded-3xl p-4 xl:px-10 overflow-hidden">
-        <div className="w-full h-full flex flex-col gap-4">
-          <div className="flex flex-row justify-between items-center">
-            <h1 className="h-16 flex-none text-2xl flex items-center text-ardamint">Brief Description</h1>
-            <DetailLinkArrow subject={regionEnName}></DetailLinkArrow>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <ScrollShadow hideScrollBar className="w-full h-full" size={100}>
-              <p className={`text-justify text-base ${notoSansKr.className}`}>{regionBriefDescription}</p>
-            </ScrollShadow>
-          </div>
+        <div className="rounded-md border border-[#F5F7EF]/15 bg-[#F5F7EF]/8 p-3">
+          <p className="text-xs text-[#F5F7EF]/60">사건</p>
+          <p className="mt-1 text-3xl font-semibold text-[#F5F7EF]">{totalEvents}</p>
         </div>
+      </div>
+
+      {randomCharacterName ? (
+        <p className="mt-3 rounded-md border border-[#D6A526]/25 bg-[#D6A526]/10 px-3 py-2 text-sm text-[#F5F7EF]/80">
+          이 지역의 이름: <span className="text-[#F5F7EF]">{randomCharacterName}</span>
+        </p>
+      ) : null}
+
+      <div className="mt-4 min-h-0 flex-1 overflow-hidden">
+        <p className="mb-3 text-sm uppercase tracking-[0.2em] text-[#B23A48]">기록</p>
+        <ScrollShadow hideScrollBar className="h-full w-full pr-1" size={80}>
+          <p className={`whitespace-pre-line text-justify text-sm leading-7 text-[#F5F7EF]/82 ${notoSansKr.className}`}>
+            {regionBriefDescription || '선택한 지역의 기록이 아직 없습니다.'}
+          </p>
+        </ScrollShadow>
       </div>
     </div>
   )

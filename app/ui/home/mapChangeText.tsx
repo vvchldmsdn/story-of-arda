@@ -24,22 +24,31 @@ export default function MapChange({ map }: { map: string }) {
   };
 
   return (
-    <>
-      <Tabs variant='light' color='warning' size='lg'
+    <div className="w-full md:w-auto">
+      <Tabs
+        variant='bordered'
+        color='warning'
+        size='md'
+        radius="sm"
         selectedKey={selected}
         onSelectionChange={handleSelectionChange}
+        classNames={{
+          tabList: "w-full border border-[#D6A526]/35 bg-[#101214]/90 p-1 shadow-xl shadow-black/30 backdrop-blur-md md:w-auto",
+          cursor: "bg-[#D6A526]",
+          tab: "h-10 px-3",
+          tabContent: "text-[#F5F7EF] group-data-[selected=true]:text-[#101214]"
+        }}
       >
         {maps.map((item) => {
             return (
               <Tab
-                className='text-2xl h-20'
+                className='text-sm'
                 key={item.name}
                 title={item.name}
               />
             )
           })}
       </Tabs>
-      
-    </>
+    </div>
   )
 }
