@@ -19,11 +19,14 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   // put data to page_image table
   try {
+    const decodedSubject = decodeURIComponent(subject);
+    const decodedUrl = decodeURIComponent(url);
+
     await sql`
     INSERT INTO page_image (page_id, url)
-    SELECT id, ${decodeURIComponent(url)}
+    SELECT id, ${decodedUrl}
     FROM page
-    WHERE page.en_name = ${subject};
+    WHERE page.en_name = ${decodedSubject};
     `;
 
     return NextResponse.json({ subject }, { status: 201 });

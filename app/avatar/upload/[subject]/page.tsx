@@ -46,7 +46,7 @@ export default function AvatarUploadPage({params}: { params: {subject: string}})
         const newBlob = (await response.json()) as PutBlobResult;
 
         const storeResponse = await fetch(
-          `/api/avatar/image-link?subject=${params.subject}&url=${encodeURIComponent(newBlob.url)}`,
+          `/api/avatar/image-link?subject=${encodeURIComponent(params.subject)}&url=${encodeURIComponent(newBlob.url)}`,
           {
             method: 'POST',
           },
@@ -79,7 +79,7 @@ export default function AvatarUploadPage({params}: { params: {subject: string}})
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="rounded-lg border border-[#D6A526]/25 bg-[#121812] p-5 shadow-2xl shadow-black/25 sm:p-7">
             <p className="mb-3 text-xs uppercase tracking-[0.28em] text-[#D6A526]">Image Vault</p>
-            <h1 className="text-4xl font-semibold leading-tight">{pageTitle}</h1>
+            <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{pageTitle}</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[#F5F0DF]/70">
               이 기록에 연결할 이미지를 추가합니다. 여러 장을 한 번에 올릴 수 있습니다.
             </p>

@@ -15,6 +15,7 @@ export default async function RegionDetail({ query, map }: { query: string, map:
   const regionBriefDescription = regionData.brief_description;
   const regionEnName = regionData.en_name;
   const convertedRegionEnName = convertString(regionEnName);
+  const hasRegion = Boolean(regionEnName);
   const [totalCharacters, totalEvents, randomCharacterName] = await Promise.all([
     fetchCardCharacterSummary(regionName),
     fetchCardEventSummary(regionName),
@@ -22,19 +23,21 @@ export default async function RegionDetail({ query, map }: { query: string, map:
   ]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#D6A526]/35 bg-[#101214]/90 p-5 shadow-2xl shadow-black/40 backdrop-blur-md">
-      <div className="flex items-center justify-between gap-4 border-b border-[#F5F7EF]/15 pb-4">
-        <div>
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border border-[#D6A526]/35 bg-[#101214]/90 p-4 shadow-2xl shadow-black/40 backdrop-blur-md sm:p-5">
+      <div className="flex items-start justify-between gap-4 border-b border-[#F5F7EF]/15 pb-4">
+        <div className="min-w-0">
           <p className="mb-2 text-xs uppercase tracking-[0.24em] text-[#D6A526]">{map}</p>
-          <h1 className="text-3xl font-semibold leading-tight text-[#F5F7EF]">{regionName || '알 수 없는 지역'}</h1>
-          <p className="mt-2 text-sm text-[#F5F7EF]/65">{convertedRegionEnName}</p>
+          <h1 className="text-2xl font-semibold leading-tight text-[#F5F7EF] sm:text-3xl">{regionName || '알 수 없는 지역'}</h1>
+          <p className="mt-2 break-words text-sm text-[#F5F7EF]/65">{convertedRegionEnName}</p>
         </div>
-        <Link
-          href={`/detail/${regionEnName}`}
-          className="flex-none rounded-md border border-[#D6A526]/50 px-3 py-2 text-sm text-[#F5F7EF] transition hover:border-[#D6A526] hover:bg-[#D6A526] hover:text-[#101214]"
-        >
-          상세 기록
-        </Link>
+        {hasRegion ? (
+          <Link
+            href={`/detail/${regionEnName}`}
+            className="flex-none rounded-md border border-[#D6A526]/50 px-3 py-2 text-sm text-[#F5F7EF] transition hover:border-[#D6A526] hover:bg-[#D6A526] hover:text-[#101214]"
+          >
+            상세 기록
+          </Link>
+        ) : null}
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3">

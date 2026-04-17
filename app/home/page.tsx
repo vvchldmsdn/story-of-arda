@@ -40,7 +40,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
   const map = searchParams?.map || 'Middle Earth';
 
   return (
-    <main className="relative h-screen overflow-hidden bg-[#101214] text-[#F5F7EF]">
+    <main className="relative h-[100dvh] overflow-hidden bg-[#101214] text-[#F5F7EF]">
       <div className="absolute inset-0">
         <MapSearch map={map}></MapSearch>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#101214]/80 via-[#101214]/10 to-[#101214]/85"></div>
@@ -58,7 +58,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         </div>
       </div>
 
-      <section className="absolute bottom-4 left-4 right-4 z-20 max-h-[46vh] md:bottom-6 md:left-6 md:right-auto md:top-28 md:max-h-none md:w-[420px]">
+      <section className="absolute bottom-4 left-4 right-4 z-20 max-h-[52dvh] overflow-hidden md:bottom-6 md:left-6 md:right-auto md:top-28 md:max-h-none md:w-[420px]">
         <RegionDetail query={query} map={map}></RegionDetail>
       </section>
 

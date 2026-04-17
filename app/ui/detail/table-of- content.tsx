@@ -8,7 +8,11 @@ export default function TableOfContent({ contentHeadings }: { contentHeadings: A
   const pathname = usePathname();
   const { replace } = useRouter();
   const heading = Number(headingParams.get('heading') || '0');
-  const selectedIdx = Number.isInteger(heading) && heading >= 0 ? heading : 0;
+  const selectedIdx = Number.isInteger(heading) && heading >= 0 && heading < contentHeadings.length ? heading : 0;
+
+  if (contentHeadings.length === 0) {
+    return null;
+  }
 
   const setHeading = (idx: number) => {
     const params = new URLSearchParams(headingParams);

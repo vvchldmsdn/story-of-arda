@@ -52,7 +52,7 @@ export default async function Detail({ params, searchParams }: Props) {
   const getMarkdown = await fetchDetailMarkdown(params.subject);
   const markdown = getMarkdown.text;
 
-  const getBriefDescription = await fetchOverviewBriefDescription(overview);
+  const getBriefDescription = overview ? await fetchOverviewBriefDescription(overview) : '';
   
   const convertedSubjectEnName = convertString(decodeURIComponent(params.subject));
 
@@ -83,6 +83,11 @@ export default async function Detail({ params, searchParams }: Props) {
     contents[contents.length - 1] = markdown.substring(lastIndex).trim();
   }
 
+  if (titles.length === 0 && markdown.trim()) {
+    titles.push('개요');
+    contents.push(markdown.trim());
+  }
+
   return (
     <main className="min-h-screen bg-[#0F1411] text-[#F5F0DF]">
       <section className="border-b border-[#D6A526]/25 bg-[#0F1411]">
@@ -92,7 +97,7 @@ export default async function Detail({ params, searchParams }: Props) {
               지도 탐험으로
             </Link>
             <p className="mb-3 text-xs uppercase tracking-[0.28em] text-[#D6A526]">Arda Archive</p>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-tight text-[#F5F0DF]">{pageName || convertedSubjectEnName}</h1>
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-[#F5F0DF] sm:text-5xl">{pageName || convertedSubjectEnName}</h1>
             <p className="mt-3 text-lg text-[#F5F0DF]/65">{convertedSubjectEnName}</p>
             <p className="mt-6 max-w-3xl text-base leading-7 text-[#F5F0DF]/78">{pageBriefDescription}</p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -135,6 +140,10 @@ export default async function Detail({ params, searchParams }: Props) {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:py-10">
+        <div className="lg:hidden">
+          <TableOfContent contentHeadings={titles}></TableOfContent>
+        </div>
+
         <aside className="hidden lg:block">
           <div className="sticky top-6">
             <TableOfContent contentHeadings={titles}></TableOfContent>

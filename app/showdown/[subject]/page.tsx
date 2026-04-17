@@ -109,7 +109,7 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
               기록으로 돌아가기
             </Link>
             <p className="mb-2 text-xs uppercase tracking-[0.28em] text-[#D6A526]">Archive Desk</p>
-            <h1 className="text-4xl font-semibold leading-tight">{pageTitle}</h1>
+            <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{pageTitle}</h1>
             <p className="mt-3 text-sm text-[#F5F0DF]/65">{isEditting ? '기존 기록 업데이트' : '새 기록 등록'}</p>
           </div>
 
@@ -129,7 +129,7 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
       </header>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-4 py-6 sm:px-6 lg:grid-cols-2">
-        <div className="flex min-h-[70vh] flex-col rounded-lg border border-[#D6A526]/25 bg-[#121812] shadow-2xl shadow-black/25">
+        <div className="flex min-h-[55vh] flex-col rounded-lg border border-[#D6A526]/25 bg-[#121812] shadow-2xl shadow-black/25 lg:min-h-[70vh]">
           <div className="border-b border-[#F5F0DF]/10 px-4 py-3">
             <p className="text-sm text-[#F5F0DF]/70">마크다운 작성</p>
           </div>
@@ -137,12 +137,12 @@ export default function ShowDown({ params }: { params: { subject: string } }) {
             value={markdown}
             onChange={e => setMarkdown(e.target.value)}
             spellCheck={false}
-            className="min-h-[70vh] flex-1 resize-none bg-transparent p-4 font-mono text-sm leading-7 text-[#F5F0DF] outline-none placeholder:text-[#F5F0DF]/40"
+            className="min-h-[55vh] flex-1 resize-none bg-transparent p-4 font-mono text-sm leading-7 text-[#F5F0DF] outline-none placeholder:text-[#F5F0DF]/40 lg:min-h-[70vh]"
             placeholder={'# 제목\n\n본문을 작성하세요.'}
           />
         </div>
 
-        <div className="min-h-[70vh] overflow-auto rounded-lg bg-[#F5F0DF] p-5 text-[#1B1D18] shadow-2xl shadow-black/25 sm:p-7">
+        <div className="min-h-[55vh] overflow-auto rounded-lg bg-[#F5F0DF] p-5 text-[#1B1D18] shadow-2xl shadow-black/25 sm:p-7 lg:min-h-[70vh]">
           <p className="mb-5 text-xs uppercase tracking-[0.24em] text-[#B23A48]">Preview</p>
           <div className="text-justify">
             {parse(converter.makeHtml(markdown), options)}

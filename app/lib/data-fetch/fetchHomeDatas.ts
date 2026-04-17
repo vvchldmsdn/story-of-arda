@@ -7,7 +7,6 @@ export async function fetchRegionName(query: string, map: string) {
   const parts: Array<string> = query.split(' ');
   const x: number = parseFloat(parts[0]);
   const y: number = parseFloat(parts[1]);
-  console.log('fetch', map)
 
   let mapId: number;
   switch(map) {
@@ -23,7 +22,6 @@ export async function fetchRegionName(query: string, map: string) {
     default:
       mapId = 6;
   }
-  console.log('맵 아이디', mapId)
 
   try {
     const data = await sql`
