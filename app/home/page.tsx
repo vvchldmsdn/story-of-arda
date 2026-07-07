@@ -4,6 +4,8 @@ import RegionDetail from "../ui/home/region-detail";
 import Search from "../ui/home/search";
 import { Metadata } from 'next';
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
+import WorldExperienceDeck from "../ui/home/world-experience";
+import { Suspense } from "react";
 
 type Props = {
   searchParams: {
@@ -26,7 +28,7 @@ export async function generateMetadata(
     title: regionName,
     description: regionBriefDescription,
     generator: 'Next.js',
-    keywords: ['lord of the rings', 'silmarilion', regionName, '반지의 제왕', '실마릴리온', '중간계'],
+    keywords: ['lord of the rings', 'silmarillion', regionName, '반지의 제왕', '실마릴리온', '중간계'],
     openGraph: {
       title: regionName,
     }
@@ -62,9 +64,17 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         <RegionDetail query={query} map={map}></RegionDetail>
       </section>
 
-      <div className="pointer-events-none absolute bottom-6 right-6 z-10 hidden max-w-xs border-l border-[#D6A526]/40 pl-4 text-sm leading-6 text-[#F5F7EF]/75 lg:block">
-        지도를 끌어 이동하고, 휠로 확대하세요. 궁금한 땅을 누르면 기록이 열립니다.
-      </div>
+      <section className="absolute bottom-6 right-6 top-28 z-20 hidden w-[430px] min-h-0 lg:block">
+        <Suspense
+          fallback={
+            <div className="rounded-lg border border-[#D6A526]/30 bg-[#101214]/90 p-4 text-sm text-[#F5F7EF]/70 shadow-2xl shadow-black/30">
+              아르다 탐험 기록을 여는 중입니다.
+            </div>
+          }
+        >
+          <WorldExperienceDeck query={query} map={map} />
+        </Suspense>
+      </section>
     </main>
   )
 };

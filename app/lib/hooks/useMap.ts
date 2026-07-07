@@ -20,6 +20,7 @@ const usePosition = (initialPosition: PositionType) => {
 
 export const useMap = (mapData: MapType) => {
   const imgRef = useRef<HTMLImageElement>(null);
+  const pointerStartRef = useRef<PositionType>({ x: 0, y: 0 });
   const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
   const [mapPosition, setMapPosition] = usePosition({ x: 0, y: 0 });
@@ -56,6 +57,7 @@ export const useMap = (mapData: MapType) => {
     e.preventDefault();
     setDragging(true);
     setIsMoved(false);
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
     if (imgRef.current) {
       const rect = imgRef.current.getBoundingClientRect();
       setMouseStart({ x: e.clientX - rect.left, y: e.clientY - rect.top });  // 이미지 안에서의 상대적 포지션
@@ -63,13 +65,22 @@ export const useMap = (mapData: MapType) => {
   }, [setMouseStart]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    setIsMoved(true);
-    if (dragging && imgRef.current) {
-     
-      const rect = imgRef.current.getBoundingClientRect();
-      const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
-      setMapPosition(newPosition);
+    if (!dragging || !imgRef.current) {
+      return;
     }
+
+    const moveDistance = Math.hypot(
+      e.clientX - pointerStartRef.current.x,
+      e.clientY - pointerStartRef.current.y,
+    );
+
+    if (moveDistance > 5) {
+      setIsMoved(true);
+    }
+
+    const rect = imgRef.current.getBoundingClientRect();
+    const newPosition = calculateNewPosition(e.clientX, e.clientY, rect);
+    setMapPosition(newPosition);
   }, [dragging, calculateNewPosition, setMapPosition]);
 
   const handleMouseUp = useCallback(() => {
@@ -77,6 +88,8 @@ export const useMap = (mapData: MapType) => {
   }, []);
 
   const handleZoomIn = useCallback((e: React.WheelEvent<HTMLImageElement>) => {
+    e.preventDefault();
+
     if (imgRef.current) {
       // 확대
       if (e.deltaY < 0 && scale < 5) {

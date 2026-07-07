@@ -4,9 +4,11 @@ import DetailContents from "@/app/ui/detail/detail-contents";
 import Image from "next/image";
 import Link from "next/link";
 import ContentImages from "@/app/ui/detail/content-images";
-import { EditIcon, UploadImageIcon } from "@/app/lib/icons";
+import { EditIcon, GlobeIcon, UploadImageIcon } from "@/app/lib/icons";
 import { convertString } from "@/app/lib/utils";
 import { Metadata, ResolvingMetadata } from 'next';
+import RelationshipGraph from "@/app/ui/shared/relationship-graph";
+import { getRelationshipProfile } from "@/app/lib/arda-experience";
 
 
 type Props = {
@@ -55,6 +57,7 @@ export default async function Detail({ params, searchParams }: Props) {
   const getBriefDescription = overview ? await fetchOverviewBriefDescription(overview) : '';
   
   const convertedSubjectEnName = convertString(decodeURIComponent(params.subject));
+  const relationshipProfile = getRelationshipProfile(params.subject, pageName || convertedSubjectEnName);
 
   // h1 태그(#)로 시작하는 줄을 찾는 정규표현식
   const regex = /(?<=\n|^)#\s(.+)(?=\n)/g;
@@ -102,18 +105,25 @@ export default async function Detail({ params, searchParams }: Props) {
             <p className="mt-6 max-w-3xl text-base leading-7 text-[#F5F0DF]/78">{pageBriefDescription}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href={{ pathname: `/showdown/${params.subject}` }}
+                href="/home"
                 className="flex items-center gap-2 rounded-md border border-[#D6A526]/45 px-4 py-2 text-sm text-[#F5F0DF] transition hover:border-[#D6A526] hover:bg-[#D6A526] hover:text-[#0F1411]"
               >
+                <GlobeIcon />
+                지도 탐험
+              </Link>
+              <Link
+                href={{ pathname: `/showdown/${params.subject}` }}
+                className="flex items-center gap-2 rounded-md border border-[#F5F0DF]/25 px-4 py-2 text-sm text-[#F5F0DF]/85 transition hover:border-[#F5F0DF] hover:text-[#F5F0DF]"
+              >
                 <EditIcon />
-                편집
+                기록 제보
               </Link>
               <Link
                 href={{ pathname: `/avatar/upload/${params.subject}` }}
                 className="flex items-center gap-2 rounded-md border border-[#F5F0DF]/25 px-4 py-2 text-sm text-[#F5F0DF]/85 transition hover:border-[#F5F0DF] hover:text-[#F5F0DF]"
               >
                 <UploadImageIcon />
-                이미지 추가
+                이미지 기여
               </Link>
             </div>
           </div>
@@ -144,9 +154,14 @@ export default async function Detail({ params, searchParams }: Props) {
           <TableOfContent contentHeadings={titles}></TableOfContent>
         </div>
 
+        <div className="lg:hidden">
+          <RelationshipGraph profile={relationshipProfile} compact />
+        </div>
+
         <aside className="hidden lg:block">
-          <div className="sticky top-6">
+          <div className="sticky top-6 space-y-4">
             <TableOfContent contentHeadings={titles}></TableOfContent>
+            <RelationshipGraph profile={relationshipProfile} compact />
           </div>
         </aside>
 
