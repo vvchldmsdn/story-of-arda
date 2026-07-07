@@ -7,7 +7,7 @@ import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import WorldExperienceDeck from "../ui/home/world-experience";
 import { Suspense } from "react";
 import TimelinePlayer from "../ui/home/timeline-player";
-import { fetchArdaJourneysForMap } from "../lib/data-fetch/fetchArdaExperience";
+import { fetchArdaJourneysForMap, fetchArdaMapMemoriesForMap } from "../lib/data-fetch/fetchArdaExperience";
 
 type Props = {
   searchParams: {
@@ -42,12 +42,15 @@ export async function generateMetadata(
 export default async function Home({ searchParams }: { searchParams?: { query?: string, map?: string } }) {
   const query = searchParams?.query || '2436.3901 1957.8402';
   const map = searchParams?.map || 'Middle Earth';
-  const journeys = await fetchArdaJourneysForMap(map);
+  const [journeys, mapMemories] = await Promise.all([
+    fetchArdaJourneysForMap(map),
+    fetchArdaMapMemoriesForMap(map),
+  ]);
 
   return (
     <main className="relative h-[100dvh] overflow-hidden bg-[#101214] text-[#F5F7EF]">
       <div className="absolute inset-0">
-        <MapSearch map={map} journeys={journeys}></MapSearch>
+        <MapSearch map={map} journeys={journeys} memories={mapMemories}></MapSearch>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#101214]/80 via-[#101214]/10 to-[#101214]/85"></div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#101214]/85 via-[#101214]/20 to-transparent lg:w-1/2"></div>
       </div>

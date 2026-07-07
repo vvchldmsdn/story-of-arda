@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMap } from "@/app/lib/hooks/useMap";
 import { MapType } from "@/app/lib/types/mapTypes";
-import type { ArdaJourney } from "@/app/lib/arda-experience";
+import type { ArdaJourney, PlaceMemoryEvent } from "@/app/lib/arda-experience";
 import JourneyMapOverlay from "./journey-map-overlay";
+import MapMemoryOverlay from "./map-memory-overlay";
 
 type ImageMetrics = {
   width: number;
@@ -13,7 +14,15 @@ type ImageMetrics = {
   naturalHeight: number;
 };
 
-export default function MapSearch({ map, journeys }: { map: string; journeys: ArdaJourney[] }) {
+export default function MapSearch({
+  map,
+  journeys,
+  memories,
+}: {
+  map: string;
+  journeys: ArdaJourney[];
+  memories: PlaceMemoryEvent[];
+}) {
   const mapSrc = map || 'Middle Earth';
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -89,6 +98,13 @@ export default function MapSearch({ map, journeys }: { map: string; journeys: Ar
       ></img>
       <JourneyMapOverlay
         journeys={journeys}
+        map={mapSrc}
+        mapPosition={mapPosition}
+        scale={scale}
+        imageMetrics={imageMetrics}
+      />
+      <MapMemoryOverlay
+        memories={memories}
         map={mapSrc}
         mapPosition={mapPosition}
         scale={scale}

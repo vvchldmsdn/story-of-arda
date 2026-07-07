@@ -3,6 +3,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import {
   getJourneysForMap,
   getPlaceMemories,
+  placeMemoryEvents,
   type ArdaJourney,
   type JourneyStep,
   type PlaceMemoryEvent,
@@ -55,6 +56,22 @@ function toJourneyStep(row: JourneyRow): JourneyStep {
     map: row.map_name,
     coords: [toNumber(row.x, 0), toNumber(row.y, 0)],
     summary: row.step_summary,
+  };
+}
+
+function toPlaceMemoryEvent(row: PlaceMemoryRow, placeKeys: string[] = []): PlaceMemoryEvent {
+  return {
+    id: row.id,
+    placeKeys,
+    map: row.map_name,
+    coords: [toNumber(row.x, 0), toNumber(row.y, 0)],
+    era: row.era,
+    dateLabel: row.date_label || "",
+    kind: row.kind || "journey",
+    title: row.title,
+    summary: row.summary,
+    consequence: row.consequence || "",
+    relatedSubjects: [],
   };
 }
 
@@ -160,20 +177,42 @@ export async function fetchArdaPlaceMemories({
       return getPlaceMemories(regionEnName, regionName, map);
     }
 
-    return data.rows.map((row) => ({
-      id: row.id,
-      placeKeys: [regionEnName, regionName],
-      map: row.map_name,
-      coords: [toNumber(row.x, 0), toNumber(row.y, 0)],
-      era: row.era,
-      dateLabel: row.date_label || "",
-      kind: row.kind || "journey",
-      title: row.title,
-      summary: row.summary,
-      consequence: row.consequence || "",
-      relatedSubjects: [],
-    }));
+    return data.rows.map((row) => toPlaceMemoryEvent(row, [regionEnName, regionName]));
   } catch (error) {
     return getPlaceMemories(regionEnName, regionName, map);
+  }
+}
+
+export async function fetchArdaMapMemoriesForMap(map: string): Promise<PlaceMemoryEvent[]> {
+  noStore();
+
+  try {
+    const data = await sql<PlaceMemoryRow>`
+      SELECT
+        e.slug AS id,
+        mp.map_name,
+        ST_X(el.point) AS x,
+        ST_Y(el.point) AS y,
+        era.name AS era,
+        e.date_label,
+        e.event_kind AS kind,
+        e.title,
+        e.summary,
+        e.consequence
+      FROM arda_event AS e
+      JOIN arda_event_location AS el ON el.event_id = e.id
+      JOIN arda_map_profile AS mp ON mp.id = el.map_profile_id
+      JOIN arda_era AS era ON era.id = e.era_id
+      WHERE mp.map_name = ${map}
+      ORDER BY e.sequence_order ASC, el.location_order ASC;
+    `;
+
+    if (data.rows.length === 0) {
+      return placeMemoryEvents.filter((event) => event.map === map);
+    }
+
+    return data.rows.map((row) => toPlaceMemoryEvent(row));
+  } catch (error) {
+    return placeMemoryEvents.filter((event) => event.map === map);
   }
 }
