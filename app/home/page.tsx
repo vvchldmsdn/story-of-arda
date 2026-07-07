@@ -47,7 +47,7 @@ export default async function Home({ searchParams }: { searchParams?: { query?: 
   return (
     <main className="relative h-[100dvh] overflow-hidden bg-[#101214] text-[#F5F7EF]">
       <div className="absolute inset-0">
-        <MapSearch map={map}></MapSearch>
+        <MapSearch map={map} journeys={journeys}></MapSearch>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#101214]/80 via-[#101214]/10 to-[#101214]/85"></div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#101214]/85 via-[#101214]/20 to-transparent lg:w-1/2"></div>
       </div>
