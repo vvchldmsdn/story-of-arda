@@ -2,14 +2,17 @@
 
 import { useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowPathIcon,
   BuildingLibraryIcon,
   ChatBubbleBottomCenterTextIcon,
+  ChevronRightIcon,
   ExclamationTriangleIcon,
   FireIcon,
   FlagIcon,
   MapPinIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import type { PlaceMemoryEvent } from "@/app/lib/arda-experience";
@@ -146,15 +149,68 @@ export default function MapMemoryOverlay({
       .filter(({ memory }) => activeFilter === "all" || memory.kind === activeFilter);
   }, [activeFilter, clusterCounts, mapMemories]);
 
+  const selectedMemory = useMemo(
+    () => mapMemories.find((memory) => memory.id === selectedMemoryId),
+    [mapMemories, selectedMemoryId],
+  );
+
+  const relatedMemories = useMemo(() => {
+    if (!selectedMemory) {
+      return [];
+    }
+
+    const seen = new Set<string>();
+
+    return mapMemories
+      .filter((memory) => memory.id !== selectedMemory.id)
+      .filter((memory) => {
+        if (seen.has(memory.id)) {
+          return false;
+        }
+
+        seen.add(memory.id);
+        return memory.kind === selectedMemory.kind || memory.era === selectedMemory.era;
+      })
+      .map((memory) => {
+        const distance = Math.hypot(
+          memory.coords[0] - selectedMemory.coords[0],
+          memory.coords[1] - selectedMemory.coords[1],
+        );
+
+        return {
+          memory,
+          score: memory.kind === selectedMemory.kind ? 0 : 1,
+          distance,
+        };
+      })
+      .sort((a, b) => a.score - b.score || a.distance - b.distance)
+      .map(({ memory }) => memory)
+      .slice(0, 3);
+  }, [mapMemories, selectedMemory]);
+
   if (mapMemories.length === 0 || imageMetrics.width === 0 || imageMetrics.height === 0) {
     return null;
   }
 
-  const selectMemory = (memory: PlaceMemoryEvent) => {
+  const getMemoryHref = (memory: PlaceMemoryEvent) => {
     const params = new URLSearchParams(searchParams);
     params.set("map", memory.map);
     params.set("query", `${memory.coords[0]} ${memory.coords[1]}`);
     params.set("memory", memory.id);
+    return `${pathname}?${params.toString()}`;
+  };
+
+  const selectMemory = (memory: PlaceMemoryEvent) => {
+    if (activeFilter !== "all" && activeFilter !== memory.kind) {
+      setActiveFilter(memory.kind);
+    }
+
+    replace(getMemoryHref(memory));
+  };
+
+  const clearMemory = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("memory");
     replace(`${pathname}?${params.toString()}`);
   };
 
@@ -265,6 +321,88 @@ export default function MapMemoryOverlay({
           );
         })}
       </div>
+
+      {selectedMemory ? (
+        <aside
+          className="pointer-events-none absolute left-1/2 top-36 z-30 hidden w-[32rem] max-w-[calc(100vw-56rem)] min-w-[24rem] -translate-x-1/2 xl:block"
+          data-testid="map-memory-focus"
+        >
+          <div className="pointer-events-auto overflow-hidden rounded-lg border border-[#F5F0DF]/18 bg-[#101214]/88 text-[#F5F0DF] shadow-2xl shadow-black/40 backdrop-blur-md">
+            <div className="flex items-start gap-3 border-b border-[#F5F0DF]/10 p-4">
+              <span
+                className={clsx(
+                  "mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-full border ring-4",
+                  kindMeta[selectedMemory.kind].className,
+                )}
+              >
+                {(() => {
+                  const Icon = kindMeta[selectedMemory.kind].Icon;
+                  return <Icon className="h-4 w-4" aria-hidden="true" />;
+                })()}
+              </span>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#D6A526]">
+                    {selectedMemory.dateLabel || kindMeta[selectedMemory.kind].label}
+                  </span>
+                  <span className="h-px flex-1 bg-[#F5F0DF]/12" />
+                  <span className="text-[11px] text-[#F5F0DF]/48">{selectedMemory.era}</span>
+                </div>
+                <h3 className="mt-2 truncate text-lg font-semibold leading-6">{selectedMemory.title}</h3>
+              </div>
+
+              <button
+                type="button"
+                className="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-[#F5F0DF]/12 text-[#F5F0DF]/60 transition hover:border-[#F5F0DF]/35 hover:text-[#F5F0DF]"
+                onClick={clearMemory}
+                aria-label="Close memory focus"
+              >
+                <XMarkIcon className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="space-y-3 p-4">
+              <p className="text-sm leading-6 text-[#F5F0DF]/78">{selectedMemory.summary}</p>
+              <p className="border-l border-[#D6A526]/45 pl-3 text-xs leading-5 text-[#F5F0DF]/58">
+                {selectedMemory.consequence}
+              </p>
+
+              {relatedMemories.length > 0 ? (
+                <div className="border-t border-[#F5F0DF]/10 pt-3">
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#F5F0DF]/46">연결된 사건</p>
+                    <p className="text-[11px] text-[#F5F0DF]/36">{relatedMemories.length}</p>
+                  </div>
+                  <div className="grid gap-2">
+                    {relatedMemories.map((memory) => (
+                      <Link
+                        href={getMemoryHref(memory)}
+                        replace
+                        className="group flex items-center gap-3 rounded-md border border-[#F5F0DF]/10 bg-[#F5F0DF]/5 px-3 py-2 text-left transition hover:border-[#D6A526]/45 hover:bg-[#D6A526]/10"
+                        key={`${selectedMemory.id}-${memory.id}`}
+                        data-testid="map-memory-focus-jump"
+                        data-memory-id={memory.id}
+                        onClick={(event) => {
+                          event.stopPropagation();
+
+                          if (activeFilter !== "all" && activeFilter !== memory.kind) {
+                            setActiveFilter(memory.kind);
+                          }
+                        }}
+                      >
+                        <span className="w-20 flex-none text-[11px] text-[#D6A526]">{memory.dateLabel}</span>
+                        <span className="min-w-0 flex-1 truncate text-xs text-[#F5F0DF]/74">{memory.title}</span>
+                        <ChevronRightIcon className="h-4 w-4 flex-none text-[#F5F0DF]/32 transition group-hover:text-[#D6A526]" aria-hidden="true" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </aside>
+      ) : null}
     </>
   );
 }
