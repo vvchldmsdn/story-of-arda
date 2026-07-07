@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node -r dotenv/config ./scripts/seed.js"
+    "seed": "node -r dotenv/config ./scripts/seed.js",
+    "db:arda": "node -r dotenv/config ./db/scripts/apply-arda-knowledge-graph.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",

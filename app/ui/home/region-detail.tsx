@@ -6,8 +6,8 @@ import {
 } from "@/app/lib/data-fetch/fetchHomeDatas"
 import { convertString } from "@/app/lib/utils";
 import Link from "next/link";
-import { getPlaceMemories } from "@/app/lib/arda-experience";
 import PlaceMemory from "./place-memory";
+import { fetchArdaPlaceMemories } from "@/app/lib/data-fetch/fetchArdaExperience";
 
 export default async function RegionDetail({ query, map }: { query: string, map: string }) {
   const regionData = await fetchRegionName(query, map);
@@ -16,11 +16,11 @@ export default async function RegionDetail({ query, map }: { query: string, map:
   const regionEnName = regionData.en_name;
   const convertedRegionEnName = convertString(regionEnName);
   const hasRegion = Boolean(regionEnName);
-  const placeMemories = getPlaceMemories(regionEnName, regionName, map);
-  const [totalCharacters, totalEvents, randomCharacterName] = await Promise.all([
+  const [totalCharacters, totalEvents, randomCharacterName, placeMemories] = await Promise.all([
     fetchCardCharacterSummary(regionName),
     fetchCardEventSummary(regionName),
-    fetchRandomCharacterName(regionName)
+    fetchRandomCharacterName(regionName),
+    fetchArdaPlaceMemories({ regionEnName, regionName, map }),
   ]);
 
   return (

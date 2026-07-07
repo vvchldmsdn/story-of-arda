@@ -7,7 +7,7 @@ import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import WorldExperienceDeck from "../ui/home/world-experience";
 import { Suspense } from "react";
 import TimelinePlayer from "../ui/home/timeline-player";
-import { ardaJourneys } from "../lib/arda-experience";
+import { fetchArdaJourneysForMap } from "../lib/data-fetch/fetchArdaExperience";
 
 type Props = {
   searchParams: {
@@ -39,9 +39,10 @@ export async function generateMetadata(
 
 
 
-export default function Home({ searchParams }: { searchParams?: { query?: string, map?: string } }) {
+export default async function Home({ searchParams }: { searchParams?: { query?: string, map?: string } }) {
   const query = searchParams?.query || '2436.3901 1957.8402';
   const map = searchParams?.map || 'Middle Earth';
+  const journeys = await fetchArdaJourneysForMap(map);
 
   return (
     <main className="relative h-[100dvh] overflow-hidden bg-[#101214] text-[#F5F7EF]">
@@ -79,7 +80,7 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
       </section>
 
       <section className="absolute bottom-6 left-[460px] right-[460px] z-30 hidden xl:block">
-        <TimelinePlayer journeys={ardaJourneys} />
+        <TimelinePlayer journeys={journeys} />
       </section>
     </main>
   )

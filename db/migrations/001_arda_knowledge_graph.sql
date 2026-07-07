@@ -50,12 +50,16 @@ CREATE TABLE IF NOT EXISTS arda_event (
   era_id INTEGER REFERENCES arda_era(id),
   slug VARCHAR(180) UNIQUE NOT NULL,
   title VARCHAR(220) NOT NULL,
+  event_kind VARCHAR(80) NOT NULL DEFAULT 'journey',
   date_label VARCHAR(120),
   sequence_order INTEGER NOT NULL DEFAULT 0,
   spoiler_level INTEGER NOT NULL DEFAULT 0,
   summary TEXT NOT NULL,
   consequence TEXT
 );
+
+ALTER TABLE arda_event
+  ADD COLUMN IF NOT EXISTS event_kind VARCHAR(80) NOT NULL DEFAULT 'journey';
 
 CREATE TABLE IF NOT EXISTS arda_event_location (
   id SERIAL PRIMARY KEY,
