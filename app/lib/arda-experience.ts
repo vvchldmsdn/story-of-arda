@@ -45,6 +45,20 @@ export type RelationshipProfile = {
   links: RelationLink[];
 };
 
+export type PlaceMemoryEvent = {
+  id: string;
+  placeKeys: string[];
+  map: string;
+  coords: [number, number];
+  era: string;
+  dateLabel: string;
+  kind: "founding" | "council" | "battle" | "fall" | "return" | "journey";
+  title: string;
+  summary: string;
+  consequence: string;
+  relatedSubjects: string[];
+};
+
 export const ardaEraMaps: ArdaEraMap[] = [
   {
     map: "Middle Earth",
@@ -210,6 +224,114 @@ export const ardaJourneys: ArdaJourney[] = [
   },
 ];
 
+export const placeMemoryEvents: PlaceMemoryEvent[] = [
+  {
+    id: "minas-anor-founded",
+    placeKeys: ["minas-tirith", "minastirith", "미나스티리스", "gondor", "곤도르"],
+    map: "Middle Earth",
+    coords: [2450.0072, 1962.575],
+    era: "제2시대 말",
+    dateLabel: "S.A. 3320",
+    kind: "founding",
+    title: "미나스 아노르가 세워지다",
+    summary:
+      "누메노르 몰락 이후 망명 왕국 곤도르가 세워지며, 태양의 탑 미나스 아노르가 안두인 서쪽 방어선의 핵심이 됩니다.",
+    consequence:
+      "오스길리아스와 함께 곤도르의 권력 축을 이루고, 훗날 미나스 티리스라는 이름으로 서쪽 인간 왕국의 상징이 됩니다.",
+    relatedSubjects: ["Elendil", "Anarion", "Gondor"],
+  },
+  {
+    id: "osgiliath-falls-capital-moves",
+    placeKeys: ["minas-tirith", "minastirith", "미나스티리스", "osgiliath", "오스길리아스", "gondor", "곤도르"],
+    map: "Middle Earth",
+    coords: [2486.7017, 1989.8004],
+    era: "제3시대",
+    dateLabel: "T.A. 1640",
+    kind: "fall",
+    title: "수도의 무게가 미나스 티리스로 옮겨지다",
+    summary:
+      "오스길리아스가 전염병과 전쟁으로 약해지면서 곤도르의 실질적 중심은 미나스 아노르로 이동합니다.",
+    consequence:
+      "도시는 더 이상 변방 요새가 아니라 곤도르의 기억과 통치가 모이는 마지막 성채가 됩니다.",
+    relatedSubjects: ["Osgiliath", "Gondor"],
+  },
+  {
+    id: "pelennor-fields",
+    placeKeys: ["minas-tirith", "minastirith", "미나스티리스", "gondor", "곤도르", "rohan", "로한"],
+    map: "Middle Earth",
+    coords: [2450.0072, 1962.575],
+    era: "제3시대",
+    dateLabel: "T.A. 3019",
+    kind: "battle",
+    title: "펠렌노르 평원의 전투",
+    summary:
+      "미나스 티리스가 모르도르의 대군에 포위되고, 로한의 기마대와 아라고른의 남부 병력이 전장의 흐름을 뒤집습니다.",
+    consequence:
+      "곤도르는 멸망 직전에서 살아남고, 왕의 귀환이 현실의 정치 질서로 이어질 길이 열립니다.",
+    relatedSubjects: ["Rohan", "Aragorn-II", "Sauron"],
+  },
+  {
+    id: "aragorn-crowned",
+    placeKeys: ["minas-tirith", "minastirith", "미나스티리스", "gondor", "곤도르", "aragorn", "아라고른"],
+    map: "Middle Earth",
+    coords: [2450.0072, 1962.575],
+    era: "제4시대의 문턱",
+    dateLabel: "T.A. 3019",
+    kind: "return",
+    title: "왕의 귀환",
+    summary:
+      "아라고른이 엘렛사르 왕으로 즉위하며 오랫동안 비어 있던 곤도르의 왕좌가 회복됩니다.",
+    consequence:
+      "미나스 티리스는 전쟁의 폐허가 아니라 재건과 통합 왕국의 수도로 다시 읽히게 됩니다.",
+    relatedSubjects: ["Aragorn-II", "Arwen-Undomiel", "Gondor"],
+  },
+  {
+    id: "council-of-elrond",
+    placeKeys: ["rivendell", "리븐델", "fellowship", "반지원정대"],
+    map: "Middle Earth",
+    coords: [1848.8328, 746.6704],
+    era: "제3시대",
+    dateLabel: "T.A. 3018",
+    kind: "council",
+    title: "엘론드의 회의",
+    summary:
+      "여러 자유 민족의 대표들이 리븐델에 모여 절대반지의 운명을 논의하고, 파괴라는 거의 불가능한 결론에 도달합니다.",
+    consequence:
+      "반지원정대가 결성되며 세계의 운명은 왕국의 군대가 아니라 작은 동행의 길 위로 옮겨갑니다.",
+    relatedSubjects: ["Elrond", "Frodo-Baggins", "Gandalf"],
+  },
+  {
+    id: "helms-deep-stands",
+    placeKeys: ["rohan", "로한", "helmsdeep", "헬름협곡", "edoras", "에도라스"],
+    map: "Middle Earth",
+    coords: [1785.9546, 1690.0562],
+    era: "제3시대",
+    dateLabel: "T.A. 3019",
+    kind: "battle",
+    title: "헬름 협곡이 버티다",
+    summary:
+      "사루만의 군대가 로한을 무너뜨리려 하지만, 헬름 협곡의 방어전은 로한이 아직 끝나지 않았음을 증명합니다.",
+    consequence:
+      "세오덴은 방어만 하는 왕이 아니라 곤도르를 향해 달려갈 왕으로 바뀝니다.",
+    relatedSubjects: ["Theoden", "Isengard", "Gandalf"],
+  },
+  {
+    id: "black-gate-last-stand",
+    placeKeys: ["mordor", "모르도르", "blackgate", "검은문", "sauron", "사우론"],
+    map: "Middle Earth",
+    coords: [2601.5, 1712.5789],
+    era: "제3시대",
+    dateLabel: "T.A. 3019",
+    kind: "battle",
+    title: "검은 문 앞의 마지막 미끼",
+    summary:
+      "서쪽의 병력은 승산 없는 전투를 감수하며 사우론의 시선을 자신들에게 묶어 둡니다.",
+    consequence:
+      "전쟁의 승패는 전장의 힘이 아니라 운명의 산으로 향한 작은 틈에서 결정됩니다.",
+    relatedSubjects: ["Aragorn-II", "Sauron", "Frodo-Baggins"],
+  },
+];
+
 const defaultRelationshipProfile: RelationshipProfile = {
   id: "arda-conflict-web",
   title: "아르다 핵심 관계도",
@@ -322,6 +444,13 @@ export const relationshipProfiles: RelationshipProfile[] = [
   },
 ];
 
+export const ardaKnowledgeSeed = {
+  eras: ardaEraMaps,
+  journeys: ardaJourneys,
+  placeMemories: placeMemoryEvents,
+  relationships: relationshipProfiles,
+};
+
 export function getEraMap(map: string) {
   return ardaEraMaps.find((item) => item.map === map) || ardaEraMaps[0];
 }
@@ -340,6 +469,21 @@ export function getJourneyBySlug(slug: string | null) {
 
 function normalize(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9가-힣]/g, "");
+}
+
+export function getPlaceMemories(subject?: string, displayName?: string, map?: string) {
+  const key = normalize(`${subject || ""} ${displayName || ""}`);
+  const memories = placeMemoryEvents.filter((event) => {
+    const mapMatches = !map || event.map === map;
+    const keyMatches = event.placeKeys.some((placeKey) => key.includes(normalize(placeKey)));
+    return mapMatches && keyMatches;
+  });
+
+  if (memories.length > 0) {
+    return memories;
+  }
+
+  return [];
 }
 
 export function getRelationshipProfile(subject?: string, displayName?: string): RelationshipProfile {

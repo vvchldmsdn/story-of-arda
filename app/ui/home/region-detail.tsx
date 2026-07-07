@@ -4,10 +4,10 @@ import {
   fetchRandomCharacterName,
   fetchRegionName
 } from "@/app/lib/data-fetch/fetchHomeDatas"
-import { ScrollShadow } from "@nextui-org/react";
-import { notoSansKr } from "@/app/lib/fonts";
 import { convertString } from "@/app/lib/utils";
 import Link from "next/link";
+import { getPlaceMemories } from "@/app/lib/arda-experience";
+import PlaceMemory from "./place-memory";
 
 export default async function RegionDetail({ query, map }: { query: string, map: string }) {
   const regionData = await fetchRegionName(query, map);
@@ -16,6 +16,7 @@ export default async function RegionDetail({ query, map }: { query: string, map:
   const regionEnName = regionData.en_name;
   const convertedRegionEnName = convertString(regionEnName);
   const hasRegion = Boolean(regionEnName);
+  const placeMemories = getPlaceMemories(regionEnName, regionName, map);
   const [totalCharacters, totalEvents, randomCharacterName] = await Promise.all([
     fetchCardCharacterSummary(regionName),
     fetchCardEventSummary(regionName),
@@ -57,14 +58,11 @@ export default async function RegionDetail({ query, map }: { query: string, map:
         </p>
       ) : null}
 
-      <div className="mt-4 min-h-0 flex-1 overflow-hidden">
-        <p className="mb-3 text-sm uppercase tracking-[0.2em] text-[#B23A48]">기록</p>
-        <ScrollShadow hideScrollBar className="h-full w-full pr-1" size={80}>
-          <p className={`whitespace-pre-line text-justify text-sm leading-7 text-[#F5F7EF]/82 ${notoSansKr.className}`}>
-            {regionBriefDescription || '선택한 지역의 기록이 아직 없습니다.'}
-          </p>
-        </ScrollShadow>
-      </div>
+      <PlaceMemory
+        events={placeMemories}
+        fallbackDescription={regionBriefDescription}
+        regionName={regionName || '선택한 지역'}
+      />
     </div>
   )
 };

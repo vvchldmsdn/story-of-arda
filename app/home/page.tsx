@@ -6,6 +6,8 @@ import { Metadata } from 'next';
 import { fetchRegionName } from "@/app/lib/data-fetch/fetchHomeDatas"
 import WorldExperienceDeck from "../ui/home/world-experience";
 import { Suspense } from "react";
+import TimelinePlayer from "../ui/home/timeline-player";
+import { ardaJourneys } from "../lib/arda-experience";
 
 type Props = {
   searchParams: {
@@ -74,6 +76,10 @@ export default function Home({ searchParams }: { searchParams?: { query?: string
         >
           <WorldExperienceDeck query={query} map={map} />
         </Suspense>
+      </section>
+
+      <section className="absolute bottom-6 left-[460px] right-[460px] z-30 hidden xl:block">
+        <TimelinePlayer journeys={ardaJourneys} />
       </section>
     </main>
   )
