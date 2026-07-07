@@ -10,7 +10,7 @@ import { notoSansKr } from "@/app/lib/fonts";
 const kindLabels: Record<PlaceMemoryEvent["kind"], string> = {
   battle: "전투",
   council: "회의",
-  fall: "전환",
+  fall: "몰락",
   founding: "건립",
   journey: "여정",
   return: "귀환",
@@ -51,10 +51,10 @@ export default function PlaceMemory({ events, fallbackDescription, regionName }:
   if (!selectedEvent) {
     return (
       <div className="mt-4 min-h-0 flex-1 overflow-hidden">
-        <p className="mb-3 text-sm uppercase tracking-[0.2em] text-[#B23A48]">기록</p>
+        <p className="mb-3 text-sm uppercase tracking-[0.2em] text-[#E85D4F]">기록</p>
         <ScrollShadow hideScrollBar className="h-full w-full pr-1" size={80}>
-          <p className={`whitespace-pre-line text-justify text-sm leading-7 text-[#F5F7EF]/82 ${notoSansKr.className}`}>
-            {fallbackDescription || '선택한 지역의 기록이 아직 없습니다.'}
+          <p className={`whitespace-pre-line text-justify text-sm leading-7 text-[#F7F1DC]/86 ${notoSansKr.className}`}>
+            {fallbackDescription || "선택한 지역의 기록이 아직 없습니다."}
           </p>
         </ScrollShadow>
       </div>
@@ -64,8 +64,8 @@ export default function PlaceMemory({ events, fallbackDescription, regionName }:
   return (
     <div className="mt-4 min-h-0 flex-1 overflow-hidden">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-sm uppercase tracking-[0.2em] text-[#B23A48]">장소의 기억</p>
-        <p className="text-xs text-[#F5F7EF]/50">{regionName}</p>
+        <p className="text-sm uppercase tracking-[0.2em] text-[#E85D4F]">장소의 기억</p>
+        <p className="text-xs text-[#F7F1DC]/56">{regionName}</p>
       </div>
 
       <div className="mb-3 grid grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] gap-3">
@@ -76,8 +76,8 @@ export default function PlaceMemory({ events, fallbackDescription, regionName }:
               className={clsx(
                 "w-full rounded-md border px-3 py-2 text-left transition",
                 selectedEvent.id === event.id
-                  ? "border-[#D6A526] bg-[#D6A526] text-[#101214]"
-                  : "border-[#F5F7EF]/12 bg-[#F5F7EF]/6 text-[#F5F7EF]/76 hover:border-[#D6A526]/50",
+                  ? "border-[#E7C86A] bg-[#E7C86A] text-[#0B100E]"
+                  : "border-[#F7F1DC]/24 bg-[#F7F1DC]/7 text-[#F7F1DC]/82 hover:border-[#E7C86A]/60",
               )}
               key={event.id}
               onClick={() => selectMemory(event, index)}
@@ -88,32 +88,32 @@ export default function PlaceMemory({ events, fallbackDescription, regionName }:
           ))}
         </div>
 
-        <article className="rounded-md border border-[#F5F7EF]/12 bg-[#F5F7EF]/7 p-3">
+        <article className="rounded-md border border-[#F7F1DC]/24 bg-[#F7F1DC]/8 p-3 ring-1 ring-white/5">
           <div className="flex items-center justify-between gap-2">
-            <span className="rounded-full border border-[#D6A526]/45 px-2 py-1 text-[11px] text-[#D6A526]">
+            <span className="rounded-full border border-[#E7C86A]/55 px-2 py-1 text-[11px] text-[#E7C86A]">
               {kindLabels[selectedEvent.kind]}
             </span>
-            <span className="text-[11px] text-[#F5F7EF]/50">{selectedEvent.era}</span>
+            <span className="text-[11px] text-[#F7F1DC]/56">{selectedEvent.era}</span>
           </div>
-          <h2 className="mt-3 text-base font-semibold leading-6 text-[#F5F7EF]">{selectedEvent.title}</h2>
-          <p className="mt-2 text-xs leading-5 text-[#F5F7EF]/72">{selectedEvent.summary}</p>
+          <h2 className="mt-3 text-base font-semibold leading-6 text-[#FFF8DE]">{selectedEvent.title}</h2>
+          <p className="mt-2 text-xs leading-5 text-[#F7F1DC]/78">{selectedEvent.summary}</p>
         </article>
       </div>
 
       <ScrollShadow hideScrollBar className="h-full w-full pr-1" size={80}>
-        <div className={`text-justify text-sm leading-7 text-[#F5F7EF]/82 ${notoSansKr.className}`}>
+        <div className={`text-justify text-sm leading-7 text-[#F7F1DC]/86 ${notoSansKr.className}`}>
           <p>{selectedEvent.consequence}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {selectedEvent.relatedSubjects.map((subject) => (
               <span
-                className="rounded-full border border-[#F5F7EF]/12 bg-black/15 px-3 py-1 text-xs text-[#F5F7EF]/68"
+                className="rounded-full border border-[#F7F1DC]/20 bg-black/20 px-3 py-1 text-xs text-[#F7F1DC]/72"
                 key={`${selectedEvent.id}-${subject}`}
               >
                 {subject}
               </span>
             ))}
           </div>
-          <p className="mt-4 whitespace-pre-line text-[#F5F7EF]/62">{fallbackDescription}</p>
+          <p className="mt-4 whitespace-pre-line text-[#F7F1DC]/66">{fallbackDescription}</p>
         </div>
       </ScrollShadow>
     </div>

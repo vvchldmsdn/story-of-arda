@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ScrollShadow, Image } from "@nextui-org/react";
 import { useState } from "react";
@@ -20,18 +20,13 @@ export default function ContentImageStrip({ images }: { images: ContentImage[] }
   };
 
   return (
-    <div className="rounded-lg border border-[#D6A526]/25 bg-[#121812]/80 p-3 shadow-xl shadow-black/20">
+    <div className="rounded-xl border border-[#E7C86A]/32 bg-[#0B100E]/94 p-3 shadow-[0_18px_60px_rgba(0,0,0,0.32)] ring-1 ring-white/10">
       <ScrollShadow
         orientation="horizontal"
         hideScrollBar
         className={clsx(
           "flex-none transition-height duration-700 ease-in-out",
-          {
-            "h-0 overflow-hidden": isClosed
-          },
-          {
-            "h-48": !isClosed
-          }
+          isClosed ? "h-0 overflow-hidden" : "h-48",
         )}
       >
         <div className="flex flex-row flex-nowrap gap-4">
@@ -42,18 +37,21 @@ export default function ContentImageStrip({ images }: { images: ContentImage[] }
                 alt="Detail image"
                 isZoomed
                 key={image.url}
-                style={{ minWidth: '260px' }}
+                style={{ minWidth: "260px" }}
                 className="max-h-[180px] rounded-md object-cover"
                 width={260}
-              ></Image>
-            )
+              />
+            );
           })}
         </div>
       </ScrollShadow>
-      <p
-        className="mt-3 text-center text-sm text-[#F5F0DF]/74 hover:cursor-pointer hover:text-[#F5F0DF]"
+      <button
+        type="button"
+        className="mt-3 w-full text-center text-sm text-[#F7F1DC]/78 hover:text-[#FFF8DE]"
         onClick={handleClick}
-      >이미지 창 {isClosed ? '열기' : '닫기'}</p>
+      >
+        이미지 {isClosed ? "열기" : "접기"}
+      </button>
     </div>
-  )
+  );
 }

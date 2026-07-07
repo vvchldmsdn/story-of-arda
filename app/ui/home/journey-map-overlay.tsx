@@ -24,6 +24,96 @@ type JourneyMapOverlayProps = {
   imageMetrics: ImageMetrics;
 };
 
+type Coord = [number, number];
+
+const detailedTrailCoords: Record<string, Record<string, Coord[]>> = {
+  "fellowship-road": {
+    "Middle Earth": [
+      [1848.8328, 746.6704],
+      [1818, 807],
+      [1796, 866],
+      [1858, 928],
+      [1936.3607, 897.4971],
+      [1970, 1026],
+      [1987.927, 1189.6115],
+      [2052, 1246],
+      [2149.9587, 1286.9312],
+      [2244, 1414],
+      [2320, 1628],
+      [2450.0072, 1962.575],
+      [2612, 1900],
+      [2818, 1986],
+      [3083.7443, 2053.4878],
+    ],
+  },
+  "rohan-gondor-war": {
+    "Middle Earth": [
+      [1688.3238, 1520.817],
+      [1732, 1606],
+      [1785.9546, 1690.0562],
+      [1878.2828, 1732.935],
+      [1984, 1772],
+      [2132, 1816],
+      [2318, 1900],
+      [2450.0072, 1962.575],
+      [2538, 1858],
+      [2601.5, 1712.5789],
+    ],
+  },
+  "erebor-road": {
+    "Middle Earth": [
+      [1848.8328, 746.6704],
+      [1882, 804],
+      [1936.3607, 897.4971],
+      [2078, 848],
+      [2268, 820],
+      [2468, 898],
+      [2601.291, 952.8692],
+      [2626, 760],
+      [2550.238, 473.4328],
+    ],
+  },
+};
+
+function getTrailCoords(journey: ArdaJourney, map: string): Coord[] {
+  const detailedCoords = detailedTrailCoords[journey.slug]?.[map];
+
+  if (detailedCoords && detailedCoords.length > 0) {
+    return detailedCoords;
+  }
+
+  return journey.steps.filter((step) => step.map === map).map((step) => step.coords);
+}
+
+function toScreenPoint(coord: Coord, imageMetrics: ImageMetrics) {
+  return {
+    x: (coord[0] / imageMetrics.naturalWidth) * imageMetrics.width,
+    y: (coord[1] / imageMetrics.naturalHeight) * imageMetrics.height,
+  };
+}
+
+function createRoutePath(points: Array<{ x: number; y: number }>) {
+  if (points.length === 0) {
+    return "";
+  }
+
+  if (points.length === 1) {
+    return `M ${points[0].x} ${points[0].y}`;
+  }
+
+  return points.reduce((path, point, index) => {
+    if (index === 0) {
+      return `M ${point.x} ${point.y}`;
+    }
+
+    const previous = points[index - 1];
+    const controlX = (previous.x + point.x) / 2;
+    const controlY = (previous.y + point.y) / 2 - Math.min(18, Math.max(-18, (point.x - previous.x) * 0.08));
+
+    return `${path} Q ${controlX} ${controlY} ${point.x} ${point.y}`;
+  }, "");
+}
+
 export default function JourneyMapOverlay({
   journeys,
   map,
@@ -49,6 +139,9 @@ export default function JourneyMapOverlay({
     selectedStepParam < selectedJourney.steps.length
       ? selectedStepParam
       : 0;
+  const trailPoints = getTrailCoords(selectedJourney, map).map((coord) => toScreenPoint(coord, imageMetrics));
+  const routePath = createRoutePath(trailPoints);
+  const intermediateTrailPoints = trailPoints.slice(1, -1);
 
   const moveToStep = (stepIndex: number) => {
     const step = selectedJourney.steps[stepIndex];
@@ -74,23 +167,54 @@ export default function JourneyMapOverlay({
       aria-hidden={false}
     >
       <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
-        <polyline
-          points={selectedJourney.steps
-            .filter((step) => step.map === map)
-            .map((step) => {
-              const x = (step.coords[0] / imageMetrics.naturalWidth) * imageMetrics.width;
-              const y = (step.coords[1] / imageMetrics.naturalHeight) * imageMetrics.height;
-              return `${x},${y}`;
-            })
-            .join(" ")}
+        <path
+          d={routePath}
           fill="none"
-          stroke="#D6A526"
-          strokeDasharray="8 10"
+          stroke="#0B0F0D"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeOpacity="0.68"
+          strokeOpacity="0.75"
+          strokeWidth="7"
+        />
+        <path
+          d={routePath}
+          fill="none"
+          stroke="#F3C64B"
+          strokeDasharray="5 9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeOpacity="0.92"
           strokeWidth="3"
         />
+        <path
+          d={routePath}
+          fill="none"
+          stroke="#F7F1DC"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeOpacity="0.35"
+          strokeWidth="1"
+        />
+        {intermediateTrailPoints.map((point, index) => (
+          <g key={`${selectedJourney.slug}-trail-${index}`}>
+            <circle
+              cx={point.x}
+              cy={point.y}
+              fill="#0B0F0D"
+              r={index % 3 === 0 ? "4" : "2.7"}
+              stroke="#F3C64B"
+              strokeOpacity="0.9"
+              strokeWidth="1.4"
+            />
+            <circle
+              cx={point.x}
+              cy={point.y}
+              fill="#F7F1DC"
+              opacity="0.78"
+              r="1"
+            />
+          </g>
+        ))}
       </svg>
 
       <div className="absolute left-0 top-0 h-full w-full">

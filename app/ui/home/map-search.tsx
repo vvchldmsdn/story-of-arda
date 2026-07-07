@@ -76,6 +76,39 @@ export default function MapSearch({
     }
   }, [imgRef, updateImageMetrics]);
 
+  useEffect(() => {
+    const image = imgRef.current;
+    const container = divRef.current;
+
+    if (!image || !container) {
+      return;
+    }
+
+    const syncMetrics = () => {
+      const rect = container.getBoundingClientRect();
+      setMapData({ width: rect.width, height: rect.height, top: rect.top, left: rect.left });
+      updateImageMetrics();
+    };
+
+    syncMetrics();
+    const frameId = window.requestAnimationFrame(syncMetrics);
+
+    if ("ResizeObserver" in window) {
+      const observer = new ResizeObserver(syncMetrics);
+      observer.observe(container);
+      observer.observe(image);
+
+      return () => {
+        window.cancelAnimationFrame(frameId);
+        observer.disconnect();
+      };
+    }
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [imgRef, mapSrc, updateImageMetrics]);
+
   return (
     <div
       ref={divRef}

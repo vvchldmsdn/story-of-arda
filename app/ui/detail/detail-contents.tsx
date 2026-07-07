@@ -30,13 +30,13 @@ export default function DetailContents({ titles, contents, heading, overview }: 
     replace: (domNode: any) => {
       switch (domNode.name) {
         case 'p':
-          return <p className="my-5 text-base leading-8 text-[#1B1D18]/86">{domToReact(domNode.children, options)}</p>;
+          return <p className="my-5 text-base leading-8 text-[#211D12]/88">{domToReact(domNode.children, options)}</p>;
         case 'h1':
-          return <h1 className="mb-8 text-4xl font-semibold leading-tight text-[#1B1D18]">{domToReact(domNode.children, options)}</h1>;
+          return <h1 className="mb-8 border-b border-[#8B6F2D]/25 pb-5 text-4xl font-semibold leading-tight text-[#15120B]">{domToReact(domNode.children, options)}</h1>;
         case 'h2':
-          return <h2 className="mb-3 mt-10 text-2xl font-semibold text-[#274B3D]">{domToReact(domNode.children, options)}</h2>;
+          return <h2 className="mb-3 mt-10 text-2xl font-semibold text-[#243F35]">{domToReact(domNode.children, options)}</h2>;
         case 'h3':
-          return <h3 className="mb-2 mt-8 text-xl font-semibold text-[#274B3D]">{domToReact(domNode.children, options)}</h3>;
+          return <h3 className="mb-2 mt-8 text-xl font-semibold text-[#243F35]">{domToReact(domNode.children, options)}</h3>;
         case 'a':
           return (
             <Popover className="inline-block" showArrow backdrop="opaque"
@@ -45,19 +45,19 @@ export default function DetailContents({ titles, contents, heading, overview }: 
                   "before:bg-[#D6A526]"
                 ],
                 content: [
-                  "border border-[#D6A526]/45 bg-[#F5F0DF] px-0 py-0",
+                  "border border-[#8B6F2D]/45 bg-[#F5ECD2] px-0 py-0",
                 ],
               }}
             >
               <PopoverTrigger className="inline-block">
                 <p 
-                  className="inline-block text-[#B23A48] underline decoration-[#D6A526]/60 underline-offset-4 hover:cursor-pointer"
+                  className="inline-block text-[#8C2632] underline decoration-[#8B6F2D]/70 underline-offset-4 hover:cursor-pointer"
                   onClick={() => handleClick(domNode.attribs.href)}
                 >{domToReact(domNode.children, options)}</p>
               </PopoverTrigger>
               <PopoverContent>
                 <div className="mx-0">
-                  <Card className="w-[330px] bg-[#F5F0DF] py-4">
+                  <Card className="w-[330px] bg-[#F5ECD2] py-4">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start flex justify-center">
                       <div className="whitespace-normal w-full">
                         <div className="mb-4 flex w-full items-center justify-between text-[#1B1D18]">
@@ -86,13 +86,13 @@ export default function DetailContents({ titles, contents, heading, overview }: 
             </Popover>
           )
         case 'blockquote':
-          return <blockquote className="my-6 rounded-md border-l-4 border-[#D6A526] bg-[#D6A526]/12 p-4 text-[#1B1D18]/80">{domToReact(domNode.children, options)}</blockquote>;
+          return <blockquote className="my-6 rounded-md border-l-4 border-[#8B6F2D] bg-[#8B6F2D]/12 p-4 text-[#211D12]/82">{domToReact(domNode.children, options)}</blockquote>;
         case 'ul':
-          return <ul className="my-5 list-disc space-y-2 pl-6 text-[#1B1D18]/86">{domToReact(domNode.children, options)}</ul>;
+          return <ul className="my-5 list-disc space-y-2 pl-6 text-[#211D12]/88">{domToReact(domNode.children, options)}</ul>;
         case 'li':
           return <li className="leading-7">{domToReact(domNode.children, options)}</li>;
         case 'hr':
-          return <hr className="my-8 border-[#1B1D18]/15"></hr>
+          return <hr className="my-8 border-[#211D12]/15"></hr>
         case 'img':
           return <Image src='/swordsman.jpeg' alt={domNode.attribs.alt || 'Content image'} className="float-right ml-4 mt-2 w-40 rounded-md"></Image>
       };
@@ -100,8 +100,8 @@ export default function DetailContents({ titles, contents, heading, overview }: 
   };
 
   return (
-    <article className="rounded-lg bg-[#F5F0DF] px-5 py-6 text-[#1B1D18] shadow-2xl shadow-black/25 sm:px-8 lg:px-12 lg:py-10">
-      <div className="mx-auto max-w-3xl text-justify">
+    <article className="rounded-xl border border-[#E7C86A]/35 bg-[#F5ECD2] px-5 py-6 text-[#211D12] shadow-[0_24px_90px_rgba(0,0,0,0.35)] ring-1 ring-white/40 sm:px-8 lg:px-12 lg:py-10">
+      <div className="mx-auto max-w-4xl text-justify">
         {parse(converter.makeHtml('# ' + activeTitle + `\n\n` + activeContent), options)}
       </div>
     </article>

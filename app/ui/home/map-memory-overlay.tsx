@@ -216,8 +216,8 @@ export default function MapMemoryOverlay({
 
   return (
     <>
-      <div className="pointer-events-none absolute left-1/2 top-[5.5rem] z-20 hidden -translate-x-1/2 md:block">
-        <div className="pointer-events-auto flex items-center gap-1 rounded-lg border border-[#F5F0DF]/14 bg-[#101214]/78 p-1 shadow-xl shadow-black/30 backdrop-blur-md">
+      <div className="pointer-events-none absolute left-1/2 top-4 z-20 hidden -translate-x-1/2 md:block">
+        <div className="pointer-events-auto flex items-center gap-1 rounded-lg border border-[#F7F1DC]/28 bg-[#0B100E]/90 p-1 shadow-xl shadow-black/40 ring-1 ring-white/10 backdrop-blur-xl">
           {filters.map((filter) => {
             const isActive = activeFilter === filter.value;
             const count =
@@ -235,8 +235,8 @@ export default function MapMemoryOverlay({
                 className={clsx(
                   "flex h-8 items-center gap-1.5 rounded-md px-2 text-[11px] font-medium transition",
                   isActive
-                    ? "bg-[#F5F0DF] text-[#101214]"
-                    : "text-[#F5F0DF]/62 hover:bg-[#F5F0DF]/10 hover:text-[#F5F0DF]",
+                    ? "bg-[#F7F1DC] text-[#0B100E]"
+                    : "text-[#F7F1DC]/72 hover:bg-[#F7F1DC]/10 hover:text-[#FFF8DE]",
                 )}
                 key={filter.value}
                 data-memory-filter={filter.value}
@@ -246,7 +246,7 @@ export default function MapMemoryOverlay({
               >
                 <FlagIcon className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>{filter.label}</span>
-                <span className={clsx("text-[10px]", isActive ? "text-[#101214]/55" : "text-[#F5F0DF]/38")}>
+                <span className={clsx("text-[10px]", isActive ? "text-[#0B100E]/55" : "text-[#F7F1DC]/48")}>
                   {count}
                 </span>
               </button>
@@ -324,11 +324,11 @@ export default function MapMemoryOverlay({
 
       {selectedMemory ? (
         <aside
-          className="pointer-events-none absolute left-1/2 top-36 z-30 hidden w-[32rem] max-w-[calc(100vw-56rem)] min-w-[24rem] -translate-x-1/2 xl:block"
+          className="pointer-events-none absolute left-1/2 top-20 z-30 hidden w-[32rem] max-w-[calc(100%_-_2rem)] -translate-x-1/2 xl:block"
           data-testid="map-memory-focus"
         >
-          <div className="pointer-events-auto overflow-hidden rounded-lg border border-[#F5F0DF]/18 bg-[#101214]/88 text-[#F5F0DF] shadow-2xl shadow-black/40 backdrop-blur-md">
-            <div className="flex items-start gap-3 border-b border-[#F5F0DF]/10 p-4">
+          <div className="pointer-events-auto overflow-hidden rounded-xl border border-[#F7F1DC]/28 bg-[#0B100E]/94 text-[#F7F1DC] shadow-[0_24px_80px_rgba(0,0,0,0.55)] ring-1 ring-white/10 backdrop-blur-xl">
+            <div className="flex items-start gap-3 border-b border-[#F7F1DC]/16 p-4">
               <span
                 className={clsx(
                   "mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-full border ring-4",
@@ -343,18 +343,18 @@ export default function MapMemoryOverlay({
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#D6A526]">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-[#E7C86A]">
                     {selectedMemory.dateLabel || kindMeta[selectedMemory.kind].label}
                   </span>
-                  <span className="h-px flex-1 bg-[#F5F0DF]/12" />
-                  <span className="text-[11px] text-[#F5F0DF]/48">{selectedMemory.era}</span>
+                  <span className="h-px flex-1 bg-[#F7F1DC]/16" />
+                  <span className="text-[11px] text-[#F7F1DC]/56">{selectedMemory.era}</span>
                 </div>
                 <h3 className="mt-2 truncate text-lg font-semibold leading-6">{selectedMemory.title}</h3>
               </div>
 
               <button
                 type="button"
-                className="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-[#F5F0DF]/12 text-[#F5F0DF]/60 transition hover:border-[#F5F0DF]/35 hover:text-[#F5F0DF]"
+                className="flex h-8 w-8 flex-none items-center justify-center rounded-md border border-[#F7F1DC]/22 text-[#F7F1DC]/70 transition hover:border-[#F7F1DC]/45 hover:text-[#FFF8DE]"
                 onClick={clearMemory}
                 aria-label="Close memory focus"
               >
@@ -363,23 +363,23 @@ export default function MapMemoryOverlay({
             </div>
 
             <div className="space-y-3 p-4">
-              <p className="text-sm leading-6 text-[#F5F0DF]/78">{selectedMemory.summary}</p>
-              <p className="border-l border-[#D6A526]/45 pl-3 text-xs leading-5 text-[#F5F0DF]/58">
+              <p className="text-sm leading-6 text-[#F7F1DC]/84">{selectedMemory.summary}</p>
+              <p className="border-l border-[#E7C86A]/55 pl-3 text-xs leading-5 text-[#F7F1DC]/66">
                 {selectedMemory.consequence}
               </p>
 
               {relatedMemories.length > 0 ? (
-                <div className="border-t border-[#F5F0DF]/10 pt-3">
+                <div className="border-t border-[#F7F1DC]/16 pt-3">
                   <div className="mb-2 flex items-center justify-between gap-3">
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#F5F0DF]/46">연결된 사건</p>
-                    <p className="text-[11px] text-[#F5F0DF]/36">{relatedMemories.length}</p>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#F7F1DC]/56">연결된 사건</p>
+                    <p className="text-[11px] text-[#F7F1DC]/46">{relatedMemories.length}</p>
                   </div>
                   <div className="grid gap-2">
                     {relatedMemories.map((memory) => (
                       <Link
                         href={getMemoryHref(memory)}
                         replace
-                        className="group flex items-center gap-3 rounded-md border border-[#F5F0DF]/10 bg-[#F5F0DF]/5 px-3 py-2 text-left transition hover:border-[#D6A526]/45 hover:bg-[#D6A526]/10"
+                        className="group flex items-center gap-3 rounded-md border border-[#F7F1DC]/16 bg-[#F7F1DC]/7 px-3 py-2 text-left transition hover:border-[#E7C86A]/55 hover:bg-[#E7C86A]/12"
                         key={`${selectedMemory.id}-${memory.id}`}
                         data-testid="map-memory-focus-jump"
                         data-memory-id={memory.id}
@@ -391,9 +391,9 @@ export default function MapMemoryOverlay({
                           }
                         }}
                       >
-                        <span className="w-20 flex-none text-[11px] text-[#D6A526]">{memory.dateLabel}</span>
-                        <span className="min-w-0 flex-1 truncate text-xs text-[#F5F0DF]/74">{memory.title}</span>
-                        <ChevronRightIcon className="h-4 w-4 flex-none text-[#F5F0DF]/32 transition group-hover:text-[#D6A526]" aria-hidden="true" />
+                        <span className="w-20 flex-none text-[11px] text-[#E7C86A]">{memory.dateLabel}</span>
+                        <span className="min-w-0 flex-1 truncate text-xs text-[#F7F1DC]/82">{memory.title}</span>
+                        <ChevronRightIcon className="h-4 w-4 flex-none text-[#F7F1DC]/42 transition group-hover:text-[#E7C86A]" aria-hidden="true" />
                       </Link>
                     ))}
                   </div>
